@@ -37,7 +37,8 @@ if(L.Browser.mobile){
     var main = document.getElementById('main');
     main.style.paddingBottom = '0%';
     var instruction = document.getElementById('instruction');
-    instruction.style.top = '7%';
+    instruction.style.top = '8%';
+    instruction.style.fontSize = '12px';
 }
 
 function getMax(prop){
@@ -1309,7 +1310,7 @@ schema = [{
 
 // Set location and zoom 
 if(L.Browser.mobile){
-    var mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.25, dragging: false}).setView([22.146, 79.088], 4.25);
+    var mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5, dragging: false}).setView([22.146, 79.088], 4);
 }
 else{
     var mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5}).setView([22.146, 79.088], 4.5);
