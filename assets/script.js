@@ -37,7 +37,7 @@ if(L.Browser.mobile){
     var main = document.getElementById('main');
     main.style.paddingBottom = '0%';
     var instruction = document.getElementById('instruction');
-    instruction.style.top = '12%';
+    instruction.style.top = '14%';
     instruction.style.fontSize = '12px';
 }
 
