@@ -36,6 +36,8 @@ if(L.Browser.mobile){
     slidercontainer.style.width = '50%';
     var main = document.getElementById('main');
     main.style.paddingBottom = '0%';
+    var instruction = document.getElementById('instruction');
+    instruction.style.top = '7%';
 }
 
 function getMax(prop){
@@ -549,7 +551,7 @@ function loadChartData(){
             style: {
                 text:{
                 'font-family': "'Fira Sans', sans-serif",
-                'font-size' : 16,
+                'font-size' : (L.Browser.mobile?10:16),
                 'fill' : '#666666',
                 }
             }
@@ -979,7 +981,7 @@ schema = [{
         style: {
             text:{
               'font-family': "'Fira Sans', sans-serif",
-              'font-size' : 16,
+              'font-size' : (L.Browser.mobile?10:16),
               'fill' : '#666666',
             }
         }
