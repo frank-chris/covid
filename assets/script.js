@@ -1221,6 +1221,9 @@ schema = [{
   
      function changeScript(value){
         loadChartData();
+        var selectedButton = document.getElementById(value);
+        selectedButton.style.backgroundColor = '#5A6268';
+        selectedButton.style.color = '#fff';
      }
 
     function changeScenario(value){
@@ -1239,9 +1242,6 @@ schema = [{
             buttons[i].style.backgroundColor = "#fff";
             buttons[i].style.color = '#5A6268';
         } 
-        var selectedButton = document.getElementById(value);
-        selectedButton.style.backgroundColor = '#5A6268';
-        selectedButton.style.color = '#fff';
     }
 
     
