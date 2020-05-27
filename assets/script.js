@@ -1236,7 +1236,10 @@ schema = [{
         element.type = "text/javascript";
         element.id = "data";
         document.getElementsByTagName("body")[0].appendChild(element);
-        setTimeout(changeScript, (L.Browser.mobile?2100:1700), value );
+        // setTimeout(changeScript, (L.Browser.mobile?2100:1700), value );
+        element.onload = function (){
+            changeScript(value);
+        };
         loadChartData();
         console.log(runID);
         var buttons = document.getElementsByClassName('scenario');
