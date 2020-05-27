@@ -443,7 +443,7 @@ function loadChartData(){
         "type": "date",
         "format": "%d-%b-%y"
         }, {
-        "name": "Active(Predicted)",
+        "name": "Active(IND Trend)",
         "type": "number"
         }, {
         "name": "Active",
@@ -455,7 +455,7 @@ function loadChartData(){
         "name": "LA",
         "type": "number"
         }, {
-        "name": "Recovered(Predicted)",
+        "name": "Recovered(IND Trend)",
         "type": "number"
         }, {
         "name": "Recovered",
@@ -467,7 +467,7 @@ function loadChartData(){
         "name": "LR",
         "type": "number"
         }, {
-        "name": "Total(Predicted)",
+        "name": "Total(IND Trend)",
         "type": "number"
         }, {
         "name": "Total",
@@ -501,7 +501,7 @@ function loadChartData(){
                     initiallyhidden: legendStatus['Active'],
                 },
                 {
-                    value: 'Active(Predicted)',
+                    value: 'Active(IND Trend)',
                     initiallyhidden: legendStatus['Active(Predicted)'],
                 },
                 {
@@ -513,7 +513,7 @@ function loadChartData(){
                     initiallyhidden: legendStatus['Recovered'],
                 },
                 {
-                    value: 'Recovered(Predicted)',
+                    value: 'Recovered(IND Trend)',
                     initiallyhidden: legendStatus['Recovered(Predicted)'],
                 },
                 {
@@ -525,7 +525,7 @@ function loadChartData(){
                     initiallyhidden: legendStatus['Total'],
                 },
                 {
-                    value: 'Total(Predicted)',
+                    value: 'Total(IND Trend)',
                     initiallyhidden: legendStatus['Total(Predicted)'],
                 },
                 {
@@ -575,7 +575,7 @@ function loadChartData(){
                     }
                 },
                 {
-                    value: "Active(Predicted)",
+                    value: "Active(IND Trend)",
                     type: "line"
                 },
                 {
@@ -597,7 +597,7 @@ function loadChartData(){
                     }
                 },
                 {
-                    value: "Recovered(Predicted)",
+                    value: "Recovered(IND Trend)",
                     type: "line"
                 },
                 {
@@ -619,7 +619,7 @@ function loadChartData(){
                     }
                 },
                 {
-                    value: "Total(Predicted)",
+                    value: "Total(IND Trend)",
                     type: "line"
                 },
                 {
@@ -872,7 +872,7 @@ schema = [{
     "type": "date",
     "format": "%d-%b-%y"
     }, {
-    "name": "Active(Predicted)",
+    "name": "Active(IND Trend)",
     "type": "number"
     }, {
     "name": "Active",
@@ -884,7 +884,7 @@ schema = [{
     "name": "LA",
     "type": "number"
     }, {
-    "name": "Recovered(Predicted)",
+    "name": "Recovered(IND Trend)",
     "type": "number"
     }, {
     "name": "Recovered",
@@ -896,7 +896,7 @@ schema = [{
     "name": "LR",
     "type": "number"
     }, {
-    "name": "Total(Predicted)",
+    "name": "Total(IND Trend)",
     "type": "number"
     }, {
     "name": "Total",
@@ -931,7 +931,7 @@ schema = [{
                 initiallyhidden: legendStatus['Active'],
             },
             {
-                value: 'Active(Predicted)',
+                value: 'Active(IND Trend)',
                 initiallyhidden: legendStatus['Active(Predicted)'],
             },
             {
@@ -943,7 +943,7 @@ schema = [{
                 initiallyhidden: legendStatus['Recovered'],
             },
             {
-                value: 'Recovered(Predicted)',
+                value: 'Recovered(IND Trend)',
                 initiallyhidden: legendStatus['Recovered(Predicted)'],
             },
             {
@@ -955,7 +955,7 @@ schema = [{
                 initiallyhidden: legendStatus['Total'],
             },
             {
-                value: 'Total(Predicted)',
+                value: 'Total(IND Trend)',
                 initiallyhidden: legendStatus['Total(Predicted)'],
             },
             {
@@ -1005,7 +1005,7 @@ schema = [{
                 }
             },
             {
-                value: "Active(Predicted)",
+                value: "Active(IND Trend)",
                 type: "line"
             },
             {
@@ -1027,7 +1027,7 @@ schema = [{
                 }
             },
             {
-                value: "Recovered(Predicted)",
+                value: "Recovered(IND Trend)",
                 type: "line"
             },
             {
@@ -1049,7 +1049,7 @@ schema = [{
                 }
             },
             {
-                value: "Total(Predicted)",
+                value: "Total(IND Trend)",
                 type: "line"
             },
             {
@@ -1400,9 +1400,9 @@ info.onAdd = function (map) {
 info.update = function (props) {
     this._div.innerHTML = '<h3>'+ calculatedDate(slider.value).replace(/_/g, ' ') + '</h3>' +  (props ?
         '<b>' + props.name +'</b>'
-        +'<br />' + 'Total(Predicted):<br /> ' + '<b>' + ((Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString()=="NaN"?'-':(Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString() )+ '</b>'
-        +'<br />' + 'Active(Predicted):<br /> ' + '<b>' + (parseInt(props[slider.value.toString()]).toString()=="NaN"?'-':parseInt(props[slider.value.toString()]).toString() ) +'</b>'
-        + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?'<br />' + 'Recovered(Predicted)<br /> ' + '<b>' + (parseInt(props["Recovered" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Recovered" + slider.value.toString()]).toString() ) +'</b>':'')
+        +'<br />' + 'Total(IND Trend):<br /> ' + '<b>' + ((Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString()=="NaN"?'-':(Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString() )+ '</b>'
+        +'<br />' + 'Active(IND Trend):<br /> ' + '<b>' + (parseInt(props[slider.value.toString()]).toString()=="NaN"?'-':parseInt(props[slider.value.toString()]).toString() ) +'</b>'
+        + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?'<br />' + 'Recovered(IND Trend)<br /> ' + '<b>' + (parseInt(props["Recovered" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Recovered" + slider.value.toString()]).toString() ) +'</b>':'')
         +'<br />' + 'Total<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
         +'<br />' + 'Active<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
                                                     (props["Confirmed_" + calculatedDate(slider.value)] 
