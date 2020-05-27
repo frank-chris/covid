@@ -200,7 +200,7 @@ function highlightFeature(e) {
 
 // Event listener function to reset highlight when mouse moves out of a feature
 function resetHighlight(e) {
-    geojson[currentBaseLayer].resetStyle(e.target);
+    geojson[currentBaseLayer.replace("(Data)", "")].resetStyle(e.target);
     info.update();
 }
 
@@ -279,14 +279,17 @@ function monthName(month){
   var dropDownFlag = 1;
   var legendStatus = {
       'Active(Predicted)':0,
+      'Active(IND Trend)':0,
       'Active(Uncertainty)':1,
-      'Active':0,
+      'Active(Data)':0,
       'Recovered(Predicted)':0,
+      'Recovered(IND Trend)':0,
       'Recovered(Uncertainty)':1,
-      'Recovered':0,
+      'Recovered(Data)':0,
       'Total(Predicted)':0,
+      'Total(IND Trend)':0,
       'Total(Uncertainty)':1,
-      'Total':0
+      'Total(Data)':0
   };
 
 var legendButton;
@@ -294,8 +297,9 @@ var temp;
 function setLegend(value){
     if(value=='Active'){
         legendButton = document.getElementById('Active');
-        legendStatus['Active'] = (legendButton.value=='on'?1:0);
+        legendStatus['Active(Data)'] = (legendButton.value=='on'?1:0);
         legendStatus['Active(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Active(IND Trend)'] = (legendButton.value=='on'?1:0);
         loadChart(currentState);
         legendButton.value = (legendButton.value=='on'?'off':'on');
         temp = legendButton.style.color;
@@ -304,8 +308,9 @@ function setLegend(value){
     }
     else if(value == 'Recovered'){
         legendButton = document.getElementById('Recovered');
-        legendStatus['Recovered'] = (legendButton.value=='on'?1:0);
+        legendStatus['Recovered(Data)'] = (legendButton.value=='on'?1:0);
         legendStatus['Recovered(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Recovered(IND Trend)'] = (legendButton.value=='on'?1:0);
         loadChart(currentState);
         legendButton.value = (legendButton.value=='on'?'off':'on');
         temp = legendButton.style.color;
@@ -314,8 +319,9 @@ function setLegend(value){
     }
     else if(value == 'Total'){
         legendButton = document.getElementById('Total');
-        legendStatus['Total'] = (legendButton.value=='on'?1:0);
+        legendStatus['Total(Data)'] = (legendButton.value=='on'?1:0);
         legendStatus['Total(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Total(IND Trend)'] = (legendButton.value=='on'?1:0);
         loadChart(currentState);
         legendButton.value = (legendButton.value=='on'?'off':'on');
         temp = legendButton.style.color;
@@ -403,19 +409,19 @@ function loadChartData(){
         "name": "Active(Predicted)",
         "type": "number"
         }, {
-        "name": "Active",
+        "name": "Active(Data)",
         "type": "number"
         }, {
         "name": "Recovered(Predicted)",
         "type": "number"
         }, {
-        "name": "Recovered",
+        "name": "Recovered(Data)",
         "type": "number"
         }, {
         "name": "Total(Predicted)",
         "type": "number"
         }, {
-        "name": "Total",
+        "name": "Total(Data)",
         "type": "number"
         }, {
         "name": "HA",
@@ -446,7 +452,7 @@ function loadChartData(){
         "name": "Active(IND Trend)",
         "type": "number"
         }, {
-        "name": "Active",
+        "name": "Active(Data)",
         "type": "number"
         }, {
         "name": "HA",
@@ -458,7 +464,7 @@ function loadChartData(){
         "name": "Recovered(IND Trend)",
         "type": "number"
         }, {
-        "name": "Recovered",
+        "name": "Recovered(Data)",
         "type": "number"
         }, {
         "name": "HR",
@@ -470,7 +476,7 @@ function loadChartData(){
         "name": "Total(IND Trend)",
         "type": "number"
         }, {
-        "name": "Total",
+        "name": "Total(Data)",
         "type": "number"
         }, {
         "name": "HT",
@@ -497,36 +503,36 @@ function loadChartData(){
         legend: {
             item:[
                 {
-                    value: 'Active',
-                    initiallyhidden: legendStatus['Active'],
+                    value: 'Active(Data)',
+                    initiallyhidden: legendStatus['Active(Data)'],
                 },
                 {
                     value: 'Active(IND Trend)',
-                    initiallyhidden: legendStatus['Active(Predicted)'],
+                    initiallyhidden: legendStatus['Active(IND Trend)'],
                 },
                 {
                     value: 'Active(Uncertainty)',
                     initiallyhidden: legendStatus['Active(Uncertainty)'],
                 },
                 {
-                    value: 'Recovered',
-                    initiallyhidden: legendStatus['Recovered'],
+                    value: 'Recovered(Data)',
+                    initiallyhidden: legendStatus['Recovered(Data)'],
                 },
                 {
                     value: 'Recovered(IND Trend)',
-                    initiallyhidden: legendStatus['Recovered(Predicted)'],
+                    initiallyhidden: legendStatus['Recovered(IND Trend)'],
                 },
                 {
                     value: 'Recovered(Uncertainty)',
                     initiallyhidden: legendStatus['Recovered(Uncertainty)'],
                 },
                 {
-                    value: 'Total',
-                    initiallyhidden: legendStatus['Total'],
+                    value: 'Total(Data)',
+                    initiallyhidden: legendStatus['Total(Data)'],
                 },
                 {
                     value: 'Total(IND Trend)',
-                    initiallyhidden: legendStatus['Total(Predicted)'],
+                    initiallyhidden: legendStatus['Total(IND Trend)'],
                 },
                 {
                     value: 'Total(Uncertainty)',
@@ -579,7 +585,7 @@ function loadChartData(){
                     type: "line"
                 },
                 {
-                    value: "Active",
+                    value: "Active(Data)",
                     type: "line"
                 },
                 {
@@ -601,7 +607,7 @@ function loadChartData(){
                     type: "line"
                 },
                 {
-                    value: "Recovered",
+                    value: "Recovered(Data)",
                     type: "line"
                 },
                 {
@@ -623,7 +629,7 @@ function loadChartData(){
                     type: "line"
                 },
                 {
-                    value: "Total",
+                    value: "Total(Data)",
                     type: "line"
                 }
             ],
@@ -650,8 +656,8 @@ function loadChartData(){
         legend: {
             item:[
                 {
-                    value: 'Active',
-                    initiallyhidden: legendStatus['Active'],
+                    value: 'Active(Data)',
+                    initiallyhidden: legendStatus['Active(Data)'],
                 },
                 {
                     value: 'Active(Predicted)',
@@ -662,8 +668,8 @@ function loadChartData(){
                     initiallyhidden: legendStatus['Active(Uncertainty)'],
                 },
                 {
-                    value: 'Recovered',
-                    initiallyhidden: legendStatus['Recovered'],
+                    value: 'Recovered(Data)',
+                    initiallyhidden: legendStatus['Recovered(Data)'],
                 },
                 {
                     value: 'Recovered(Predicted)',
@@ -674,8 +680,8 @@ function loadChartData(){
                     initiallyhidden: legendStatus['Recovered(Uncertainty)'],
                 },
                 {
-                    value: 'Total',
-                    initiallyhidden: legendStatus['Total'],
+                    value: 'Total(Data)',
+                    initiallyhidden: legendStatus['Total(Data)'],
                 },
                 {
                     value: 'Total(Predicted)',
@@ -724,7 +730,7 @@ function loadChartData(){
                         type: "line"
                     },
                     {
-                        value: "Active",
+                        value: "Active(Data)",
                         type: "line"
                     },
                     {
@@ -746,7 +752,7 @@ function loadChartData(){
                         type: "line"
                     },
                     {
-                        value: "Recovered",
+                        value: "Recovered(Data)",
                         type: "line"
                     },
                     {
@@ -768,7 +774,7 @@ function loadChartData(){
                         type: "line"
                     },
                     {
-                        value: "Total",
+                        value: "Total(Data)",
                         type: "line"
                     }
                 ],
@@ -832,19 +838,19 @@ schema2 = [{
     "name": "Active(Predicted)",
     "type": "number"
     }, {
-    "name": "Active",
+    "name": "Active(Data)",
     "type": "number"
     }, {
     "name": "Recovered(Predicted)",
     "type": "number"
     }, {
-    "name": "Recovered",
+    "name": "Recovered(Data)",
     "type": "number"
     }, {
     "name": "Total(Predicted)",
     "type": "number"
     }, {
-    "name": "Total",
+    "name": "Total(Data)",
     "type": "number"
     }, {
     "name": "HA",
@@ -875,7 +881,7 @@ schema = [{
     "name": "Active(IND Trend)",
     "type": "number"
     }, {
-    "name": "Active",
+    "name": "Active(Data)",
     "type": "number"
     }, {
     "name": "HA",
@@ -887,7 +893,7 @@ schema = [{
     "name": "Recovered(IND Trend)",
     "type": "number"
     }, {
-    "name": "Recovered",
+    "name": "Recovered(Data)",
     "type": "number"
     }, {
     "name": "HR",
@@ -899,7 +905,7 @@ schema = [{
     "name": "Total(IND Trend)",
     "type": "number"
     }, {
-    "name": "Total",
+    "name": "Total(Data)",
     "type": "number"
     }, {
     "name": "HT",
@@ -927,36 +933,36 @@ schema = [{
     legend: {
         item:[
             {
-                value: 'Active',
-                initiallyhidden: legendStatus['Active'],
+                value: 'Active(Data)',
+                initiallyhidden: legendStatus['Active(Data)'],
             },
             {
                 value: 'Active(IND Trend)',
-                initiallyhidden: legendStatus['Active(Predicted)'],
+                initiallyhidden: legendStatus['Active(IND Trend)'],
             },
             {
                 value: 'Active(Uncertainty)',
                 initiallyhidden: legendStatus['Active(Uncertainty)'],
             },
             {
-                value: 'Recovered',
-                initiallyhidden: legendStatus['Recovered'],
+                value: 'Recovered(Data)',
+                initiallyhidden: legendStatus['Recovered(Data)'],
             },
             {
                 value: 'Recovered(IND Trend)',
-                initiallyhidden: legendStatus['Recovered(Predicted)'],
+                initiallyhidden: legendStatus['Recovered(IND Trend)'],
             },
             {
                 value: 'Recovered(Uncertainty)',
                 initiallyhidden: legendStatus['Recovered(Uncertainty)'],
             },
             {
-                value: 'Total',
-                initiallyhidden: legendStatus['Total'],
+                value: 'Total(Data)',
+                initiallyhidden: legendStatus['Total(Data)'],
             },
             {
                 value: 'Total(IND Trend)',
-                initiallyhidden: legendStatus['Total(Predicted)'],
+                initiallyhidden: legendStatus['Total(IND Trend)'],
             },
             {
                 value: 'Total(Uncertainty)',
@@ -1009,7 +1015,7 @@ schema = [{
                 type: "line"
             },
             {
-                value: "Active",
+                value: "Active(Data)",
                 type: "line"
             },
             {
@@ -1031,7 +1037,7 @@ schema = [{
                 type: "line"
             },
             {
-                value: "Recovered",
+                value: "Recovered(Data)",
                 type: "line"
             },
             {
@@ -1053,7 +1059,7 @@ schema = [{
                 type: "line"
             },
             {
-                value: "Total",
+                value: "Total(Data)",
                 type: "line"
             }
         ],
@@ -1080,8 +1086,8 @@ schema = [{
      legend: {
         item:[
             {
-                value: 'Active',
-                initiallyhidden: legendStatus['Active'],
+                value: 'Active(Data)',
+                initiallyhidden: legendStatus['Active(Data)'],
             },
             {
                 value: 'Active(Predicted)',
@@ -1092,8 +1098,8 @@ schema = [{
                 initiallyhidden: legendStatus['Active(Uncertainty)'],
             },
             {
-                value: 'Recovered',
-                initiallyhidden: legendStatus['Recovered'],
+                value: 'Recovered(Data)',
+                initiallyhidden: legendStatus['Recovered(Data)'],
             },
             {
                 value: 'Recovered(Predicted)',
@@ -1104,8 +1110,8 @@ schema = [{
                 initiallyhidden: legendStatus['Recovered(Uncertainty)'],
             },
             {
-                value: 'Total',
-                initiallyhidden: legendStatus['Total'],
+                value: 'Total(Data)',
+                initiallyhidden: legendStatus['Total(Data)'],
             },
             {
                 value: 'Total(Predicted)',
@@ -1154,7 +1160,7 @@ schema = [{
                     type: "line"
                 },
                 {
-                    value: "Active",
+                    value: "Active(Data)",
                     type: "line"
                 },
                 {
@@ -1176,7 +1182,7 @@ schema = [{
                     type: "line"
                 },
                 {
-                    value: "Recovered",
+                    value: "Recovered(Data)",
                     type: "line"
                 },
                 {
@@ -1198,7 +1204,7 @@ schema = [{
                     type: "line"
                 },
                 {
-                    value: "Total",
+                    value: "Total(Data)",
                     type: "line"
                 }
             ],
@@ -1255,13 +1261,13 @@ schema = [{
   function loadChart(state){
     if(state == "India"){
         dataSource2.data = dataStore2.createDataTable(overallData["Total"], schema2);
-        dataSource2.legend.item[0].initiallyhidden = legendStatus['Active'];
+        dataSource2.legend.item[0].initiallyhidden = legendStatus['Active(Data)'];
         dataSource2.legend.item[1].initiallyhidden = legendStatus['Active(Predicted)'];
         dataSource2.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
-        dataSource2.legend.item[3].initiallyhidden = legendStatus['Recovered'];
+        dataSource2.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
         dataSource2.legend.item[4].initiallyhidden = legendStatus['Recovered(Predicted)'];
         dataSource2.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
-        dataSource2.legend.item[6].initiallyhidden = legendStatus['Total'];
+        dataSource2.legend.item[6].initiallyhidden = legendStatus['Total(Data)'];
         dataSource2.legend.item[7].initiallyhidden = legendStatus['Total(Predicted)'];
         dataSource2.legend.item[8].initiallyhidden = legendStatus['Total(Uncertainty)'];
 
@@ -1282,14 +1288,14 @@ schema = [{
     else{
         dataSource.caption.text = state;
         dataSource.data = dataStore.createDataTable(stateData[state], schema);
-        dataSource.legend.item[0].initiallyhidden = legendStatus['Active'];
-        dataSource.legend.item[1].initiallyhidden = legendStatus['Active(Predicted)'];
+        dataSource.legend.item[0].initiallyhidden = legendStatus['Active(Data)'];
+        dataSource.legend.item[1].initiallyhidden = legendStatus['Active(IND Trend)'];
         dataSource.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
-        dataSource.legend.item[3].initiallyhidden = legendStatus['Recovered'];
-        dataSource.legend.item[4].initiallyhidden = legendStatus['Recovered(Predicted)'];
+        dataSource.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
+        dataSource.legend.item[4].initiallyhidden = legendStatus['Recovered(IND Trend)'];
         dataSource.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
-        dataSource.legend.item[6].initiallyhidden = legendStatus['Total'];
-        dataSource.legend.item[7].initiallyhidden = legendStatus['Total(Predicted)'];
+        dataSource.legend.item[6].initiallyhidden = legendStatus['Total(Data)'];
+        dataSource.legend.item[7].initiallyhidden = legendStatus['Total(IND Trend)'];
         dataSource.legend.item[8].initiallyhidden = legendStatus['Total(Uncertainty)'];
         
         new FusionCharts({
@@ -1374,13 +1380,13 @@ title.onAdd = function (map) {
 title.update = function () {
     this._div.innerHTML = '<h3>India</h3>' 
                             + "Total(Predicted)<br> <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()])).toString()
-                            + "</b><br> Total<br> <b>"   + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':totalData[0]["Confirmed_" + calculatedDate(slider.value)])
+                            + "</b><br> Total(Data)<br> <b>"   + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':totalData[0]["Confirmed_" + calculatedDate(slider.value)])
                             + "</b><br> Active(Predicted)<br> <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
-                            + "</b><br> Active<br> <b>" + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(totalData[0]["Confirmed_" + calculatedDate(slider.value)] 
+                            + "</b><br> Active(Data)<br> <b>" + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(totalData[0]["Confirmed_" + calculatedDate(slider.value)] 
                                                         - totalData[0]["Recovered_" + calculatedDate(slider.value)] 
                                                         - totalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() )
                             + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b><br> Recovered(Predicted)<br> <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
-                            + "</b><br> Recovered<br> <b>" + (totalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(totalData[0]["Recovered_" + calculatedDate(slider.value)])+Number(totalData[0]["Deceased_" + calculatedDate(slider.value)]));
+                            + "</b><br> Recovered(Data)<br> <b>" + (totalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(totalData[0]["Recovered_" + calculatedDate(slider.value)])+Number(totalData[0]["Deceased_" + calculatedDate(slider.value)]));
 };
 
 title.setPosition('topleft');
@@ -1403,12 +1409,12 @@ info.update = function (props) {
         +'<br />' + 'Total(IND Trend):<br /> ' + '<b>' + ((Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString()=="NaN"?'-':(Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString() )+ '</b>'
         +'<br />' + 'Active(IND Trend):<br /> ' + '<b>' + (parseInt(props[slider.value.toString()]).toString()=="NaN"?'-':parseInt(props[slider.value.toString()]).toString() ) +'</b>'
         + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?'<br />' + 'Recovered(IND Trend)<br /> ' + '<b>' + (parseInt(props["Recovered" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Recovered" + slider.value.toString()]).toString() ) +'</b>':'')
-        +'<br />' + 'Total<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
-        +'<br />' + 'Active<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
+        +'<br />' + 'Total(Data)<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
+        +'<br />' + 'Active(Data)<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
                                                     (props["Confirmed_" + calculatedDate(slider.value)] 
                                                   - props["Recovered_" + calculatedDate(slider.value)] 
                                                   - props["Deceased_" + calculatedDate(slider.value)]).toString() ) +'</b>'
-        +'<br />' + 'Recovered<br /> ' + '<b>' + (props["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props["Recovered_" + calculatedDate(slider.value)])+Number(props["Deceased_" + calculatedDate(slider.value)])) +'</b>'
+        +'<br />' + 'Recovered(Data)<br /> ' + '<b>' + (props["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props["Recovered_" + calculatedDate(slider.value)])+Number(props["Deceased_" + calculatedDate(slider.value)])) +'</b>'
         : (L.Browser.mobile?'Touch on<br />a state':'Hover over<br />a state'));
 };
 
@@ -1467,7 +1473,7 @@ legend.update = function (currentBaseLayer){
         }
     }
 
-    else if(currentBaseLayer == "Total" || currentBaseLayer == "Active" || currentBaseLayer=='Recovered' ){
+    else if(currentBaseLayer == "Total(Data)" || currentBaseLayer == "Active(Data)" || currentBaseLayer=='Recovered(Data)' ){
         grades = legendGrades("Confirmed_" + calculatedDate(slider.value));
         labels = [];
 
@@ -1503,9 +1509,9 @@ var baseMaps = {
     "Total(Predicted)": geojson["Total(Predicted)"],
     "Active(Predicted)": geojson["Active(Predicted)"],
     "Recovered(Predicted)":geojson["Recovered(Predicted)"],
-    "Total": geojson["Total"],
-    "Active": geojson["Active"],
-    "Recovered": geojson["Recovered"],
+    "Total(Data)": geojson["Total"],
+    "Active(Data)": geojson["Active"],
+    "Recovered(Data)": geojson["Recovered"],
 };
 
 
