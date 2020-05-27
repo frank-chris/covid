@@ -5,8 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>COVID-19</title>
+    <meta name="keywords" content="COVID-19, Covid-19 India Predictions, Mathematical model, MODELLING OF COVID-19 PANDEMIC">
+    
+    <title>COVID-19: IISc MODEL</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/smoothproducts.css">
@@ -31,6 +32,17 @@
     
 </head>
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100440163-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-100440163-2');
+</script>
+
+
 <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background-color: #666666;">
         <div class="container"><a style = "font-family: 'Fira Sans', sans-serif; font-weight: 400;" class="navbar-brand logo" href="#">DATA-DRIVEN MODELLING OF COVID-19 PANDEMIC</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
@@ -49,7 +61,7 @@
         <section id = 'title-section' class="clean-block features" style=" padding-top:10px; padding-bottom: 5px;">
             <div class="container">
                 <div class="block-heading" style='padding-top: 40px;'>
-                    <h3 class="text-left text-info" style="margin-right: 5px;margin-left: 5px;">PDE-based modelling of Covid-19 infections</h3>
+                    <h3 class="text-left text-info" style="font-family: 'Fira Sans', sans-serif; margin-right: 5px;margin-left: 5px;">PDE-based modelling of Covid-19 infections</h3>
                     <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
                         <div class="text-left para" style="margin-bottom: 10px;">
                             The aim of this project is to develop and apply a predictive computational model for the Covid-19 epidemic based on a high-dimensional population balance modelling.
@@ -59,7 +71,8 @@
                             <li> A six-dimensional population balance predictive computational model for an epidemic.
                             <li> Unlike the existing (Compartment or Network) models, proposed model predicts the distribution of infected population across the region, the age of the infected people, the day since infection, and the severity of infection, over a period of time.
                             <li> Incorporates the immunity, pre-medical history, effective treatment, point-to-point movement of infected population (e.g., by air, train etc), interactivity (community spread), hygiene and the social distancing of the population. 
-                            <li> Finite element operator-splitting scheme for the high-dimensional<span id='result'> PDE. </span> 
+                            <li> Finite element operator-splitting scheme for the high-dimensional PDE.
+                            <li> Proposed model can be used to predict region-wise and age-wise COVID-19 spread accurately, and consequently it can be used to frame policies on periodic lockdown, staggered opening of educational institutions and public <span id='result'> facilities. </span> 
                         </ul>
                     </div>
                 </div>
@@ -82,51 +95,52 @@
                     <div class="row align-items-center" style="margin-right: 0px;margin-left: 0px;padding-bottom: 2px;">
                         <div class="col align-items-right" style = "padding-bottom: 10px; margin: 0%;">
                                 <button id='Current_Trend' style="width: max-content; font-size: 15px; font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Current_Trend');" title="Current Trend">
-                                    <i class="material-icons" style="padding-right: 10px;">show_chart</i> Current Trend
+                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> Current Trend
                                 </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
-                                <button id='Bad_Scenario' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Bad_Scenario');" title="Bad Scenario">
-                                    <i class="material-icons" style="padding-right: 10px;">show_chart</i> Bad Scenario
+                                <button id='Better_Scenario' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Better_Scenario');" title="Better Scenario">
+                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> Better Scenario
                                 </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
                             <button id='Worse_Scenario' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Worse_Scenario');" title="Worse Scenario">
-                                <i class="material-icons" style="padding-right: 10px;">show_chart</i> Worse Scenario
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> Worse Scenario
                             </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
-                            <button id='Sunday_Lockdown' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Sunday_Lockdown');" title="Sunday Lockdown">
-                                <i class="material-icons" style="padding-right: 10px;">show_chart</i> Sunday Lockdown
+                            <button id='Sunday_Lockdown' style="width: 200px; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Sunday_Lockdown');" title="Sunday Lockdown">
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i>Current Trend with Sunday  Lockdown
                             </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
-                            <button id='Sunday_Wednesday_Lockdown' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Sunday_Wednesday_Lockdown');" title="Sunday Wednesday Lockdown">
-                                <i class="material-icons" style="padding-right: 10px;">show_chart</i> Sunday Wednesday Lockdown
+                            <button id='Sunday_Wednesday_Lockdown' style="width: 200px; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('Sunday_Wednesday_Lockdown');" title="Sunday Wednesday Lockdown">
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> Current Trend with Sun & Wed Lockdown
                             </button>
                         </div>
                     </div>
                     <div class="row align-items-center" style=" padding-bottom: 2px;">
                         <div class="col-2 " style = "padding: 10px; margin: 0%;">
+<!--                          Click to enable/disable -->
                         </div>
                         <div class="col-2 " style = "padding: 10px; margin: 0%;">
-                            <button id='Active' value='on' style="width: 90px;font-family: 'Fira Sans', sans serif; color: #ffffff; background-color: #DC3545;" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Active');"  title="Click to enable/disable">
-                                Active
+                            <button id='Active' value='on' style="width: 110px;font-family: 'Fira Sans', sans serif; color: #ffffff; background-color: #DC3545;" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Active');"  title="Click to enable/disable">
+                                Enable/Disable Active Cases
                             </button>
                         </div>
                         <div class="col-2 " style = "padding: 10px; margin: 0%;">
-                            <button  id='Recovered' value='on' style="width: 90px; font-family: 'Fira Sans', sans serif; color: #ffffff; background-color: #28A745;" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Recovered');" title="Click to enable/disable">
-                                Recovered
+                            <button  id='Recovered' value='on' style="width: 120px; font-family: 'Fira Sans', sans serif; color: #ffffff; background-color: #28A745;" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Recovered');" title="Click to enable/disable">
+                               Enable/Disable Total Recovered  
                             </button>
                         </div>
                         <div class="col-2 " style = "padding: 10px; margin: 0%;">
-                            <button id='Total' value='on' style="width: 90px; font-family: 'Fira Sans', sans serif; background-color: #A65628; color: #ffffff; border-color: #A65628;" type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Total');"  title="Click to enable/disable">
-                                Total
+                            <button id='Total' value='on' style="width: 120px; font-family: 'Fira Sans', sans serif; background-color: #A65628; color: #ffffff; border-color: #A65628;" type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Total');"  title="Click to enable/disable">
+                               Enable/Disable  Total   Cases
                             </button>
                         </div>
                         <div class="col-2 " style = "padding: 10px; margin: 0%;">
-                            <button id='Uncertainty' value='off' style="width: 90px; font-family: 'Fira Sans', sans serif; color:#6C757D; background-color: #ffffff;" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Uncertainty');"  title="Click to enable/disable">
-                                Uncertainty
+                            <button id='Uncertainty' value='off' style="width: 140px; font-family: 'Fira Sans', sans serif; color:#6C757D; background-color: #ffffff;" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Uncertainty');"  title="Click to enable/disable">
+                                Enable/Disable  Uncertainty Region
                             </button>
                         </div>
                         <div class="col-2 " style = "padding: 10px; margin: 0%;">
@@ -139,24 +153,44 @@
                                     Chart loading
                                 </div>
                                 <div class='para' id='instruction' style="position: absolute; right: 9%; top: 2%; font-size: 15px; line-height: 1; color:#5648D4">
-                                    Select<br>Time<br>Interval
+                                    Select<br>Duration
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="text-left para" style="margin-bottom: 5px; margin-right: 5px; margin-left: 5px;margin-top: 0px;">
-                        Click on the legend to remove/add a plot.
-                        Scroll/pinch-zoom on the plot to zoom. 
-                        Use the time slider to adjust time period.
-                        Use the calendar on top-right corner to set a specific time period.
+                    <div class="text-center para" style=" font-size: 15px;  margin-bottom: 5px; margin-right: 5px; margin-left: 5px;margin-top: 0px;">
+                        (Click on the above square buttons to remove/add a plot.
+<!--                         Scroll/pinch-zoom on the plot to zoom.  -->
+                        Use the time slider to adjust time period.)
+<!--                         Use the calendar on top-right corner to set a specific time period. -->
                     </div>
-                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Discussion and Observation</h4>
-                    <ul class='para'>
-                        <li> ...
-                        <li> ...
-                        <li> ...
-                        <li> ...
+                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Computational Model</h4>
+                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> between 23 Mar and 3  May, 2020 is used partially to tune the parameters of the data-driven model.                    
+                        <li> State-wise results are computed with the parameters of national trend to compare the performance of the respective state with the national trend. See Discussion for interpretation.                     
+                        <li> Quarantine of <b>Active Cases</b> so as to prevent new infections is the key to contain the pandemic. An adaptive quarantine function in our model ensures that infected population is quarantined based on their infection level (showing symptoms) and based on latest published literature on how the infection spreads from infected population.
+                        <li> <b>Total Recovered</b>  includes both recovered and dead populations.
+                        <li> The severity of the infection is taken into consideration while modeling the infectious death rate function (see the rate functions in the model).
                     </ul>
+                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Observations</h4>
+                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+                        <li> <b> Current Trend:</b> Hits a peak of 6.55 lakh ‘Active Cases’ in the first week of October 2020. Further, there will be around 35 thousand ‘Active Cases’ and 34.9 lakh ‘Total’ infected cases at the end of March 2021.              
+                        <li> <b>Better Scenario:</b> Hits a peak of 2.85 lakh Active Cases in the first week of August 2020. Further, there will be around 43 thousand ‘Active Cases’ and 15.7 lakh ‘Total’ infected cases at the end of March 2021.
+                        <li> <b>Worse Scenario:</b> Hits a peak of 35 lakh ‘Active Cases’ in the last week of Jan 2021. Further, there will around 28.5 lakh ‘Active Cases’ and 2.16 crore ‘Total’ infected cases at the end of March 2021.
+                        <li><b>Current Trend with Sunday  Lockdown:</b>Hits a peak of 3.05 lakh ‘Active Cases’ in the second week of September 2020. Further, there will be around 12 thousand ‘Active Cases’ and 17.1 lakh ‘Total’ infected cases at the end of March 2021.  
+                        <li><b>Current Trend with Sun & Wed  Lockdown:</b> Hits a peak of 1.42 lakh Active Cases in the second week of August 2020. Further, there will around 3.5 thousand ‘Active’ Cases and 8.3 lakh ‘Total’ infected cases at the end of Mar 2021.                        
+                    </ul> 
+                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Discussion</h4>
+                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+                        <li> In order to achieve and follow the <b>Current Trend</b> prediction for the next one year, people should maintain the same or even better level of social distancing as maintained during 23 Mar - 3rd May 2020. It is assumed that awareness increases with time and there is more compliance of social distancing and other norms. Also, we anticipate that more members of the susceptible population improve their hygiene practice and immunity levels.
+                        <li> Until the development of vaccines, social distancing and other practices to reduce interaction among people (such as avoiding mass gathering etc.) are the key tools to contain the spread of COVID-19. As such, public awareness of these practices through several modes (advertisements through TV, radios, new papers, social media, etc.) is crucial. 
+                         <li>  The <b>Better Scenario</b> and <b>Worse Scenario</b> model the infection spread when there is better and worse compliance of social distancing and other norms among susceptible population.                
+                        <li> Short, periodic (e.g., one or two days per week) lockdown with complete compliance to stay at home and avoid interaction helps reduce infection. This must be combined with increased social distancing and quarantining of suspected population during non-lockdown phases. The ‘Sunday Lockdown’ and ‘Sun & Wed Lockdown’ scenarios model these strategies.
+                        <li>Since this is an active situation with regular ongoing interventions and policy changes from State and Central governments, we do not predict each state individually and the state numbers have to be interpreted as follows.
+                        <li>In each scenario, the <b>state numbers</b> are computed with the national parameters. This is done to compare the actual data of the state  with the national trend. 
+                        <li>For example, Kerala, Karnataka, Uttar Pradesh (and others) have done better than the national trend. Whereas, Maharashtra, Tamil Nadu, Madhya Pradesh (and others) have done worse than the national trend. Some states such as Rajasthan, Andhra Pradesh (and others) have done similar to the national trend.
+                        <li>The range of all predicted scenarios (some shown here, others not shown) can be viewed by enabling the uncertainty region in the time series plots. 
+                    </ul>                    
                 </div>
             </div>
         </section>
@@ -259,7 +293,7 @@
                             \begin{equation}
                             C =  C_R + C_{ID},
                             \end{equation}
-                            where $C_R(t,\mathbf{x},\ell_v,\ell_d,\ell_a)$ is a recovery rate function that quantifies the rate of recovery of the population from Covid-19, $C_Q(t,\mathbf{x},\ell_v,\ell_d,\ell_a)$ is a quarantine rate that quantifies the removal of people into a quarantine facility 
+                            where $C_R(t,\mathbf{x},\ell_v,\ell_d,\ell_a)$ is a recovery rate function that quantifies the rate of recovery of the population from Covid-19
                             and $C_{ID}(t,\mathbf{x},\ell_v,\ell_d,\ell_a)$ is the Covid-19 death rate. 
                             We also define a source term $F = C_T(t,\mathbf{x},\ell_v,\ell_d,\ell_a)$ that quantifies the point-to-point movement of infected population (e.g., by air, train etc) within $\Omega_x$ not explained by ${\bf u}$ and the source/sink of infected population travelled by air into $\Omega_x$ not explained by $g_n$.
                             Moreover,  $C_T$ and ${\bf u}$ need to be defined in such a way 
@@ -267,10 +301,10 @@
                             Moreover $B_{\rm nuc}$ is the nucleation function that quantifies how a susceptible population becomes infected and it is defined by
                             <span class='equation'>
                             \begin{equation}
-                              B_{\rm nuc}(t,\mathbf{x},\ell_v,\ell_a) = B_{\rm nuc}\left(\ell_a, \sigma, H, S_D, N_S(t), N_Q(t) I\right), \qquad \forall ~\ell_v,\ell_a\in L_v\times L_a.
+                              B_{\rm nuc}(t,\mathbf{x},\ell_v,\ell_a) = B_{\rm nuc}\left(C_Q, \ell_a, \sigma, H, S_D, N_S(t), N_Q(t) I\right), \qquad \forall ~\ell_v,\ell_a\in L_v\times L_a.
                             \end{equation}
                             </span>    
-                            Here, $\sigma\in[0,1]$ is the interactivity index, $H\in[0,1]$ is the hygiene index, $S_D\in[0,1]$ is the social distancing index. 
+                            Here,  $C_Q(t,\mathbf{x},\ell_v,\ell_d,\ell_a)$ is a quarantine rate that quantifies the removal of people into a quarantine facility, $\sigma\in[0,1]$ is the interactivity index, $H\in[0,1]$ is the hygiene index, $S_D\in[0,1]$ is the social distancing index. 
             
                             Finally, the total population $N(t)$ at a given time $t\in(0,T_\infty]$ is defined by
                             <span class = 'equation'>
@@ -283,7 +317,7 @@
                             N_S(t) &=  N(t) - [N_I(t)+N_Q(t)+N_R(t)-N_{ID}(t)-N_D(t)] \,.
                             \end{align*}
                             </span>
-                            Here, $N_S$, $N_B$, $N_R$, $N_I$, $N_Q$ $N_{ID}$ and $N_D$ are the number of susceptible, newborn, recovered, asymptomatic/symptomatic infectives, qurantined, infective death and natural death populations, respectively.
+                            Here, $N_S$, $N_B$, $N_R$, $N_I$, $N_Q$ $N_{ID}$ and $N_D$ are the number of susceptible, newborn, recovered, asymptomatic/symptomatic infectives, quarantined, infective death and natural death populations, respectively.
                             The population in the interval $(v_{\rm reco},v_{\min})$ has recovered from Covid-19.
                             <h5 style='margin-top: 20px;'>Finite Element Approximation</h5> 
                             A finite element scheme <sup>[1]</sup> based on operator splitting <sup>[2-5]</sup> has been implemented in our in-house (open-source) finite element package to solve the high-dimensional population balance equation.
@@ -320,9 +354,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href='https://cmg.cds.iisc.ac.in/excomp/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
                                     Members of eXComp group, CDS, IISc Bangalore
-                                </a>
                             </li>
                         </ol>
                     </div>
