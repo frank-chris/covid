@@ -422,8 +422,8 @@ function loadChartData(){
                                 lowtotalData["Recovered" + i.toString()],  // LR
                                 hightotalData["Deceased" + i.toString()], // HR
                                 lowtotalData["Deceased" + i.toString()],
-                                Number(hightotalData[i.toString()]) + Number(hightotalData["Recovered" + i.toString()]), // HT
-                                Number(lowtotalData[i.toString()]) + Number(lowtotalData["Recovered" + i.toString()])    // LT
+                                Number(hightotalData[i.toString()]) + Number(hightotalData["Recovered" + i.toString()]) + Number(hightotalData["Deceased" + i.toString()]), // HT
+                                Number(lowtotalData[i.toString()]) + Number(lowtotalData["Recovered" + i.toString()]) + Number(lowtotalData["Deceased" + i.toString()])  // LT
                             ]); // Correct total uncertainty here
     }
     
@@ -453,8 +453,8 @@ function loadChartData(){
                                                     lowstatesData[state.properties["name"]]["Deceased" + i.toString()],
                                                     Number(state.properties[i.toString()])+Number(state.properties["Recovered" + i.toString()])+Number(state.properties["Deceased" + i.toString()]),
                                                     state.properties["Confirmed_" + calculatedDate(i)],
-                                                    Number(highstatesData[state.properties["name"]][i.toString()])+Number(highstatesData[state.properties["name"]]["Recovered" + i.toString()]),
-                                                    Number(lowstatesData[state.properties["name"]][i.toString()])+Number(lowstatesData[state.properties["name"]]["Recovered" + i.toString()])
+                                                    Number(highstatesData[state.properties["name"]][i.toString()])+Number(highstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(highstatesData[state.properties["name"]]["Deceased" + i.toString()]),
+                                                    Number(lowstatesData[state.properties["name"]][i.toString()])+Number(lowstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(lowstatesData[state.properties["name"]]["Deceased" + i.toString()])
                                                 ]);// correct total uncertainty here
         
         // stateData[state.properties["name"]].push([chartDate(i), "Recovered(Pred)", state.properties["Recovered" + i.toString()]]);
@@ -1417,8 +1417,8 @@ schema = [{
                 },
                 {
                     value:  {
-                                high: "HR",
-                                low: "LR"
+                                high: "HD",
+                                low: "LD"
                             },
                     name: "Deceased(Uncertainty)",
                     type: "area-range",
