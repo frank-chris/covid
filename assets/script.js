@@ -89,14 +89,29 @@ function getColorTotal(value, prop1, prop2) {
                       '#fdfdfd';
 }
 
-
+function getColorThree(value, prop1, prop2, prop3){
+    var max = getMax(prop1) + getMax(prop2) + getMax(prop3);
+    
+    return value > max ? '#990000' :
+           value > max/2  ? '#d7301f' :
+           value > max/5  ? '#ef6548' :
+           value > max/10  ? '#fc8d59' :
+           value > max/20   ? '#fdd49e' :
+           value > max/50   ? '#ffff29' :
+           value > max/100   ? '#d6ff75' :
+           value >= 0   ? '#78c679' :
+                      '#fdfdfd';
+}
 
 // Function to set style for geoJson layer
 function styleTotalPred(feature) {
     return {
-        fillColor: getColorTotal(Number(feature.properties[(slider.value).toString()]) 
+        fillColor: getColorThree(Number(feature.properties[(slider.value).toString()]) 
+                            + Number(feature.properties["Deceased" + (slider.value).toString()])
                             + Number(feature.properties["Recovered" + (slider.value).toString()]), 
-                            (slider.value).toString(), "Recovered" + (slider.value).toString()),
+                            (slider.value).toString(), 
+                            "Deceased" + (slider.value).toString(),
+                            "Recovered" + (slider.value).toString()),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -120,6 +135,17 @@ function styleActivePred(feature) {
 function styleRecoveredPred(feature) {
     return {
         fillColor: getColor(feature.properties["Recovered" + (slider.value).toString()], "Recovered" + (slider.value).toString()),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleDeceasedPred(feature) {
+    return {
+        fillColor: getColor(feature.properties["Deceased" + (slider.value).toString()], "Deceased" + (slider.value).toString()),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -155,9 +181,20 @@ function styleActive(feature) {
 
 function styleRecovered(feature) {
     return {
-        fillColor: getColor(Number(feature.properties['Recovered_' + calculatedDate(slider.value)]) 
-                            + Number(feature.properties['Deceased_' + calculatedDate(slider.value)]) ,
-                             'Confirmed_' + calculatedDate(slider.value)),
+        fillColor: getColor(Number(feature.properties['Recovered_' + calculatedDate(slider.value)]),
+                             'Recovered_' + calculatedDate(slider.value)),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleDeceased(feature) {
+    return {
+        fillColor: getColor(Number(feature.properties['Deceased_' + calculatedDate(slider.value)]),
+                             'Deceased_' + calculatedDate(slider.value)),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -177,6 +214,13 @@ function legendGrades(prop){
 function legendGradesTotal(prop1, prop2){
 
     var max = getMax(prop1) + getMax(prop2);
+
+    return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
+}
+
+function legendGradesThree(prop1, prop2, prop3){
+
+    var max = getMax(prop1) + getMax(prop2) + getMax(prop3);
 
     return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
 }
@@ -286,6 +330,10 @@ function monthName(month){
       'Recovered(IND Trend)':0,
       'Recovered(Uncertainty)':1,
       'Recovered(Data)':0,
+      'Deceased(Predicted)':0,
+      'Deceased(IND Trend)':0,
+      'Deceased(Uncertainty)':1,
+      'Deceased(Data)':0,
       'Total(Predicted)':0,
       'Total(IND Trend)':0,
       'Total(Uncertainty)':1,
@@ -317,6 +365,17 @@ function setLegend(value){
         legendButton.style.color = legendButton.style.backgroundColor;
         legendButton.style.backgroundColor = temp;
     }
+    else if(value == 'Deceased'){
+        legendButton = document.getElementById('Deceased');
+        legendStatus['Deceased(Data)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Deceased(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Deceased(IND Trend)'] = (legendButton.value=='on'?1:0);
+        loadChart(currentState);
+        legendButton.value = (legendButton.value=='on'?'off':'on');
+        temp = legendButton.style.color;
+        legendButton.style.color = legendButton.style.backgroundColor;
+        legendButton.style.backgroundColor = temp;
+    }
     else if(value == 'Total'){
         legendButton = document.getElementById('Total');
         legendStatus['Total(Data)'] = (legendButton.value=='on'?1:0);
@@ -332,6 +391,7 @@ function setLegend(value){
         legendButton = document.getElementById('Uncertainty');
         legendStatus['Active(Uncertainty)'] = (legendButton.value=='on'?1:0);
         legendStatus['Recovered(Uncertainty)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Deceased(Uncertainty)'] = (legendButton.value=='on'?1:0);
         legendStatus['Total(Uncertainty)'] = (legendButton.value=='on'?1:0);
         loadChart(currentState);
         legendButton.value = (legendButton.value=='on'?'off':'on');
@@ -351,16 +411,20 @@ function loadChartData(){
         /*Active(Predicted)*/      totalData[0][i.toString()],
         /*Active*/                 (totalData[0]["Confirmed_" + calculatedDate(i)] - totalData[0]["Recovered_" + calculatedDate(i)] - totalData[0]["Deceased_" + calculatedDate(i)]),
         /*Recovered(Predicted)*/   totalData[0]["Recovered" + i.toString()],
-        /*Recovered*/              Number(totalData[0]["Recovered_" + calculatedDate(i)]) + Number(totalData[0]["Deceased_" + calculatedDate(i)]),
-        /*Total(Predicted)*/       Number(totalData[0][i.toString()]) + Number(totalData[0]["Recovered" + i.toString()]),
+        /*Recovered*/              Number(totalData[0]["Recovered_" + calculatedDate(i)]),
+        /*Deceased(Predicted)*/    totalData[0]["Deceased" + i.toString()],
+        /*Deceased*/               Number(totalData[0]["Deceased_" + calculatedDate(i)]),
+        /*Total(Predicted)*/       Number(totalData[0][i.toString()]) + Number(totalData[0]["Recovered" + i.toString()]) + Number(totalData[0]["Deceased" + i.toString()]),
         /*Total*/                  totalData[0]["Confirmed_" + calculatedDate(i)],
                                 hightotalData[i.toString()], // HA
                                 lowtotalData[i.toString()],  // LA
                                 hightotalData["Recovered" + i.toString()], // HR
                                 lowtotalData["Recovered" + i.toString()],  // LR
+                                hightotalData["Deceased" + i.toString()], // HR
+                                lowtotalData["Deceased" + i.toString()],
                                 Number(hightotalData[i.toString()]) + Number(hightotalData["Recovered" + i.toString()]), // HT
                                 Number(lowtotalData[i.toString()]) + Number(lowtotalData["Recovered" + i.toString()])    // LT
-                            ]);
+                            ]); // Correct total uncertainty here
     }
     
     if(dropDownFlag==1){
@@ -380,14 +444,18 @@ function loadChartData(){
                                                     highstatesData[state.properties["name"]][i.toString()],
                                                     lowstatesData[state.properties["name"]][i.toString()],
                                                     state.properties["Recovered" + i.toString()],
-                                                    Number(state.properties["Recovered_" + calculatedDate(i)]) + Number(state.properties["Deceased_" + calculatedDate(i)]),
+                                                    Number(state.properties["Recovered_" + calculatedDate(i)]),
                                                     highstatesData[state.properties["name"]]["Recovered" + i.toString()],
                                                     lowstatesData[state.properties["name"]]["Recovered" + i.toString()],
-                                                    Number(state.properties[i.toString()])+Number(state.properties["Recovered" + i.toString()]),
+                                                    state.properties["Deceased" + i.toString()],
+                                                    Number(state.properties["Deceased_" + calculatedDate(i)]),
+                                                    highstatesData[state.properties["name"]]["Deceased" + i.toString()],
+                                                    lowstatesData[state.properties["name"]]["Deceased" + i.toString()],
+                                                    Number(state.properties[i.toString()])+Number(state.properties["Recovered" + i.toString()])+Number(state.properties["Deceased" + i.toString()]),
                                                     state.properties["Confirmed_" + calculatedDate(i)],
                                                     Number(highstatesData[state.properties["name"]][i.toString()])+Number(highstatesData[state.properties["name"]]["Recovered" + i.toString()]),
                                                     Number(lowstatesData[state.properties["name"]][i.toString()])+Number(lowstatesData[state.properties["name"]]["Recovered" + i.toString()])
-                                                ]);
+                                                ]);// correct total uncertainty here
         
         // stateData[state.properties["name"]].push([chartDate(i), "Recovered(Pred)", state.properties["Recovered" + i.toString()]]);
         // stateData[state.properties["name"]].push([chartDate(i), "Recovered", state.properties["Recovered_" + calculatedDate(i)]]);
@@ -418,6 +486,12 @@ function loadChartData(){
         "name": "Recovered(Data)",
         "type": "number"
         }, {
+        "name": "Deceased(Predicted)",
+        "type": "number"
+        }, {
+        "name": "Deceased(Data)",
+        "type": "number"
+        }, {
         "name": "Total(Predicted)",
         "type": "number"
         }, {
@@ -434,6 +508,12 @@ function loadChartData(){
         "type": "number"
         }, {
         "name": "LR",
+        "type": "number"
+        }, {
+        "name": "HD",
+        "type": "number"
+        }, {
+        "name": "LD",
         "type": "number"
         }, {
         "name": "HT",
@@ -473,6 +553,18 @@ function loadChartData(){
         "name": "LR",
         "type": "number"
         }, {
+        "name": "Deceased(IND Trend)",
+        "type": "number"
+        }, {
+        "name": "Deceased(Data)",
+        "type": "number"
+        }, {
+        "name": "HD",
+        "type": "number"
+        }, {
+        "name": "LD",
+        "type": "number"
+        }, {
         "name": "Total(IND Trend)",
         "type": "number"
         }, {
@@ -488,7 +580,7 @@ function loadChartData(){
     ];
         dataStore = new FusionCharts.DataStore();
         dataSource = {
-        chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,A65628,A65628,984EA3,111111,999999",
+        chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
                 exportEnabled: "1",
                 animation: '0',
                 style: {
@@ -525,6 +617,18 @@ function loadChartData(){
                 {
                     value: 'Recovered(Uncertainty)',
                     initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+                },
+                {
+                    value: 'Deceased(Data)',
+                    initiallyhidden: legendStatus['Deceased(Data)'],
+                },
+                {
+                    value: 'Deceased(IND Trend)',
+                    initiallyhidden: legendStatus['Deceased(IND Trend)'],
+                },
+                {
+                    value: 'Deceased(Uncertainty)',
+                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
                 },
                 {
                     value: 'Total(Data)',
@@ -612,6 +716,28 @@ function loadChartData(){
                 },
                 {
                     value:  {
+                                high: "HD",
+                                low: "LD"
+                            },
+                    name: "Deceased(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Deceased(IND Trend)",
+                    type: "line"
+                },
+                {
+                    value: "Deceased(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
                                 high: "HT",
                                 low: "LT"
                             },
@@ -641,7 +767,7 @@ function loadChartData(){
     
         dataStore2 = new FusionCharts.DataStore();
         dataSource2 = {
-        chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,A65628,A65628,984EA3,111111,999999",
+        chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
                 exportEnabled: "1",
                 animation: '0',
                 style: {
@@ -678,6 +804,18 @@ function loadChartData(){
                 {
                     value: 'Recovered(Uncertainty)',
                     initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+                },
+                {
+                    value: 'Deceased(Data)',
+                    initiallyhidden: legendStatus['Deceased(Data)'],
+                },
+                {
+                    value: 'Deceased(Predicted)',
+                    initiallyhidden: legendStatus['Deceased(Predicted)'],
+                },
+                {
+                    value: 'Deceased(Uncertainty)',
+                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
                 },
                 {
                     value: 'Total(Data)',
@@ -753,6 +891,28 @@ function loadChartData(){
                     },
                     {
                         value: "Recovered(Data)",
+                        type: "line"
+                    },
+                    {
+                        value:  {
+                                    high: "HD",
+                                    low: "LD"
+                                },
+                        name: "Deceased(Uncertainty)",
+                        type: "area-range",
+                        style: {
+                            plot:{
+                                "stroke-opacity": "0",
+                                "fill-opacity": "0.1"
+                            }
+                        }
+                    },
+                    {
+                        value: "Deceased(Predicted)",
+                        type: "line"
+                    },
+                    {
+                        value: "Deceased(Data)",
                         type: "line"
                     },
                     {
@@ -847,6 +1007,12 @@ schema2 = [{
     "name": "Recovered(Data)",
     "type": "number"
     }, {
+    "name": "Deceased(Predicted)",
+    "type": "number"
+    }, {
+    "name": "Deceased(Data)",
+    "type": "number"
+    }, {
     "name": "Total(Predicted)",
     "type": "number"
     }, {
@@ -863,6 +1029,12 @@ schema2 = [{
     "type": "number"
     }, {
     "name": "LR",
+    "type": "number"
+    }, {
+    "name": "HD",
+    "type": "number"
+    }, {
+    "name": "LD",
     "type": "number"
     }, {
     "name": "HT",
@@ -902,6 +1074,18 @@ schema = [{
     "name": "LR",
     "type": "number"
     }, {
+    "name": "Deceased(IND Trend)",
+    "type": "number"
+    }, {
+    "name": "Deceased(Data)",
+    "type": "number"
+    }, {
+    "name": "HD",
+    "type": "number"
+    }, {
+    "name": "LD",
+    "type": "number"
+    }, {
     "name": "Total(IND Trend)",
     "type": "number"
     }, {
@@ -918,7 +1102,7 @@ schema = [{
     
    var dataStore = new FusionCharts.DataStore();
    var dataSource = {
-      chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,A65628,A65628,984EA3,111111,999999",
+      chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
               exportEnabled: "1",
               animation: '0',
               style: {
@@ -955,6 +1139,18 @@ schema = [{
             {
                 value: 'Recovered(Uncertainty)',
                 initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+            },
+            {
+                value: 'Deceased(Data)',
+                initiallyhidden: legendStatus['Deceased(Data)'],
+            },
+            {
+                value: 'Deceased(IND Trend)',
+                initiallyhidden: legendStatus['Deceased(IND Trend)'],
+            },
+            {
+                value: 'Deceased(Uncertainty)',
+                initiallyhidden: legendStatus['Deceased(Uncertainty)'],
             },
             {
                 value: 'Total(Data)',
@@ -1042,6 +1238,28 @@ schema = [{
             },
             {
                 value:  {
+                            high: "HD",
+                            low: "LD"
+                        },
+                name: "Deceased(Uncertainty)",
+                type: "area-range",
+                style: {
+                    plot:{
+                        "stroke-opacity": "0",
+                        "fill-opacity": "0.1"
+                    }
+                }
+            },
+            {
+                value: "Deceased(IND Trend)",
+                type: "line"
+            },
+            {
+                value: "Deceased(Data)",
+                type: "line"
+            },
+            {
+                value:  {
                             high: "HT",
                             low: "LT"
                         },
@@ -1071,7 +1289,7 @@ schema = [{
   
     var dataStore2 = new FusionCharts.DataStore();
     var dataSource2 = {
-       chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,A65628,A65628,984EA3,111111,999999",
+       chart: {palettecolors:"E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
                exportEnabled: "1",
                animation: '0',
                style: {
@@ -1108,6 +1326,18 @@ schema = [{
             {
                 value: 'Recovered(Uncertainty)',
                 initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+            },
+            {
+                value: 'Deceased(Data)',
+                initiallyhidden: legendStatus['Deceased(Data)'],
+            },
+            {
+                value: 'Deceased(Predicted)',
+                initiallyhidden: legendStatus['Deceased(Predicted)'],
+            },
+            {
+                value: 'Deceased(Uncertainty)',
+                initiallyhidden: legendStatus['Deceased(Uncertainty)'],
             },
             {
                 value: 'Total(Data)',
@@ -1183,6 +1413,28 @@ schema = [{
                 },
                 {
                     value: "Recovered(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
+                                high: "HR",
+                                low: "LR"
+                            },
+                    name: "Deceased(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Deceased(Predicted)",
+                    type: "line"
+                },
+                {
+                    value: "Deceased(Data)",
                     type: "line"
                 },
                 {
@@ -1267,9 +1519,12 @@ schema = [{
         dataSource2.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
         dataSource2.legend.item[4].initiallyhidden = legendStatus['Recovered(Predicted)'];
         dataSource2.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
-        dataSource2.legend.item[6].initiallyhidden = legendStatus['Total(Data)'];
-        dataSource2.legend.item[7].initiallyhidden = legendStatus['Total(Predicted)'];
-        dataSource2.legend.item[8].initiallyhidden = legendStatus['Total(Uncertainty)'];
+        dataSource2.legend.item[6].initiallyhidden = legendStatus['Deceased(Data)'];
+        dataSource2.legend.item[7].initiallyhidden = legendStatus['Deceased(Predicted)'];
+        dataSource2.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
+        dataSource2.legend.item[9].initiallyhidden = legendStatus['Total(Data)'];
+        dataSource2.legend.item[10].initiallyhidden = legendStatus['Total(Predicted)'];
+        dataSource2.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
 
         new FusionCharts({
         type: "timeseries",
@@ -1294,9 +1549,12 @@ schema = [{
         dataSource.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
         dataSource.legend.item[4].initiallyhidden = legendStatus['Recovered(IND Trend)'];
         dataSource.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
-        dataSource.legend.item[6].initiallyhidden = legendStatus['Total(Data)'];
-        dataSource.legend.item[7].initiallyhidden = legendStatus['Total(IND Trend)'];
-        dataSource.legend.item[8].initiallyhidden = legendStatus['Total(Uncertainty)'];
+        dataSource.legend.item[6].initiallyhidden = legendStatus['Deceased(Data)'];
+        dataSource.legend.item[7].initiallyhidden = legendStatus['Deceased(IND Trend)'];
+        dataSource.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
+        dataSource.legend.item[9].initiallyhidden = legendStatus['Total(Data)'];
+        dataSource.legend.item[10].initiallyhidden = legendStatus['Total(IND Trend)'];
+        dataSource.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
         
         new FusionCharts({
         type: "timeseries",
@@ -1351,6 +1609,10 @@ geojson["Recovered(Predicted)"] = L.geoJson(statesData, {
     onEachFeature: onEachFeature
 });
 
+geojson["Deceased(Predicted)"] = L.geoJson(statesData, {
+    style: styleDeceasedPred,
+    onEachFeature: onEachFeature
+});
 
 geojson["Total"] = L.geoJson(statesData, {
     style: styleTotal,
@@ -1367,6 +1629,10 @@ geojson["Recovered"] = L.geoJson(statesData, {
     onEachFeature: onEachFeature
 });
 
+geojson["Deceased"] = L.geoJson(statesData, {
+    style: styleDeceased,
+    onEachFeature: onEachFeature
+});
 
 // Title info control
 var title = L.control();
@@ -1379,14 +1645,16 @@ title.onAdd = function (map) {
 
 title.update = function () {
     this._div.innerHTML = '<h3>India</h3>' 
-                            + "Total(Predicted)<br> <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()])).toString()
+                            + "Total(Predicted)<br> <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()]) + Number(totalData[0]["Deceased" + slider.value.toString()])).toString()
                             + "</b><br> Total(Data)<br> <b>"   + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':totalData[0]["Confirmed_" + calculatedDate(slider.value)])
                             + "</b><br> Active(Predicted)<br> <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
                             + "</b><br> Active(Data)<br> <b>" + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(totalData[0]["Confirmed_" + calculatedDate(slider.value)] 
                                                         - totalData[0]["Recovered_" + calculatedDate(slider.value)] 
                                                         - totalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() )
                             + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b><br> Recovered(Predicted)<br> <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
-                            + "</b><br> Recovered(Data)<br> <b>" + (totalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(totalData[0]["Recovered_" + calculatedDate(slider.value)])+Number(totalData[0]["Deceased_" + calculatedDate(slider.value)]));
+                            + "</b><br> Recovered(Data)<br> <b>" + (totalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(totalData[0]["Recovered_" + calculatedDate(slider.value)]))
+                            + "</b><br> Deceased(Predicted)<br> <b>" + parseInt(totalData[0]["Deceased" + slider.value.toString()]).toString()
+                            + "</b><br> Deceased(Data)<br> <b>" + (totalData[0]["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(totalData[0]["Deceased_" + calculatedDate(slider.value)]));
 };
 
 title.setPosition('topleft');
@@ -1406,15 +1674,17 @@ info.onAdd = function (map) {
 info.update = function (props) {
     this._div.innerHTML = '<h3>'+ calculatedDate(slider.value).replace(/_/g, ' ') + '</h3>' +  (props ?
         '<b>' + props.name +'</b>'
-        +'<br />' + 'Total(IND Trend):<br /> ' + '<b>' + ((Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString()=="NaN"?'-':(Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString() )+ '</b>'
+        +'<br />' + 'Total(IND Trend):<br /> ' + '<b>' + ((Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString()=="NaN"?'-':(Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])+Number(props["Deceased" + slider.value.toString()])).toString() )+ '</b>'
         +'<br />' + 'Active(IND Trend):<br /> ' + '<b>' + (parseInt(props[slider.value.toString()]).toString()=="NaN"?'-':parseInt(props[slider.value.toString()]).toString() ) +'</b>'
         + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?'<br />' + 'Recovered(IND Trend)<br /> ' + '<b>' + (parseInt(props["Recovered" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Recovered" + slider.value.toString()]).toString() ) +'</b>':'')
+        +'<br />' + 'Deceased(IND Trend)<br /> ' + '<b>' + (parseInt(props["Deceased" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Deceased" + slider.value.toString()]).toString() ) +'</b>'
         +'<br />' + 'Total(Data)<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
         +'<br />' + 'Active(Data)<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
                                                     (props["Confirmed_" + calculatedDate(slider.value)] 
                                                   - props["Recovered_" + calculatedDate(slider.value)] 
                                                   - props["Deceased_" + calculatedDate(slider.value)]).toString() ) +'</b>'
-        +'<br />' + 'Recovered(Data)<br /> ' + '<b>' + (props["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props["Recovered_" + calculatedDate(slider.value)])+Number(props["Deceased_" + calculatedDate(slider.value)])) +'</b>'
+        +'<br />' + 'Recovered(Data)<br /> ' + '<b>' + (props["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props["Recovered_" + calculatedDate(slider.value)])) +'</b>'
+        +'<br />' + 'Deceased(Data)<br /> ' + '<b>' + (props["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(props["Deceased_" + calculatedDate(slider.value)])) +'</b>'
         : (L.Browser.mobile?'Touch on<br />a state':'Hover over<br />a state'));
 };
 
@@ -1449,13 +1719,13 @@ legend.update = function (currentBaseLayer){
     }
 
     else if (currentBaseLayer == "Total(Predicted)"){
-        grades = legendGradesTotal((slider.value).toString(), "Recovered" + (slider.value).toString());
+        grades = legendGradesThree((slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString());
         labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
-                '<i style="background:' + getColorTotal(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString()) + '"></i> ' +
+                '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
                 grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
         }
     }
@@ -1473,7 +1743,19 @@ legend.update = function (currentBaseLayer){
         }
     }
 
-    else if(currentBaseLayer == "Total(Data)" || currentBaseLayer == "Active(Data)" || currentBaseLayer=='Recovered(Data)' ){
+    else if(currentBaseLayer == "Deceased(Predicted)"){
+        grades = legendGrades("Deceased" + (slider.value).toString());
+        labels = [];
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1, "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+    }
+
+    else if(currentBaseLayer == "Total(Data)" || currentBaseLayer == "Active(Data)"){
         grades = legendGrades("Confirmed_" + calculatedDate(slider.value));
         labels = [];
 
@@ -1484,15 +1766,38 @@ legend.update = function (currentBaseLayer){
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
     }
-
-    else{
-        grades = legendGradesTotal((slider.value).toString(), "Recovered" + (slider.value).toString());
+    else if(currentBaseLayer=='Recovered(Data)' ){
+        grades = legendGrades("Recovered_" + calculatedDate(slider.value));
         labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
-                '<i style="background:' + getColorTotal(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString()) + '"></i> ' +
+                '<i style="background:' + getColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+    }
+
+    else if(currentBaseLayer=='Deceased(Data)' ){
+        grades = legendGrades("Deceased_" + calculatedDate(slider.value));
+        labels = [];
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+    }
+
+    else{
+        grades = legendGradesThree((slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString());
+        labels = [];
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
                 grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
         }
     }
@@ -1509,9 +1814,11 @@ var baseMaps = {
     "Total(Predicted)": geojson["Total(Predicted)"],
     "Active(Predicted)": geojson["Active(Predicted)"],
     "Recovered(Predicted)":geojson["Recovered(Predicted)"],
+    "Deceased(Predicted)": geojson["Deceased(Predicted)"],
     "Total(Data)": geojson["Total"],
     "Active(Data)": geojson["Active"],
     "Recovered(Data)": geojson["Recovered"],
+    "Deceased(Data)": geojson["Deceased"],
 };
 
 
@@ -1565,9 +1872,11 @@ slider.oninput = function() {
   geojson["Total(Predicted)"].resetStyle();
   geojson["Active(Predicted)"].resetStyle();
   geojson["Recovered(Predicted)"].resetStyle();
+  geojson["Deceased(Predicted)"].resetStyle();
   geojson["Total"].resetStyle();
   geojson["Active"].resetStyle();
   geojson["Recovered"].resetStyle(); 
+  geojson["Deceased"].resetStyle(); 
   legend.update(currentBaseLayer);
 }
 
