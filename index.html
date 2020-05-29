@@ -66,14 +66,20 @@
                         <div class="text-left para" style="margin-bottom: 10px;">
                             The aim of this project is to develop and apply a predictive computational model for the Covid-19 epidemic based on a high-dimensional population balance modelling.
                         </div>
-                        <h5>Key Features</h5>
+                        <div class="text-left para" style="margin-bottom: 10px;">
+                            <i>Model predictions <b> updated on May 28, 2020 </b>. For previous results click <a target="_blank" href="covid-2020-05-03/index.html">here</a>.</i>
+                        </div>
+                        <div class="text-left para" style="margin-bottom: 10px;">
+                        <font  size=4 face ="Josefin Slab">
+                        <h5>Key Observations</h5>
                         <ul class='para'>
-                            <li> A six-dimensional population balance predictive computational model for an epidemic.
-                            <li> Unlike the existing (Compartment or Network) models, proposed model predicts the distribution of infected population across the region, the age of the infected people, the day since infection, and the severity of infection, over a period of time.
-                            <li> Incorporates the immunity, pre-medical history, effective treatment, point-to-point movement of infected population (e.g., by air, train etc), interactivity (community spread), hygiene and the social distancing of the population.
-                            <li> Finite element operator-splitting scheme for the high-dimensional PDE.
-                            <li> Proposed model can be used to predict region-wise and age-wise COVID-19 spread accurately, and consequently it can be used to frame policies on periodic lockdown, staggered opening of educational institutions and public <span id='result'> facilities. </span>
+                            <li> The recovery rate has increased since May 3, 2020 and consequently reduced new infections. It emphasises the importance of appropriate medical care and timely quarantine.   </li>
+                            <li> Among all measures, contact tracing, quarantine and social distancing are key to contain the spread in the absence of vaccine.  </li>
+                            <li> One or two day lockdown per week (e.g., Sunday, Sunday & Wednesday etc) with complete compliance along with adequate social distancing during other days is effective to reduce the spread.  </li>
+                            <li> Proposed model can be used to predict region-wise and age-wise COVID-19 spread accurately, and consequently it can be used to frame policies on periodic lockdown, staggered opening of educational institutions and public <span id='result'> facilities. </span>  </li>
                         </ul>
+                        </font>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -166,29 +172,31 @@
                     </div>
                     <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Computational Model</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
-                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> between 23 Mar and 27 May, 2020 is used partially to tune the parameters of the data-driven model. These results are current as of May 28, 2020.
-                        <li> State-wise results are computed with the parameters of national trend to compare the performance of the respective state with the national trend. See Discussion for interpretation.
-                        <li> Quarantine of <b>Active Cases</b> so as to prevent new infections is the key to contain the pandemic. An adaptive quarantine function in our model ensures that infected population is quarantined based on their infection level (showing symptoms) and based on latest published literature on how the infection spreads from infected population.
-                        <li> The severity of the infection is taken into consideration while modeling the infectious death rate function (see the rate functions in the model).
+                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> between 23 Mar and 27 May, 2020 is used partially to tune the parameters of the data-driven model. These results are current as of May 28, 2020.  </li>
+                        <li> State-wise results are computed with the parameters of national trend to compare the performance of the respective state with the national trend. See Discussion for interpretation.  </li>
+                        <li> Quarantine of <b>Active Cases</b> so as to prevent new infections is the key to contain the pandemic. An adaptive quarantine function in our model ensures that infected population is quarantined based on their infection level (showing symptoms) and based on latest published literature on how the infection spreads from infected population.  </li>
+                        <li> The severity of the infection is taken into consideration while modeling the infectious death rate function (see the rate functions in the model).  </li>
+                        <li> Differnt scenarios are modeled based on anticipated individual behavior (social distancing, hygiene practice, compliance to government rules etc.), government policies (quarantine rules, lockdown rules etc.).  </li>
+                        <li> Current Trend follows business as usual assuming further relaxation to lockdown rules. Better and Worse Scenarios assume better and worse compliance. Weekly lockdown models the impact of a complete lockdown on Sunday and Sunday & Wednesday respectively.  </li>
                     </ul>
                     <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Observations</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
-                        <li> <b> Current Trend:</b> Hits a peak of 4.1 lakh ‘Active Cases’ in the third week of September 2020. Further, there will be around 8 thousand ‘Active Cases’, 1.28 lakh deaths and 26 lakh toal cases at the end of March 2021.
-                        <li> <b>Better Scenario:</b> Hits a peak of 2.6 lakh 'Active Cases' in the first week of August 2020. Further, there will be around 95 ‘Active Cases’, 56.4 thousand deaths and 11.6 lakh total cases at the end of March 2021.
-                        <li> <b>Worse Scenario:</b> Hits a peak of 9.5 lakh ‘Active Cases’ in the second week of December 2020. Further, there will around 4.9 lakh ‘Active Cases’, 3.7 lakh deaths and 81 lakh total cases at the end of March 2021.
-                        <li><b>Current Trend with Sunday  Lockdown:</b>Hits a peak of 1.2 lakh ‘Active Cases’ in the first week of August 2020. Further, there will be around 1000 ‘Active Cases’, 42.5 thousand deaths and 8.7 lakh total cases at the end of March 2021.
-                        <li><b>Current Trend with Sun & Wed  Lockdown:</b> Hits a peak of 80 thousand Active Cases in the first week of June 2020. Further, there will around 108 ‘Active’ Cases, 18 thousand deaths and 3.7 lakh total cases at the end of March 2021.
+                        <li> <b> Current Trend:</b> Hits a peak of 4.1 lakh ‘Active Cases’ in the third week of September 2020. Further, there will be around 8 thousand ‘Active Cases’, 1.28 lakh deaths and 26 lakh toal cases at the end of March 2021.  </li>
+                        <li> <b>Better Scenario:</b> Hits a peak of 2.6 lakh 'Active Cases' in the first week of August 2020. Further, there will be around 95 ‘Active Cases’, 56.4 thousand deaths and 11.6 lakh total cases at the end of March 2021.  </li>
+                        <li> <b>Worse Scenario:</b> Hits a peak of 9.5 lakh ‘Active Cases’ in the second week of December 2020. Further, there will around 4.9 lakh ‘Active Cases’, 3.7 lakh deaths and 81 lakh total cases at the end of March 2021.  </li>
+                        <li><b>Current Trend with Sunday  Lockdown:</b>Hits a peak of 1.2 lakh ‘Active Cases’ in the first week of August 2020. Further, there will be around 1000 ‘Active Cases’, 42.5 thousand deaths and 8.7 lakh total cases at the end of March 2021.  </li>
+                        <li><b>Current Trend with Sun & Wed  Lockdown:</b> Hits a peak of 80 thousand Active Cases in the first week of June 2020. Further, there will around 108 ‘Active’ Cases, 18 thousand deaths and 3.7 lakh total cases at the end of March 2021.  </li>
                     </ul>
                     <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Discussion</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
-                        <li> In order to achieve and follow the <b>Current Trend</b> prediction for the next one year, people should maintain the same or even better level of social distancing as maintained during 23 Mar - 3rd May 2020. It is assumed that awareness increases with time and there is more compliance of social distancing and other norms. Also, we anticipate that more members of the susceptible population improve their hygiene practice and immunity levels.
-                        <li> Until the development of vaccines, social distancing and other practices to reduce interaction among people (such as avoiding mass gathering etc.) are the key tools to contain the spread of COVID-19. As such, public awareness of these practices through several modes (advertisements through TV, radios, new papers, social media, etc.) is crucial.
-                         <li>  The <b>Better Scenario</b> and <b>Worse Scenario</b> model the infection spread when there is better and worse compliance of social distancing and other norms among susceptible population.
-                        <li> Short, periodic (e.g., one or two days per week) lockdown with complete compliance to stay at home and avoid interaction helps reduce infection. This must be combined with increased social distancing and quarantining of suspected population during non-lockdown phases. The ‘Sunday Lockdown’ and ‘Sun & Wed Lockdown’ scenarios model these strategies.
-                        <li>Since this is an active situation with regular ongoing interventions and policy changes from State and Central governments, we do not predict each state individually and the state numbers have to be interpreted as follows.
-                        <li>In each scenario, the <b>state numbers</b> are computed with the national parameters. This is done to compare the actual data of the state  with the national trend.
-                        <li>For example, Kerala, Karnataka, Uttar Pradesh (and others) have done better than the national trend. Whereas, Maharashtra, Tamil Nadu, Madhya Pradesh (and others) have done worse than the national trend. Some states such as Rajasthan, Andhra Pradesh (and others) have done similar to the national trend.
-                        <li>The range of all predicted scenarios (some shown here, others not shown) can be viewed by enabling the uncertainty region in the time series plots.
+                        <li> In order to achieve and follow the <b>Current Trend</b> prediction for the next one year, people should maintain the same or even better level of social distancing as maintained during 23 Mar - 27 May 2020. It is assumed that awareness increases with time and there is more compliance of social distancing and other norms. Also, we anticipate that more members of the susceptible population improve their hygiene practice and immunity levels.  </li>
+                        <li> Until the development of vaccines, social distancing and other practices to reduce interaction among people (such as avoiding mass gathering etc.) are the key tools to contain the spread of COVID-19. As such, public awareness of these practices through several modes (advertisements through TV, radios, new papers, social media, etc.) is crucial.  </li>
+                         <li>  The <b>Better Scenario</b> and <b>Worse Scenario</b> model the infection spread when there is better and worse compliance of social distancing and other norms among susceptible population.  </li>
+                        <li> Short, periodic (e.g., one or two days per week) lockdown with complete compliance to stay at home and avoid interaction helps reduce infection. This must be combined with increased social distancing and quarantining of suspected population during non-lockdown phases. The ‘Sunday Lockdown’ and ‘Sun & Wed Lockdown’ scenarios model these strategies.  </li>
+                        <li>Since this is an active situation with regular ongoing interventions and policy changes from State and Central governments, we do not predict each state individually and the state numbers have to be interpreted as follows.  </li>
+                        <li>In each scenario, the <b>state numbers</b> are computed with the national parameters. This is done to compare the actual data of the state  with the national trend.  </li>
+                        <li>For example, Kerala, Karnataka, Uttar Pradesh (and others) have done better than the national trend. Whereas, Maharashtra, Tamil Nadu, Madhya Pradesh (and others) have done worse than the national trend. Some states such as Rajasthan, Andhra Pradesh (and others) have done similar to the national trend.  </li>
+                        <li>The range of all predicted scenarios (some shown here, others not shown) can be viewed by enabling the uncertainty region in the time series plots.  </li>
                     </ul>
                 </div>
             </div>
@@ -210,30 +218,49 @@
                 <input type="range" class="slider" id="myRange">
             </div>
         </div>
-        <section id = 'team' class="clean-block features" style="padding-bottom: 10px; padding-top: 5px;">
+        <section id = 'team' class="clean-block features" style="padding-bottom: 5px; padding-top: 5px;">
             <div class="container">
                 <div class="block-heading" style='padding-top: 30px;'>
-                    <h3 class="text-left text-info" style="margin-right: 5px;margin-left: 5px;">Team</h3>
-                    <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
-                        <ul class='para'>
-                            <li>
-                                <a href='http://cds.iisc.ac.in/faculty/sashi/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
-                                    Prof. Sashikumaar Ganesan
-                                </a>
+                    <h3 class="text-left text-info" style="margin-right: 5px;margin-left: 5px;">Team </h3>  
+                         <ul class='para' style="list-style-type:none;">
+                            <li> <b>Lead: </b>
+                            
+                                <i><a href='http://cds.iisc.ac.in/faculty/sashi/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                                 <font  size=4 face ="Josefin Slab" color="1976A1">   Prof. Sashikumaar Ganesan </font>  
+                                </a> and <a href='http://cds.iisc.ac.in/faculty/deepakns/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                                 <font  size=4 face ="Josefin Slab" color="1976A1">   Prof. Deepak Subramani </font>  
+                                </a> 
+                                 </i>
+                                 CDS, IISc Bangalore, India
                             </li>
                             <li>
-                                <a href='http://cds.iisc.ac.in/faculty/deepakns/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
-                                    Prof. Deepak Subramani
-                                </a>
+                              Email:  
+                               <A href="mailto:sashi-please remove this text-@iisc.ac.in">
+                                <span class="mailaddress">
+<!--                                  <font  size=4 face ="Josefin Slab" color="1976A1"> -->
+                                   sashi<span style="display:none;">-please remove this text-</span><span style="display:inline;">@iisc.ac.in,</span>
+<!--                                  </font> -->
+                                </span>
+                               </A>
+                               <A href="mailto:deepakns-please remove this text-@iisc.ac.in">
+                                <span class="mailaddress">
+<!--                                  <font  size=4 face ="Josefin Slab" color="1976A1"> -->
+                                   deepakns<span style="display:none;">-please remove this text-</span><span style="display:inline;">@iisc.ac.in</span>
+<!--                                  </font> -->
+                                </span>
+                               </A>                             
+                               
                             </li>
-                            <li id = 'model'>
-                                <a href='http://linkedin.com/in/chrisfrancis09' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                            <br>                        
+                            <li id = 'model'> <b>Members: </b>
+                               <i> <a href='http://linkedin.com/in/chrisfrancis09' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
                                     Chris Francis
                                 </a>
+                                </i>
                             </li>
-                        </ul>
+                        </ul> 
+                        
                     </div>
-                </div>
             </div>
         </section>
         <section id = 'modeldesc' class="clean-block features" style="padding-bottom: 10px;  padding-top: 5px;">
@@ -242,11 +269,25 @@
                     <h3 class="text-left text-info" style="margin-right: 5px;margin-left: 5px;">
                         High-Dimensional Population Balance Model
                     </h3>
+                     <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
+                        <h5>Key Features</h5>
+                        <i>
+                        <ul class='para'>
+                            <li> A six-dimensional population balance predictive computational model for an epidemic.
+                            <li> Unlike the existing (Compartment or Network) models, proposed model predicts the distribution of infected population across the region, the age of the infected people, the day since infection, and the severity of infection, over a period of time.
+                            <li> Incorporates the immunity, pre-medical history, effective treatment, point-to-point movement of infected population (e.g., by air, train etc), interactivity (community spread), hygiene and the social distancing of the population.
+                            <li> Finite element operator-splitting scheme for the high-dimensional PDE.
+                        </ul>
+                        </i>
+                      </div>
                     <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
                         <div class="text-left note">
                             Note: Double-click/double-tap on an equation to zoom.
                         </div>
                     </div>
+                     <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
+                        <h5>Population Balance Model</h5>
+                      </div>
                     <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
                         <div class="text-left para" style="margin-bottom: 30px; margin-right: 5px;">
                             Let $T_\infty$ be a given final time and $\Omega:=\Omega_x\otimes\Omega_\ell$ be the computational domain of interest. Here, $\Omega_x\subset\mathbb{R}^2$ is the spatial domain defining the geographical region of interest and $\Omega_\ell:=L_v\times L_d\times L_a$ is an internal domain, where  $L_v=[0, 1]$ denotes the Covid-19 infection severity interval, $L_d=[0,d_{\max}]$ denotes the time interval since contracting the disease, and $L_a=[0, 1]$ denotes the non-dimensional age interval with the non-dimensionalization constant being 125 years. The infection index $\ell_v\in L_v$ quantifies the severity of the population being infected by Covid-19.  Specifically, the population with infection index $\ell_v=0$ has recovered completely from Covid-19,  with $\ell_v = 1$ has died due it, with $\ell_v\ge v_{\rm sym}$ shows symptoms and those with $\ell_v\le v_{\rm sym}$ are asymptomatic. The time since contracting the disease index $\ell_d\in L_d$ quantifies the time since a population has been exposed to and contracted the disease. Specifically, the population that just contracted the disease has $\ell_d=0$. Typically, a person is asymptomatic until they reach $\ell_v=v_{\rm sym}$, and the duration elapsed $\ell_d$ is the incubation period in which the disease is sub-clinical and that population is actively spreading the disease. After recovery, a population doesn't necessarily go to $\ell_v=0$, rather they reach $\ell_v\le v_{\rm reco}$.<br><br>
@@ -354,6 +395,18 @@
                             </li>
                             <li>
                                     Members of eXComp group, CDS, IISc Bangalore
+                            </li>
+                            <li>
+                                    Special thanks to all well wishers and colleagues for the discussion and feedback on our model.
+                            </li>
+                            <li>
+                                    We thank the Indian Academy of Science Summer Fellowship Program for the support to Chris.
+                            </li>
+                            <li>
+                                    Deepak wishes to acknowledge DST Inspire and Arcot Ramachandran Young Investigator Awards.
+                            </li>
+                            <li>
+                                    Sashi wishes to acknowledge SERB and DRDO for the grants that supported development of ParMooN.
                             </li>
                         </ol>
                     </div>
