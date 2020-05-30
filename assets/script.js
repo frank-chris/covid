@@ -57,12 +57,42 @@ function getMax(prop){
     return max;
 }
 
+function getActualMax(prop){
+    var state;
+    var max = 0;
+    for (state of actualstatesData["features"]){
+        if (Number(state["properties"][prop]) > max){
+            max = Number(state["properties"][prop]);
+        }
+    }
+    if(max == 0){
+        max = 100;
+    }
+    max = Math.ceil(max/100)*100;
+
+    return max;
+}
+
 
 // Function to decide colors based on data
 function getColor(value, prop) {
     
     var max = getMax(prop);
 
+    return value > max ? '#990000' :
+           value > max/2  ? '#d7301f' :
+           value > max/5  ? '#ef6548' :
+           value > max/10  ? '#fc8d59' :
+           value > max/20   ? '#fdd49e' :
+           value > max/50   ? '#ffff29' :
+           value > max/100   ? '#d6ff75' :
+           value >= 0   ? '#78c679' :
+                      '#fdfdfd';
+}
+
+function getActualColor(value, prop) {
+    
+    var max = getActualMax(prop);
     return value > max ? '#990000' :
            value > max/2  ? '#d7301f' :
            value > max/5  ? '#ef6548' :
@@ -156,7 +186,7 @@ function styleDeceasedPred(feature) {
 
 function styleTotal(feature) {
     return {
-        fillColor: getColor(feature.properties['Confirmed_' + calculatedDate(slider.value)], 'Confirmed_' + calculatedDate(slider.value)),
+        fillColor: getActualColor(feature.properties['Confirmed_' + calculatedDate(slider.value)], 'Confirmed_' + calculatedDate(slider.value)),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -167,7 +197,7 @@ function styleTotal(feature) {
 
 function styleActive(feature) {
     return {
-        fillColor: getColor(  feature.properties['Confirmed_' + calculatedDate(slider.value)] 
+        fillColor: getActualColor(  feature.properties['Confirmed_' + calculatedDate(slider.value)] 
                             - feature.properties['Recovered_' + calculatedDate(slider.value)]
                             - feature.properties['Deceased_' + calculatedDate(slider.value)] ,
                              'Confirmed_' + calculatedDate(slider.value)),
@@ -181,7 +211,7 @@ function styleActive(feature) {
 
 function styleRecovered(feature) {
     return {
-        fillColor: getColor(Number(feature.properties['Recovered_' + calculatedDate(slider.value)]),
+        fillColor: getActualColor(Number(feature.properties['Recovered_' + calculatedDate(slider.value)]),
                              'Recovered_' + calculatedDate(slider.value)),
         weight: 2,
         opacity: 1,
@@ -193,7 +223,7 @@ function styleRecovered(feature) {
 
 function styleDeceased(feature) {
     return {
-        fillColor: getColor(Number(feature.properties['Deceased_' + calculatedDate(slider.value)]),
+        fillColor: getActualColor(Number(feature.properties['Deceased_' + calculatedDate(slider.value)]),
                              'Deceased_' + calculatedDate(slider.value)),
         weight: 2,
         opacity: 1,
@@ -207,6 +237,13 @@ function styleDeceased(feature) {
 function legendGrades(prop){
     
     var max = getMax(prop);
+
+    return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
+}
+
+function legendActualGrades(prop){
+    
+    var max = getActualMax(prop);
 
     return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
 }
@@ -239,7 +276,21 @@ function highlightFeature(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
-    info.update(layer.feature.properties);
+
+    var f;
+    for (f=0; f<statesData.features.length; ++f){
+        if(actualstatesData['features'][f].properties.name == layer.feature.properties.name){
+            break;
+        }
+    }
+    var h;
+    for (h=0; h<statesData.features.length; ++h){
+        if(statesData['features'][h].properties.name == layer.feature.properties.name){
+            break;
+        }
+    }
+    info.update(statesData['features'][h].properties, actualstatesData['features'][f].properties);
+
 }
 
 // Event listener function to reset highlight when mouse moves out of a feature
@@ -409,13 +460,13 @@ function loadChartData(){
     for(i=0;i<=noOfDays;i++){
         overallData["Total"].push([chartDate(i), 
         /*Active(Predicted)*/      totalData[0][i.toString()],
-        /*Active*/                 (totalData[0]["Confirmed_" + calculatedDate(i)] - totalData[0]["Recovered_" + calculatedDate(i)] - totalData[0]["Deceased_" + calculatedDate(i)]),
+        /*Active*/                 (actualtotalData[0]["Confirmed_" + calculatedDate(i)] - actualtotalData[0]["Recovered_" + calculatedDate(i)] - actualtotalData[0]["Deceased_" + calculatedDate(i)]),
         /*Recovered(Predicted)*/   totalData[0]["Recovered" + i.toString()],
-        /*Recovered*/              Number(totalData[0]["Recovered_" + calculatedDate(i)]),
+        /*Recovered*/              Number(actualtotalData[0]["Recovered_" + calculatedDate(i)]),
         /*Deceased(Predicted)*/    totalData[0]["Deceased" + i.toString()],
-        /*Deceased*/               Number(totalData[0]["Deceased_" + calculatedDate(i)]),
+        /*Deceased*/               Number(actualtotalData[0]["Deceased_" + calculatedDate(i)]),
         /*Total(Predicted)*/       Number(totalData[0][i.toString()]) + Number(totalData[0]["Recovered" + i.toString()]) + Number(totalData[0]["Deceased" + i.toString()]),
-        /*Total*/                  totalData[0]["Confirmed_" + calculatedDate(i)],
+        /*Total*/                  actualtotalData[0]["Confirmed_" + calculatedDate(i)],
                                 hightotalData[i.toString()], // HA
                                 lowtotalData[i.toString()],  // LA
                                 hightotalData["Recovered" + i.toString()], // HR
@@ -424,7 +475,7 @@ function loadChartData(){
                                 lowtotalData["Deceased" + i.toString()],
                                 Number(hightotalData[i.toString()]) + Number(hightotalData["Recovered" + i.toString()]) + Number(hightotalData["Deceased" + i.toString()]), // HT
                                 Number(lowtotalData[i.toString()]) + Number(lowtotalData["Recovered" + i.toString()]) + Number(lowtotalData["Deceased" + i.toString()])  // LT
-                            ]); // Correct total uncertainty here
+                            ]); 
     }
     
     if(dropDownFlag==1){
@@ -440,22 +491,22 @@ function loadChartData(){
         for(i=0;i<=noOfDays;i++){
         stateData[state.properties["name"]].push([chartDate(i),
                                                     state.properties[i.toString()],
-                                                    (state.properties["Confirmed_" + calculatedDate(i)] - state.properties["Recovered_" + calculatedDate(i)] - state.properties["Deceased_" + calculatedDate(i)]),
+                                                    (actualstatesData['features'][k].properties["Confirmed_" + calculatedDate(i)] - actualstatesData['features'][k].properties["Recovered_" + calculatedDate(i)] - actualstatesData['features'][k].properties["Deceased_" + calculatedDate(i)]),
                                                     highstatesData[state.properties["name"]][i.toString()],
                                                     lowstatesData[state.properties["name"]][i.toString()],
                                                     state.properties["Recovered" + i.toString()],
-                                                    Number(state.properties["Recovered_" + calculatedDate(i)]),
+                                                    Number(actualstatesData['features'][k].properties["Recovered_" + calculatedDate(i)]),
                                                     highstatesData[state.properties["name"]]["Recovered" + i.toString()],
                                                     lowstatesData[state.properties["name"]]["Recovered" + i.toString()],
                                                     state.properties["Deceased" + i.toString()],
-                                                    Number(state.properties["Deceased_" + calculatedDate(i)]),
+                                                    Number(actualstatesData['features'][k].properties["Deceased_" + calculatedDate(i)]),
                                                     highstatesData[state.properties["name"]]["Deceased" + i.toString()],
                                                     lowstatesData[state.properties["name"]]["Deceased" + i.toString()],
                                                     Number(state.properties[i.toString()])+Number(state.properties["Recovered" + i.toString()])+Number(state.properties["Deceased" + i.toString()]),
-                                                    state.properties["Confirmed_" + calculatedDate(i)],
+                                                    actualstatesData['features'][k].properties["Confirmed_" + calculatedDate(i)],
                                                     Number(highstatesData[state.properties["name"]][i.toString()])+Number(highstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(highstatesData[state.properties["name"]]["Deceased" + i.toString()]),
                                                     Number(lowstatesData[state.properties["name"]][i.toString()])+Number(lowstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(lowstatesData[state.properties["name"]]["Deceased" + i.toString()])
-                                                ]);// correct total uncertainty here
+                                                ]);
         
         // stateData[state.properties["name"]].push([chartDate(i), "Recovered(Pred)", state.properties["Recovered" + i.toString()]]);
         // stateData[state.properties["name"]].push([chartDate(i), "Recovered", state.properties["Recovered_" + calculatedDate(i)]]);
@@ -954,9 +1005,11 @@ function loadChartData(){
             dataSource: dataSource2,
             events: {
                 "legendItemClicked": function(ev) {
-                  console.log(ev.data.datasetName);
                   legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
-                }
+                },
+                "beforeExport": function(ev) {
+                    console.log(ev);
+                  }
             },
             }).render();
         }
@@ -972,9 +1025,11 @@ function loadChartData(){
             dataSource: dataSource,
             events: {
                 "legendItemClicked": function(ev) {
-                  console.log(ev.data.datasetName);
                   legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
-                }
+                },
+                "beforeExport": function(ev) {
+                    console.log(ev);
+                  }
             },
             }).render();
         }
@@ -1478,9 +1533,11 @@ schema = [{
        dataSource: dataSource2,
        events: {
         "legendItemClicked": function(ev) {
-          console.log(ev.data.datasetName);
           legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
-        }
+        },
+        "beforeExport": function(ev) {
+            console.log(ev);
+          }
     },
      }).render();
   
@@ -1503,7 +1560,6 @@ schema = [{
             changeScript(value);
         };
         loadChartData();
-        console.log(runID);
         var buttons = document.getElementsByClassName('scenario');
         var i;
         for (i = 0; i < buttons.length; i++) {
@@ -1538,9 +1594,11 @@ schema = [{
         dataSource: dataSource2,
         events: {
             "legendItemClicked": function(ev) {
-              console.log(ev.data.datasetName);
               legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
-            }
+            },
+            "beforeExport": function(ev) {
+                console.log(ev);
+              }
         },
         }).render();
     }
@@ -1568,9 +1626,11 @@ schema = [{
         dataSource: dataSource,
         events: {
             "legendItemClicked": function(ev) {
-              console.log(ev.data.datasetName);
               legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
-            }
+            },
+            "beforeExport": function(ev) {
+                console.log(ev);
+              }
         },
         }).render();
     }
@@ -1578,13 +1638,14 @@ schema = [{
   
   }
   
+var mymap;
 
 // Set location and zoom 
 if(L.Browser.mobile){
-    var mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5, dragging: false}).setView([22.146, 79.088], 4);
+    mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5, dragging: false}).setView([22.146, 79.088], 4);
 }
 else{
-    var mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5}).setView([22.146, 79.088], 4.5);
+    mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5}).setView([22.146, 79.088], 4.5);
 }
 
 
@@ -1618,22 +1679,22 @@ geojson["Deceased(Predicted)"] = L.geoJson(statesData, {
     onEachFeature: onEachFeature
 });
 
-geojson["Total"] = L.geoJson(statesData, {
+geojson["Total"] = L.geoJson(actualstatesData, {
     style: styleTotal,
     onEachFeature: onEachFeature
 });
 
-geojson["Active"] = L.geoJson(statesData, {
+geojson["Active"] = L.geoJson(actualstatesData, {
     style: styleActive,
     onEachFeature: onEachFeature
 });
 
-geojson["Recovered"] = L.geoJson(statesData, {
+geojson["Recovered"] = L.geoJson(actualstatesData, {
     style: styleRecovered,
     onEachFeature: onEachFeature
 });
 
-geojson["Deceased"] = L.geoJson(statesData, {
+geojson["Deceased"] = L.geoJson(actualstatesData, {
     style: styleDeceased,
     onEachFeature: onEachFeature
 });
@@ -1650,15 +1711,15 @@ title.onAdd = function (map) {
 title.update = function () {
     this._div.innerHTML = '<h3>India</h3>' 
                             + "Total(Predicted)<br> <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()]) + Number(totalData[0]["Deceased" + slider.value.toString()])).toString()
-                            + "</b><br> Total(Data)<br> <b>"   + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':totalData[0]["Confirmed_" + calculatedDate(slider.value)])
+                            + "</b><br> Total(Data)<br> <b>"   + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)])
                             + "</b><br> Active(Predicted)<br> <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
-                            + "</b><br> Active(Data)<br> <b>" + (totalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(totalData[0]["Confirmed_" + calculatedDate(slider.value)] 
-                                                        - totalData[0]["Recovered_" + calculatedDate(slider.value)] 
-                                                        - totalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() )
+                            + "</b><br> Active(Data)<br> <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() )
                             + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b><br> Recovered(Predicted)<br> <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
-                            + "</b><br> Recovered(Data)<br> <b>" + (totalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(totalData[0]["Recovered_" + calculatedDate(slider.value)]))
+                            + "</b><br> Recovered(Data)<br> <b>" + (actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]))
                             + "</b><br> Deceased(Predicted)<br> <b>" + parseInt(totalData[0]["Deceased" + slider.value.toString()]).toString()
-                            + "</b><br> Deceased(Data)<br> <b>" + (totalData[0]["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(totalData[0]["Deceased_" + calculatedDate(slider.value)]));
+                            + "</b><br> Deceased(Data)<br> <b>" + (actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]));
 };
 
 title.setPosition('topleft');
@@ -1675,20 +1736,20 @@ info.onAdd = function (map) {
 };
 
 // Method that we will use to update the control based on feature properties passed
-info.update = function (props) {
+info.update = function (props, props2) {
     this._div.innerHTML = '<h3>'+ calculatedDate(slider.value).replace(/_/g, ' ') + '</h3>' +  (props ?
         '<b>' + props.name +'</b>'
         +'<br />' + 'Total(IND Trend):<br /> ' + '<b>' + ((Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString()=="NaN"?'-':(Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])+Number(props["Deceased" + slider.value.toString()])).toString() )+ '</b>'
         +'<br />' + 'Active(IND Trend):<br /> ' + '<b>' + (parseInt(props[slider.value.toString()]).toString()=="NaN"?'-':parseInt(props[slider.value.toString()]).toString() ) +'</b>'
         + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?'<br />' + 'Recovered(IND Trend)<br /> ' + '<b>' + (parseInt(props["Recovered" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Recovered" + slider.value.toString()]).toString() ) +'</b>':'')
         +'<br />' + 'Deceased(IND Trend)<br /> ' + '<b>' + (parseInt(props["Deceased" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Deceased" + slider.value.toString()]).toString() ) +'</b>'
-        +'<br />' + 'Total(Data)<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
-        +'<br />' + 'Active(Data)<br /> ' + '<b>' + (props["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
-                                                    (props["Confirmed_" + calculatedDate(slider.value)] 
-                                                  - props["Recovered_" + calculatedDate(slider.value)] 
-                                                  - props["Deceased_" + calculatedDate(slider.value)]).toString() ) +'</b>'
-        +'<br />' + 'Recovered(Data)<br /> ' + '<b>' + (props["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props["Recovered_" + calculatedDate(slider.value)])) +'</b>'
-        +'<br />' + 'Deceased(Data)<br /> ' + '<b>' + (props["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(props["Deceased_" + calculatedDate(slider.value)])) +'</b>'
+        +'<br />' + 'Total(Data)<br /> ' + '<b>' + (props2["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props2["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
+        +'<br />' + 'Active(Data)<br /> ' + '<b>' + (props2["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
+                                                    (props2["Confirmed_" + calculatedDate(slider.value)] 
+                                                  - props2["Recovered_" + calculatedDate(slider.value)] 
+                                                  - props2["Deceased_" + calculatedDate(slider.value)]).toString() ) +'</b>'
+        +'<br />' + 'Recovered(Data)<br /> ' + '<b>' + (props2["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props2["Recovered_" + calculatedDate(slider.value)])) +'</b>'
+        +'<br />' + 'Deceased(Data)<br /> ' + '<b>' + (props2["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(props2["Deceased_" + calculatedDate(slider.value)])) +'</b>'
         : (L.Browser.mobile?'Touch on<br />a state':'Hover over<br />a state'));
 };
 
@@ -1760,36 +1821,36 @@ legend.update = function (currentBaseLayer){
     }
 
     else if(currentBaseLayer == "Total(Data)" || currentBaseLayer == "Active(Data)"){
-        grades = legendGrades("Confirmed_" + calculatedDate(slider.value));
+        grades = legendActualGrades("Confirmed_" + calculatedDate(slider.value));
         labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
-                '<i style="background:' + getColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
+                '<i style="background:' + getActualColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
     }
     else if(currentBaseLayer=='Recovered(Data)' ){
-        grades = legendGrades("Recovered_" + calculatedDate(slider.value));
+        grades = legendActualGrades("Recovered_" + calculatedDate(slider.value));
         labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
-                '<i style="background:' + getColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
+                '<i style="background:' + getActualColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
     }
 
     else if(currentBaseLayer=='Deceased(Data)' ){
-        grades = legendGrades("Deceased_" + calculatedDate(slider.value));
+        grades = legendActualGrades("Deceased_" + calculatedDate(slider.value));
         labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
-                '<i style="background:' + getColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
+                '<i style="background:' + getActualColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
     }
