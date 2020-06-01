@@ -4,7 +4,7 @@ html, body {
 }
 
 main{
-  background-color: #F1F1F1;
+  background-color: #fff;
 }
 
 p{
@@ -152,6 +152,33 @@ h5{
   font-size: 21px;
   margin: 0 0 5px;
   color: #777;
+}
+
+#india-numbers{
+  padding: 10px 0px;
+  font: 14px/16px 'Fira Sans', sans-serif;
+  background: white;
+  border-radius: 10px 10px 0px 0px;
+}
+
+#india-numbers h3{
+  font-size: 21px;
+  margin: 0 0 5px 15px;
+  color: #777;
+}
+
+#legend-numbers-1{
+  padding: 10px 10px;
+  font: 14px/16px 'Fira Sans', sans-serif;
+  background: #f1f1f1;
+  border-radius: 0px 0px 0px 10px;
+}
+
+#legend-numbers-2{
+  padding: 10px 10px;
+  font: 14px/16px 'Fira Sans', sans-serif;
+  background: #f1f1f1;
+  border-radius: 0px 0px 10px 0px;
 }
 
 .info {

@@ -30,6 +30,7 @@ if(L.Browser.mobile){
     var mapdiv = document.getElementById("mapid");
     mapdiv.style.width = "100%";
     mapdiv.style.height = "420px";
+    mapdiv.style.borderRadius = '0px';
     var slidercontainer = document.getElementById("slider1");
     slidercontainer.style.left = "2%";
     slidercontainer.style.bottom = '5%';
@@ -1724,7 +1725,41 @@ title.update = function () {
 
 title.setPosition('topleft');
 
-title.addTo(mymap);
+
+
+function updateMobileTitle(){
+    var mobileTitle = document.getElementById('india-container');
+    mobileTitle.innerHTML = "<div id='india-numbers'>"
+                            +"  <div class='row' style='margin-right: 0px;margin-left: 0px;'><h3>India</h3></div>"
+                            +"  <div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + "Total(Predicted): <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()]) + Number(totalData[0]["Deceased" + slider.value.toString()])).toString()
+                            +"</div><div class='col'>"
+                            + "</b>Total(Data): <b>"   + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)])
+                            +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + "</b>Active(Predicted): <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
+                            +"</div><div class='col'>"
+                            + "</b>Active(Data): <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() ) 
+                            +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b>Recovered(Predicted): <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
+                            +"</div><div class='col'>"
+                            + "</b>Recovered(Data): <b>" + (actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Recovered_" + calculatedDate(slider.value)])) 
+                            +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + "</b>Deceased(Predicted): <b>" + parseInt(totalData[0]["Deceased" + slider.value.toString()]).toString() 
+                            +"</div><div class='col'>"
+                            + "</b>Deceased(Data): <b>" + (actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]))
+                            +"</div></div></div>";
+}
+
+
+if(!L.Browser.mobile){
+    title.addTo(mymap);
+}
+else{
+    updateMobileTitle();
+}
+
 
 // Info control
 var info = L.control();
@@ -1769,101 +1804,163 @@ legend.onAdd = function (map) {
 
 legend.update = function (currentBaseLayer){
     var grades;
-    var labels;
+    if(L.Browser.mobile){
+        var mobileLegend = document.getElementById('legend-container');
+        mobileLegend.innerHTML = "<div class='col' id='legend-numbers-1'></div>"
+                                +"<div class='col' id='legend-numbers-2'></div>";
+        var legend1 = document.getElementById('legend-numbers-1');
+        var legend2 = document.getElementById('legend-numbers-2');
+    }
 
     if (currentBaseLayer == "Active(Predicted)"){
         grades = legendGrades((slider.value).toString());
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getColor(grades[i] + 1, (slider.value).toString()) + '"></i> ' +
                 grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColor(grades[i] + 1, (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColor(grades[i] + 1, (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
         }
     }
 
     else if (currentBaseLayer == "Total(Predicted)"){
         grades = legendGradesThree((slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString());
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
                 grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
         }
     }
 
 
     else if(currentBaseLayer == "Recovered(Predicted)"){
         grades = legendGrades("Recovered" + (slider.value).toString());
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getColor(grades[i] + 1, "Recovered" + (slider.value).toString()) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Recovered" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Recovered" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
         }
     }
 
     else if(currentBaseLayer == "Deceased(Predicted)"){
         grades = legendGrades("Deceased" + (slider.value).toString());
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getColor(grades[i] + 1, "Deceased" + (slider.value).toString()) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
         }
     }
 
     else if(currentBaseLayer == "Total(Data)" || currentBaseLayer == "Active(Data)"){
         grades = legendActualGrades("Confirmed_" + calculatedDate(slider.value));
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getActualColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
         }
     }
     else if(currentBaseLayer=='Recovered(Data)' ){
         grades = legendActualGrades("Recovered_" + calculatedDate(slider.value));
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getActualColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
         }
     }
 
     else if(currentBaseLayer=='Deceased(Data)' ){
         grades = legendActualGrades("Deceased_" + calculatedDate(slider.value));
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getActualColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
                 grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
         }
     }
 
     else{
         grades = legendGradesThree((slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString());
-        labels = [];
 
         this._div.innerHTML = "";
         for (var i = 0; i < grades.length; i++) {
             this._div.innerHTML +=
                 '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
                 grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
         }
     }
     
@@ -1871,7 +1968,13 @@ legend.update = function (currentBaseLayer){
 
 
 // Add legend to map
-legend.addTo(mymap);
+if(!L.Browser.mobile){
+    legend.addTo(mymap);
+}
+else{
+    legend.update(currentBaseLayer);
+}
+
 
 
 
@@ -1933,7 +2036,12 @@ function calculatedDate(value){
 // Update info control and geoJson layer(on dragging slider)
 slider.oninput = function() {
   info.update();
-  title.update();
+  if(!L.Browser.mobile){
+    title.update();
+  }
+  else{
+      updateMobileTitle();
+  }
   geojson["Total(Predicted)"].resetStyle();
   geojson["Active(Predicted)"].resetStyle();
   geojson["Recovered(Predicted)"].resetStyle();
