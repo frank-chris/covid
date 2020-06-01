@@ -32,9 +32,9 @@ if(L.Browser.mobile){
     mapdiv.style.height = "420px";
     mapdiv.style.borderRadius = '0px';
     var slidercontainer = document.getElementById("slider1");
-    slidercontainer.style.left = "2%";
+    slidercontainer.style.left = "3%";
     slidercontainer.style.bottom = '5%';
-    slidercontainer.style.width = '50%';
+    slidercontainer.style.width = '94%';
     var main = document.getElementById('main');
     main.style.paddingBottom = '0%';
     var instruction = document.getElementById('instruction');
@@ -2106,7 +2106,7 @@ L.Control.zoomHome = L.Control.extend({
     },
 
     _zoomHome: function (e) {
-        this._map.setView([22.146, 79.088], 4.5);
+        this._map.setView([22.146, 79.088], (L.Browser.mobile?4:4.5));
     },
 
     _createButton: function (html, title, className, container, fn) {
