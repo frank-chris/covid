@@ -1968,12 +1968,14 @@ legend.update = function (currentBaseLayer){
 
 
 // Add legend to map
-if(!L.Browser.mobile){
-    legend.addTo(mymap);
-}
-else{
+legend.addTo(mymap);
+if(L.Browser.mobile){
+    var legendDiv = document.getElementsByClassName('legend')[0];
+    legendDiv.style.display = 'none';
+    console.log(legendDiv.className);
     legend.update(currentBaseLayer);
 }
+
 
 
 

@@ -168,10 +168,18 @@ h5{
 }
 
 #legend-numbers-1{
-  padding: 10px 10px;
+  padding: 10px 20px;
   font: 14px/16px 'Fira Sans', sans-serif;
   background: #f1f1f1;
   border-radius: 0px 0px 0px 10px;
+}
+
+#legend-numbers-1 i {
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
 }
 
 #legend-numbers-2{
@@ -179,6 +187,14 @@ h5{
   font: 14px/16px 'Fira Sans', sans-serif;
   background: #f1f1f1;
   border-radius: 0px 0px 10px 0px;
+}
+
+#legend-numbers-2 i {
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
 }
 
 .info {
