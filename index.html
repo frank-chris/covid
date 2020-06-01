@@ -298,16 +298,16 @@
                             \begin{equation}\label{model}
                             \begin{array}{rcll}
                             \displaystyle\frac{\partial I}{\partial t} + \nabla_x\cdot({\bf u} I) +\nabla_\ell\cdot({\bf G} I) +CI  &=& F  \quad  &{\rm  in }  \quad (0,T_\infty]\times\Omega_x\times\Omega_\ell \,,\\
-                            {\bf u}\cdot {\bf n} &=&g_n    &{\rm in }  \quad (0,T_\infty]\times\partial\Omega_{ x}\,, \\
-                            I(0,x,\ell) & =& I_0 &{\rm in }  \quad  \Omega_{x}\times\Omega_\ell \,,\\
+                            I(t,x,\ell) &=&g_n    &{\textrm in }  \quad (0,T_\infty]\times\partial\Omega^{-}_{ x}\times L_v\times L_d\times L_a\,\\
                             I(t,\mathbf{x},\ell_v,0,\ell_a)  & =& B_{\rm nuc} \quad  &{\rm in }  \quad (0,T_\infty]\times\Omega_{x}\times L_v\times L_a \,,\\
-                            I(t,\mathbf{x},0,\ell_d>0,\ell_a)  & =& 0 \quad  &{\rm in }  \quad (0,T_\infty]\times\Omega_{x}\times L_d\times L_a \,.
+                            I(t,\mathbf{x},0,\ell_d>0,\ell_a)  & =& 0 \quad  &{\rm in }  \quad (0,T_\infty]\times\Omega_{x}\times L_d\times L_a \,,\\
+                            I(0,x,\ell) & =& I_0 &{\rm in }  \quad  \Omega_{x}\times\Omega_\ell \,.
                             \end{array}
                             \end{equation}
                             </span>
                             Here, ${\bf u}$ denotes the advection vector that quantifies the spatial movement of the population in a differential neighbourhood of $\Omega_{x}$,
                             $f(t,x,\ell_a)$ denotes the net addition of an infected population into $\Omega_{\rm x}$ from outside,
-                            ${\bf n}$  is the outward unit normal vector to $\Omega_x$,
+                            ${\bf n}$  is the outward unit normal vector to $\Omega_x$, $\partial{\Omega}^{-}:= \{x \in \partial{\Omega_{x}} \  |~ {\bf u}\cdot {\bf n} <0 \  \}$,
                             $g_n$ is the flux that quantifies the net addition of an infected population into $\Omega_{\rm x}$ from outside (the spatial movement of the population across the border of the domain $\partial\Omega_{\rm x}$), and $I_0$ is the initial distribution of infected population.
                             Further,
                             $
