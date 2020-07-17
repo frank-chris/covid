@@ -271,3 +271,8 @@ h5{
     background: #FEFEFE;
     cursor: pointer;
   }
+
+  
+  img {
+  float: right;
+}
