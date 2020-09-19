@@ -1,0 +1,2161 @@
+// For geoJson layers
+var geojson = {}
+
+var currentBaseLayer = "Total(Predicted)";
+
+var currentState = "India";
+
+// Start date parameters
+var startDate = new Date(SD); 
+
+
+var todaysDate = new Date();
+var daysTillToday = (todaysDate.getTime()-startDate.getTime())/(1000 * 3600 * 24);
+
+
+// Set labels for slider
+var startDateLabel = document.getElementById("start-date");
+var endDateLabel = document.getElementById("end-date");
+startDateLabel.innerHTML = calculatedDate(0).replace(/_/g, ' ');
+endDateLabel.innerHTML = calculatedDate(noOfDays).replace(/_/g, ' ');
+
+
+// Slider accessed by Id and values set
+var slider = document.getElementById("myRange");
+slider.value = daysTillToday - 2;
+slider.min = 0;
+slider.max = noOfDays;
+
+if(L.Browser.mobile){
+    var mapdiv = document.getElementById("mapid");
+    mapdiv.style.width = "100%";
+    mapdiv.style.height = "420px";
+    mapdiv.style.borderRadius = '0px';
+    var slidercontainer = document.getElementById("slider1");
+    slidercontainer.style.left = "3%";
+    slidercontainer.style.bottom = '5%';
+    slidercontainer.style.width = '94%';
+    var main = document.getElementById('main');
+    main.style.paddingBottom = '0%';
+    var instruction = document.getElementById('instruction');
+    instruction.style.top = '14%';
+    instruction.style.fontSize = '12px';
+}
+
+function getMax(prop){
+    var state;
+    var max = 0;
+    for (state of statesData["features"]){
+        if (Number(state["properties"][prop]) > max){
+            max = Number(state["properties"][prop]);
+        }
+    }
+    if(max == 0){
+        max = 100;
+    }
+    max = Math.ceil(max/100)*100;
+
+    return max;
+}
+
+function getActualMax(prop){
+    var state;
+    var max = 0;
+    for (state of actualstatesData["features"]){
+        if (Number(state["properties"][prop]) > max){
+            max = Number(state["properties"][prop]);
+        }
+    }
+    if(max == 0){
+        max = 100;
+    }
+    max = Math.ceil(max/100)*100;
+
+    return max;
+}
+
+
+// Function to decide colors based on data
+function getColor(value, prop) {
+    
+    var max = getMax(prop);
+
+    return value > max ? '#990000' :
+           value > max/2  ? '#d7301f' :
+           value > max/5  ? '#ef6548' :
+           value > max/10  ? '#fc8d59' :
+           value > max/20   ? '#fdd49e' :
+           value > max/50   ? '#ffff29' :
+           value > max/100   ? '#d6ff75' :
+           value >= 0   ? '#78c679' :
+                      '#fdfdfd';
+}
+
+function getActualColor(value, prop) {
+    
+    var max = getActualMax(prop);
+    return value > max ? '#990000' :
+           value > max/2  ? '#d7301f' :
+           value > max/5  ? '#ef6548' :
+           value > max/10  ? '#fc8d59' :
+           value > max/20   ? '#fdd49e' :
+           value > max/50   ? '#ffff29' :
+           value > max/100   ? '#d6ff75' :
+           value >= 0   ? '#78c679' :
+                      '#fdfdfd';
+}
+
+function getColorTotal(value, prop1, prop2) {
+    
+    var max = getMax(prop1) + getMax(prop2);
+    
+    return value > max ? '#990000' :
+           value > max/2  ? '#d7301f' :
+           value > max/5  ? '#ef6548' :
+           value > max/10  ? '#fc8d59' :
+           value > max/20   ? '#fdd49e' :
+           value > max/50   ? '#ffff29' :
+           value > max/100   ? '#d6ff75' :
+           value >= 0   ? '#78c679' :
+                      '#fdfdfd';
+}
+
+function getColorThree(value, prop1, prop2, prop3){
+    var max = getMax(prop1) + getMax(prop2) + getMax(prop3);
+    
+    return value > max ? '#990000' :
+           value > max/2  ? '#d7301f' :
+           value > max/5  ? '#ef6548' :
+           value > max/10  ? '#fc8d59' :
+           value > max/20   ? '#fdd49e' :
+           value > max/50   ? '#ffff29' :
+           value > max/100   ? '#d6ff75' :
+           value >= 0   ? '#78c679' :
+                      '#fdfdfd';
+}
+
+// Function to set style for geoJson layer
+function styleTotalPred(feature) {
+    return {
+        fillColor: getColorThree(Number(feature.properties[(slider.value).toString()]) 
+                            + Number(feature.properties["Deceased" + (slider.value).toString()])
+                            + Number(feature.properties["Recovered" + (slider.value).toString()]), 
+                            (slider.value).toString(), 
+                            "Deceased" + (slider.value).toString(),
+                            "Recovered" + (slider.value).toString()),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+
+function styleActivePred(feature) {
+    return {
+        fillColor: getColor(feature.properties[(slider.value).toString()], (slider.value).toString()),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleRecoveredPred(feature) {
+    return {
+        fillColor: getColor(feature.properties["Recovered" + (slider.value).toString()], "Recovered" + (slider.value).toString()),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleDeceasedPred(feature) {
+    return {
+        fillColor: getColor(feature.properties["Deceased" + (slider.value).toString()], "Deceased" + (slider.value).toString()),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleTotal(feature) {
+    return {
+        fillColor: getActualColor(feature.properties['Confirmed_' + calculatedDate(slider.value)], 'Confirmed_' + calculatedDate(slider.value)),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleActive(feature) {
+    return {
+        fillColor: getActualColor(  feature.properties['Confirmed_' + calculatedDate(slider.value)] 
+                            - feature.properties['Recovered_' + calculatedDate(slider.value)]
+                            - feature.properties['Deceased_' + calculatedDate(slider.value)] ,
+                             'Confirmed_' + calculatedDate(slider.value)),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleRecovered(feature) {
+    return {
+        fillColor: getActualColor(Number(feature.properties['Recovered_' + calculatedDate(slider.value)]),
+                             'Recovered_' + calculatedDate(slider.value)),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+function styleDeceased(feature) {
+    return {
+        fillColor: getActualColor(Number(feature.properties['Deceased_' + calculatedDate(slider.value)]),
+                             'Deceased_' + calculatedDate(slider.value)),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    };
+}
+
+
+function legendGrades(prop){
+    
+    var max = getMax(prop);
+
+    return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
+}
+
+function legendActualGrades(prop){
+    
+    var max = getActualMax(prop);
+
+    return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
+}
+
+function legendGradesTotal(prop1, prop2){
+
+    var max = getMax(prop1) + getMax(prop2);
+
+    return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
+}
+
+function legendGradesThree(prop1, prop2, prop3){
+
+    var max = getMax(prop1) + getMax(prop2) + getMax(prop3);
+
+    return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
+}
+
+// Event listener function to highlight a feature when mouse hovers on it
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 4,
+        color: '#552631',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+
+    var f;
+    for (f=0; f<statesData.features.length; ++f){
+        if(actualstatesData['features'][f].properties.name == layer.feature.properties.name){
+            break;
+        }
+    }
+    var h;
+    for (h=0; h<statesData.features.length; ++h){
+        if(statesData['features'][h].properties.name == layer.feature.properties.name){
+            break;
+        }
+    }
+    info.update(statesData['features'][h].properties, actualstatesData['features'][f].properties);
+
+}
+
+// Event listener function to reset highlight when mouse moves out of a feature
+function resetHighlight(e) {
+    geojson[currentBaseLayer.replace("(Data)", "")].resetStyle(e.target);
+    info.update();
+}
+
+
+// Event listener function to zoom to a feature when clicked on it
+function zoomToFeature(e) {
+    mymap.fitBounds(e.target.getBounds());
+    loadChart(e.target.feature.properties.name);
+}
+
+// Function to add the event listeners to each of the
+// features using onEachFeature of geoJson layer
+function onEachFeature(feature, layer) {
+    if(L.Browser.mobile){
+        layer.on({
+            mousedown: highlightFeature,
+            mouseup: resetHighlight,
+            dblclick: zoomToFeature
+        });
+    }
+    else{
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+    }
+}
+
+
+
+
+// Function to return shortened month name
+// Output of the JavaScript date function 'getMonth()' is passed as argument
+function monthName(month){
+    return month == 0  ? 'Jan' :
+           month == 1  ? 'Feb' :
+           month == 2  ? 'Mar' :
+           month == 3  ? 'Apr' :
+           month == 4  ? 'May' :
+           month == 5  ? 'Jun' :
+           month == 6  ? 'Jul' :
+           month == 7  ? 'Aug' :
+           month == 8  ? 'Sep' :
+           month == 9  ? 'Oct' :
+           month == 10 ? 'Nov' :
+           month == 11 ? 'Dec' :
+                      'Error: Invalid Argument';
+  }
+  
+  // Function to pad a zero on the left for single digit dates
+  // Output of the JavaScript date function 'getDate()' is passed as argument
+  function paddedDate(date){
+    if (date >= 10){
+        return date.toString();
+    }
+    else{
+        return "0" + date.toString();
+    }
+  }
+  
+  // Function to calculate date
+  function chartDate(value){
+    var reqDate = new Date(startDate.getTime() + value * (1000 * 3600 * 24));
+  
+    return (paddedDate(reqDate.getDate()) + "-"
+            + monthName(reqDate.getMonth()) + "-"
+            + reqDate.getFullYear().toString().substring(2)).toString();
+  
+  }
+  
+  let overallData = {}
+  let stateData = {}
+  var schema = [];
+  var schema2 = [];
+  var dropDownFlag = 1;
+  var legendStatus = {
+      'Active(Predicted)':0,
+      'Active(IND Trend)':0,
+      'Active(Uncertainty)':1,
+      'Active(Data)':0,
+      'Recovered(Predicted)':0,
+      'Recovered(IND Trend)':0,
+      'Recovered(Uncertainty)':1,
+      'Recovered(Data)':0,
+      'Deceased(Predicted)':0,
+      'Deceased(IND Trend)':0,
+      'Deceased(Uncertainty)':1,
+      'Deceased(Data)':0,
+      'Total(Predicted)':0,
+      'Total(IND Trend)':0,
+      'Total(Uncertainty)':1,
+      'Total(Data)':0
+  };
+
+var legendButton;
+var temp;
+function setLegend(value){
+    if(value=='Active'){
+        legendButton = document.getElementById('Active');
+        legendStatus['Active(Data)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Active(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Active(IND Trend)'] = (legendButton.value=='on'?1:0);
+        loadChart(currentState);
+        legendButton.value = (legendButton.value=='on'?'off':'on');
+        temp = legendButton.style.color;
+        legendButton.style.color = legendButton.style.backgroundColor;
+        legendButton.style.backgroundColor = temp;
+    }
+    else if(value == 'Recovered'){
+        legendButton = document.getElementById('Recovered');
+        legendStatus['Recovered(Data)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Recovered(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Recovered(IND Trend)'] = (legendButton.value=='on'?1:0);
+        loadChart(currentState);
+        legendButton.value = (legendButton.value=='on'?'off':'on');
+        temp = legendButton.style.color;
+        legendButton.style.color = legendButton.style.backgroundColor;
+        legendButton.style.backgroundColor = temp;
+    }
+    else if(value == 'Deceased'){
+        legendButton = document.getElementById('Deceased');
+        legendStatus['Deceased(Data)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Deceased(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Deceased(IND Trend)'] = (legendButton.value=='on'?1:0);
+        loadChart(currentState);
+        legendButton.value = (legendButton.value=='on'?'off':'on');
+        temp = legendButton.style.color;
+        legendButton.style.color = legendButton.style.backgroundColor;
+        legendButton.style.backgroundColor = temp;
+    }
+    else if(value == 'Total'){
+        legendButton = document.getElementById('Total');
+        legendStatus['Total(Data)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Total(Predicted)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Total(IND Trend)'] = (legendButton.value=='on'?1:0);
+        loadChart(currentState);
+        legendButton.value = (legendButton.value=='on'?'off':'on');
+        temp = legendButton.style.color;
+        legendButton.style.color = legendButton.style.backgroundColor;
+        legendButton.style.backgroundColor = temp;
+    }
+    else if(value == 'Uncertainty'){
+        legendButton = document.getElementById('Uncertainty');
+        legendStatus['Active(Uncertainty)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Recovered(Uncertainty)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Deceased(Uncertainty)'] = (legendButton.value=='on'?1:0);
+        legendStatus['Total(Uncertainty)'] = (legendButton.value=='on'?1:0);
+        loadChart(currentState);
+        legendButton.value = (legendButton.value=='on'?'off':'on');
+        temp = legendButton.style.color;
+        legendButton.style.color = legendButton.style.backgroundColor;
+        legendButton.style.backgroundColor = temp;
+    }
+}
+
+function loadChartData(){    
+    overallData = {}
+    stateData = {}
+    var i;
+    overallData["Total"] = [];
+    for(i=0;i<=noOfDays;i++){
+        overallData["Total"].push([chartDate(i), 
+        /*Active(Predicted)*/      totalData[0][i.toString()],
+        /*Active*/                 (actualtotalData[0]["Confirmed_" + calculatedDate(i)] - actualtotalData[0]["Recovered_" + calculatedDate(i)] - actualtotalData[0]["Deceased_" + calculatedDate(i)]),
+        /*Recovered(Predicted)*/   totalData[0]["Recovered" + i.toString()],
+        /*Recovered*/              Number(actualtotalData[0]["Recovered_" + calculatedDate(i)]),
+        /*Deceased(Predicted)*/    totalData[0]["Deceased" + i.toString()],
+        /*Deceased*/               Number(actualtotalData[0]["Deceased_" + calculatedDate(i)]),
+        /*Total(Predicted)*/       Number(totalData[0][i.toString()]) + Number(totalData[0]["Recovered" + i.toString()]) + Number(totalData[0]["Deceased" + i.toString()]),
+        /*Total*/                  actualtotalData[0]["Confirmed_" + calculatedDate(i)],
+                                hightotalData[i.toString()], // HA
+                                lowtotalData[i.toString()],  // LA
+                                hightotalData["Recovered" + i.toString()], // HR
+                                lowtotalData["Recovered" + i.toString()],  // LR
+                                hightotalData["Deceased" + i.toString()], // HR
+                                lowtotalData["Deceased" + i.toString()],
+                                Number(hightotalData[i.toString()]) + Number(hightotalData["Recovered" + i.toString()]) + Number(hightotalData["Deceased" + i.toString()]), // HT
+                                Number(lowtotalData[i.toString()]) + Number(lowtotalData["Recovered" + i.toString()]) + Number(lowtotalData["Deceased" + i.toString()])  // LT
+                            ]); 
+    }
+    
+    if(dropDownFlag==1){
+        var stateDropDown = document.getElementById("myselect");
+        stateDropDown.innerHTML = "<option value='India'>India</option>"
+    }
+
+    var state;
+    var k = 0;
+    for (state of statesData["features"]){
+        stateData[state.properties["name"]] = [];
+    
+        for(i=0;i<=noOfDays;i++){
+        stateData[state.properties["name"]].push([chartDate(i),
+                                                    state.properties[i.toString()],
+                                                    (actualstatesData['features'][k].properties["Confirmed_" + calculatedDate(i)] - actualstatesData['features'][k].properties["Recovered_" + calculatedDate(i)] - actualstatesData['features'][k].properties["Deceased_" + calculatedDate(i)]),
+                                                    highstatesData[state.properties["name"]][i.toString()],
+                                                    lowstatesData[state.properties["name"]][i.toString()],
+                                                    state.properties["Recovered" + i.toString()],
+                                                    Number(actualstatesData['features'][k].properties["Recovered_" + calculatedDate(i)]),
+                                                    highstatesData[state.properties["name"]]["Recovered" + i.toString()],
+                                                    lowstatesData[state.properties["name"]]["Recovered" + i.toString()],
+                                                    state.properties["Deceased" + i.toString()],
+                                                    Number(actualstatesData['features'][k].properties["Deceased_" + calculatedDate(i)]),
+                                                    highstatesData[state.properties["name"]]["Deceased" + i.toString()],
+                                                    lowstatesData[state.properties["name"]]["Deceased" + i.toString()],
+                                                    Number(state.properties[i.toString()])+Number(state.properties["Recovered" + i.toString()])+Number(state.properties["Deceased" + i.toString()]),
+                                                    actualstatesData['features'][k].properties["Confirmed_" + calculatedDate(i)],
+                                                    Number(highstatesData[state.properties["name"]][i.toString()])+Number(highstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(highstatesData[state.properties["name"]]["Deceased" + i.toString()]),
+                                                    Number(lowstatesData[state.properties["name"]][i.toString()])+Number(lowstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(lowstatesData[state.properties["name"]]["Deceased" + i.toString()])
+                                                ]);
+        
+        // stateData[state.properties["name"]].push([chartDate(i), "Recovered(Pred)", state.properties["Recovered" + i.toString()]]);
+        // stateData[state.properties["name"]].push([chartDate(i), "Recovered", state.properties["Recovered_" + calculatedDate(i)]]);
+        // stateData[state.properties["name"]].push([chartDate(i), "Total(Pred)", Number(state.properties[i.toString()])+Number(state.properties["Recovered" + i.toString()])]);
+        // stateData[state.properties["name"]].push([chartDate(i), "Total", state.properties["Confirmed_" + calculatedDate(i)]]);
+        }
+        k += 1;
+        if(dropDownFlag==1){
+            stateDropDown.innerHTML += "<option value='"+ state.properties["name"].toString() +"'>" + state.properties["name"].toString() + "</option>";
+        }    
+    } 
+    dropDownFlag = 0;
+
+    schema2 = [{
+        "name": "Time",
+        "type": "date",
+        "format": "%d-%b-%y"
+        }, {
+        "name": "Active(Predicted)",
+        "type": "number"
+        }, {
+        "name": "Active(Data)",
+        "type": "number"
+        }, {
+        "name": "Recovered(Predicted)",
+        "type": "number"
+        }, {
+        "name": "Recovered(Data)",
+        "type": "number"
+        }, {
+        "name": "Deceased(Predicted)",
+        "type": "number"
+        }, {
+        "name": "Deceased(Data)",
+        "type": "number"
+        }, {
+        "name": "Total(Predicted)",
+        "type": "number"
+        }, {
+        "name": "Total(Data)",
+        "type": "number"
+        }, {
+        "name": "HA",
+        "type": "number"
+        }, {
+        "name": "LA",
+        "type": "number"
+        }, {
+        "name": "HR",
+        "type": "number"
+        }, {
+        "name": "LR",
+        "type": "number"
+        }, {
+        "name": "HD",
+        "type": "number"
+        }, {
+        "name": "LD",
+        "type": "number"
+        }, {
+        "name": "HT",
+        "type": "number"
+        }, {
+        "name": "LT",
+        "type": "number"
+        }
+    ];
+        
+    schema = [{
+        "name": "Time",
+        "type": "date",
+        "format": "%d-%b-%y"
+        }, {
+        "name": "Active(IND Trend)",
+        "type": "number"
+        }, {
+        "name": "Active(Data)",
+        "type": "number"
+        }, {
+        "name": "HA",
+        "type": "number"
+        }, {
+        "name": "LA",
+        "type": "number"
+        }, {
+        "name": "Recovered(IND Trend)",
+        "type": "number"
+        }, {
+        "name": "Recovered(Data)",
+        "type": "number"
+        }, {
+        "name": "HR",
+        "type": "number"
+        }, {
+        "name": "LR",
+        "type": "number"
+        }, {
+        "name": "Deceased(IND Trend)",
+        "type": "number"
+        }, {
+        "name": "Deceased(Data)",
+        "type": "number"
+        }, {
+        "name": "HD",
+        "type": "number"
+        }, {
+        "name": "LD",
+        "type": "number"
+        }, {
+        "name": "Total(IND Trend)",
+        "type": "number"
+        }, {
+        "name": "Total(Data)",
+        "type": "number"
+        }, {
+        "name": "HT",
+        "type": "number"
+        }, {
+        "name": "LT",
+        "type": "number"
+        }
+    ];
+        dataStore = new FusionCharts.DataStore();
+        dataSource = {
+        chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
+                exportEnabled: "1",
+                exportFileName: 'IISc Covid-19 Model by CDS, IISc',
+                animation: '0',
+                style: {
+                    "background": {
+                        "fill": "#FFFFFF",
+                    },
+                    "canvas": {
+                        "fill": "#FFFFFF",
+                    }
+                }
+        },
+        legend: {
+            item:[
+                {
+                    value: 'Active(Data)',
+                    initiallyhidden: legendStatus['Active(Data)'],
+                },
+                {
+                    value: 'Active(IND Trend)',
+                    initiallyhidden: legendStatus['Active(IND Trend)'],
+                },
+                {
+                    value: 'Active(Uncertainty)',
+                    initiallyhidden: legendStatus['Active(Uncertainty)'],
+                },
+                {
+                    value: 'Recovered(Data)',
+                    initiallyhidden: legendStatus['Recovered(Data)'],
+                },
+                {
+                    value: 'Recovered(IND Trend)',
+                    initiallyhidden: legendStatus['Recovered(IND Trend)'],
+                },
+                {
+                    value: 'Recovered(Uncertainty)',
+                    initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+                },
+                {
+                    value: 'Deceased(Data)',
+                    initiallyhidden: legendStatus['Deceased(Data)'],
+                },
+                {
+                    value: 'Deceased(IND Trend)',
+                    initiallyhidden: legendStatus['Deceased(IND Trend)'],
+                },
+                {
+                    value: 'Deceased(Uncertainty)',
+                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+                },
+                {
+                    value: 'Total(Data)',
+                    initiallyhidden: legendStatus['Total(Data)'],
+                },
+                {
+                    value: 'Total(IND Trend)',
+                    initiallyhidden: legendStatus['Total(IND Trend)'],
+                },
+                {
+                    value: 'Total(Uncertainty)',
+                    initiallyhidden: legendStatus['Total(Uncertainty)'],
+                }
+            ]
+        },
+        caption: {
+            text: currentState,
+            position: "center",
+            style: {
+                text: {
+                    "font-size": 22,
+                    'font-family': "'Fira Sans', sans-serif",
+                    'font-weight': 500,
+                    'text-align' : "center",
+                }
+            }
+        },
+        subcaption: {
+            text: '(Data Compared to National Trend Based Prediction)',
+            position: 'center',
+            style: {
+                text:{
+                'font-family': "'Fira Sans', sans-serif",
+                'font-size' : (L.Browser.mobile?10:16),
+                'fill' : '#666666',
+                }
+            }
+        },
+        yaxis: [
+            {title: "Population",
+            plot: [
+                {
+                    value:  {
+                                high: "HA",
+                                low: "LA"
+                            },
+                    name: "Active(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Active(IND Trend)",
+                    type: "line"
+                },
+                {
+                    value: "Active(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
+                                high: "HR",
+                                low: "LR"
+                            },
+                    name: "Recovered(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Recovered(IND Trend)",
+                    type: "line"
+                },
+                {
+                    value: "Recovered(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
+                                high: "HD",
+                                low: "LD"
+                            },
+                    name: "Deceased(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Deceased(IND Trend)",
+                    type: "line"
+                },
+                {
+                    value: "Deceased(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
+                                high: "HT",
+                                low: "LT"
+                            },
+                    name: "Total(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Total(IND Trend)",
+                    type: "line"
+                },
+                {
+                    value: "Total(Data)",
+                    type: "line"
+                }
+            ],
+            }
+        ]
+        };
+    
+        
+    
+        dataStore2 = new FusionCharts.DataStore();
+        dataSource2 = {
+        chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
+                exportEnabled: "1",
+                exportFileName: 'IISc Covid-19 Model by CDS, IISc',
+                animation: '0',
+                style: {
+                    "background": {
+                        "fill": "#FFFFFF",
+                    },
+                    "canvas": {
+                        "fill": "#FFFFFF",
+                    }
+                }
+        },
+        legend: {
+            item:[
+                {
+                    value: 'Active(Data)',
+                    initiallyhidden: legendStatus['Active(Data)'],
+                },
+                {
+                    value: 'Active(Predicted)',
+                    initiallyhidden: legendStatus['Active(Predicted)'],
+                },
+                {
+                    value: 'Active(Uncertainty)',
+                    initiallyhidden: legendStatus['Active(Uncertainty)'],
+                },
+                {
+                    value: 'Recovered(Data)',
+                    initiallyhidden: legendStatus['Recovered(Data)'],
+                },
+                {
+                    value: 'Recovered(Predicted)',
+                    initiallyhidden: legendStatus['Recovered(Predicted)'],
+                },
+                {
+                    value: 'Recovered(Uncertainty)',
+                    initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+                },
+                {
+                    value: 'Deceased(Data)',
+                    initiallyhidden: legendStatus['Deceased(Data)'],
+                },
+                {
+                    value: 'Deceased(Predicted)',
+                    initiallyhidden: legendStatus['Deceased(Predicted)'],
+                },
+                {
+                    value: 'Deceased(Uncertainty)',
+                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+                },
+                {
+                    value: 'Total(Data)',
+                    initiallyhidden: legendStatus['Total(Data)'],
+                },
+                {
+                    value: 'Total(Predicted)',
+                    initiallyhidden: legendStatus['Total(Predicted)'],
+                },
+                {
+                    value: 'Total(Uncertainty)',
+                    initiallyhidden: legendStatus['Total(Uncertainty)'],
+                }
+            ]
+        },
+        caption: {
+            text: "India",
+            position: "center",
+            style: {
+                text: {
+                    "font-size": 22,
+                    'font-family': "'Fira Sans', sans-serif",
+                    'font-weight': 500,
+                    'text-align' : "center",
+                }
+            }
+        },
+        // subcaption: {
+        //   text: currentState
+        // },
+        yaxis: [
+            {   title: "Population",
+                plot: [
+                    {
+                        value:  {
+                                    high: "HA",
+                                    low: "LA"
+                                },
+                        name: "Active(Uncertainty)",
+                        type: "area-range",
+                        style: {
+                            plot:{
+                                "stroke-opacity": "0",
+                                "fill-opacity": "0.1"
+                            }
+                        }
+                    },
+                    {
+                        value: "Active(Predicted)",
+                        type: "line"
+                    },
+                    {
+                        value: "Active(Data)",
+                        type: "line"
+                    },
+                    {
+                        value:  {
+                                    high: "HR",
+                                    low: "LR"
+                                },
+                        name: "Recovered(Uncertainty)",
+                        type: "area-range",
+                        style: {
+                            plot:{
+                                "stroke-opacity": "0",
+                                "fill-opacity": "0.1"
+                            }
+                        }
+                    },
+                    {
+                        value: "Recovered(Predicted)",
+                        type: "line"
+                    },
+                    {
+                        value: "Recovered(Data)",
+                        type: "line"
+                    },
+                    {
+                        value:  {
+                                    high: "HD",
+                                    low: "LD"
+                                },
+                        name: "Deceased(Uncertainty)",
+                        type: "area-range",
+                        style: {
+                            plot:{
+                                "stroke-opacity": "0",
+                                "fill-opacity": "0.1"
+                            }
+                        }
+                    },
+                    {
+                        value: "Deceased(Predicted)",
+                        type: "line"
+                    },
+                    {
+                        value: "Deceased(Data)",
+                        type: "line"
+                    },
+                    {
+                        value:  {
+                                    high: "HT",
+                                    low: "LT"
+                                },
+                        name: "Total(Uncertainty)",
+                        type: "area-range",
+                        style: {
+                            plot:{
+                                "stroke-opacity": "0",
+                                "fill-opacity": "0.1"
+                            }
+                        }
+                    },
+                    {
+                        value: "Total(Predicted)",
+                        type: "line"
+                    },
+                    {
+                        value: "Total(Data)",
+                        type: "line"
+                    }
+                ],
+            }
+        ]
+        };
+        
+        if(currentState=='India'){
+            dataSource2.data = dataStore2.createDataTable(overallData["Total"], schema2);
+            new FusionCharts({
+            type: "timeseries",
+            renderAt: "chart-container",
+            width: "100%",
+            height: L.Browser.mobile?(window.innerHeight*2/3).toString(): (window.innerHeight - 110).toString() ,
+            dataSource: dataSource2,
+            events: {
+                "legendItemClicked": function(ev) {
+                  legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
+                },
+                "beforeExport": function(ev) {
+                    console.log(ev);
+                  }
+            },
+            }).render();
+        }
+        else{
+            dataSource.caption.text = currentState;
+            dataSource.data = dataStore.createDataTable(stateData[currentState], schema);
+            
+            new FusionCharts({
+            type: "timeseries",
+            renderAt: "chart-container",
+            width: "100%",
+            height: L.Browser.mobile?(window.innerHeight*2/3).toString(): (window.innerHeight - 110).toString() ,
+            dataSource: dataSource,
+            events: {
+                "legendItemClicked": function(ev) {
+                  legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
+                },
+                "beforeExport": function(ev) {
+                    console.log(ev);
+                  }
+            },
+            }).render();
+        }
+        
+        
+}
+
+    loadChartData();
+
+  function getSelected()
+  {
+  var selectedSource = document.getElementById("myselect").value;
+  currentState = selectedSource;
+  loadChart(selectedSource);
+  }
+  
+  
+schema2 = [{
+    "name": "Time",
+    "type": "date",
+    "format": "%d-%b-%y"
+    }, {
+    "name": "Active(Predicted)",
+    "type": "number"
+    }, {
+    "name": "Active(Data)",
+    "type": "number"
+    }, {
+    "name": "Recovered(Predicted)",
+    "type": "number"
+    }, {
+    "name": "Recovered(Data)",
+    "type": "number"
+    }, {
+    "name": "Deceased(Predicted)",
+    "type": "number"
+    }, {
+    "name": "Deceased(Data)",
+    "type": "number"
+    }, {
+    "name": "Total(Predicted)",
+    "type": "number"
+    }, {
+    "name": "Total(Data)",
+    "type": "number"
+    }, {
+    "name": "HA",
+    "type": "number"
+    }, {
+    "name": "LA",
+    "type": "number"
+    }, {
+    "name": "HR",
+    "type": "number"
+    }, {
+    "name": "LR",
+    "type": "number"
+    }, {
+    "name": "HD",
+    "type": "number"
+    }, {
+    "name": "LD",
+    "type": "number"
+    }, {
+    "name": "HT",
+    "type": "number"
+    }, {
+    "name": "LT",
+    "type": "number"
+    }
+];
+    
+schema = [{
+    "name": "Time",
+    "type": "date",
+    "format": "%d-%b-%y"
+    }, {
+    "name": "Active(IND Trend)",
+    "type": "number"
+    }, {
+    "name": "Active(Data)",
+    "type": "number"
+    }, {
+    "name": "HA",
+    "type": "number"
+    }, {
+    "name": "LA",
+    "type": "number"
+    }, {
+    "name": "Recovered(IND Trend)",
+    "type": "number"
+    }, {
+    "name": "Recovered(Data)",
+    "type": "number"
+    }, {
+    "name": "HR",
+    "type": "number"
+    }, {
+    "name": "LR",
+    "type": "number"
+    }, {
+    "name": "Deceased(IND Trend)",
+    "type": "number"
+    }, {
+    "name": "Deceased(Data)",
+    "type": "number"
+    }, {
+    "name": "HD",
+    "type": "number"
+    }, {
+    "name": "LD",
+    "type": "number"
+    }, {
+    "name": "Total(IND Trend)",
+    "type": "number"
+    }, {
+    "name": "Total(Data)",
+    "type": "number"
+    }, {
+    "name": "HT",
+    "type": "number"
+    }, {
+    "name": "LT",
+    "type": "number"
+    }
+];
+    
+   var dataStore = new FusionCharts.DataStore();
+   var dataSource = {
+      chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
+              exportEnabled: "1",
+              exportFileName: 'IISc Covid-19 Model by CDS, IISc',
+              animation: '0',
+              style: {
+                  "background": {
+                      "fill": "#FFFFFF",
+                  },
+                  "canvas": {
+                      "fill": "#FFFFFF",
+                  }
+              }
+    },
+    legend: {
+        item:[
+            {
+                value: 'Active(Data)',
+                initiallyhidden: legendStatus['Active(Data)'],
+            },
+            {
+                value: 'Active(IND Trend)',
+                initiallyhidden: legendStatus['Active(IND Trend)'],
+            },
+            {
+                value: 'Active(Uncertainty)',
+                initiallyhidden: legendStatus['Active(Uncertainty)'],
+            },
+            {
+                value: 'Recovered(Data)',
+                initiallyhidden: legendStatus['Recovered(Data)'],
+            },
+            {
+                value: 'Recovered(IND Trend)',
+                initiallyhidden: legendStatus['Recovered(IND Trend)'],
+            },
+            {
+                value: 'Recovered(Uncertainty)',
+                initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+            },
+            {
+                value: 'Deceased(Data)',
+                initiallyhidden: legendStatus['Deceased(Data)'],
+            },
+            {
+                value: 'Deceased(IND Trend)',
+                initiallyhidden: legendStatus['Deceased(IND Trend)'],
+            },
+            {
+                value: 'Deceased(Uncertainty)',
+                initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+            },
+            {
+                value: 'Total(Data)',
+                initiallyhidden: legendStatus['Total(Data)'],
+            },
+            {
+                value: 'Total(IND Trend)',
+                initiallyhidden: legendStatus['Total(IND Trend)'],
+            },
+            {
+                value: 'Total(Uncertainty)',
+                initiallyhidden: legendStatus['Total(Uncertainty)'],
+            }
+        ]
+    },
+      caption: {
+        text: currentState,
+        position: "center",
+        style: {
+            text: {
+                "font-size": 22,
+                'font-family': "'Fira Sans', sans-serif",
+                'font-weight': 500,
+                'text-align' : "center",
+            }
+        }
+      },
+      subcaption: {
+        text: '(Data Compared to National Trend Based Prediction)',
+        position: 'center',
+        style: {
+            text:{
+              'font-family': "'Fira Sans', sans-serif",
+              'font-size' : (L.Browser.mobile?10:16),
+              'fill' : '#666666',
+            }
+        }
+      },
+      yaxis: [
+        {title: "Population",
+        plot: [
+            {
+                value:  {
+                            high: "HA",
+                            low: "LA"
+                        },
+                name: "Active(Uncertainty)",
+                type: "area-range",
+                style: {
+                    plot:{
+                        "stroke-opacity": "0",
+                        "fill-opacity": "0.1"
+                    }
+                }
+            },
+            {
+                value: "Active(IND Trend)",
+                type: "line"
+            },
+            {
+                value: "Active(Data)",
+                type: "line"
+            },
+            {
+                value:  {
+                            high: "HR",
+                            low: "LR"
+                        },
+                name: "Recovered(Uncertainty)",
+                type: "area-range",
+                style: {
+                    plot:{
+                        "stroke-opacity": "0",
+                        "fill-opacity": "0.1"
+                    }
+                }
+            },
+            {
+                value: "Recovered(IND Trend)",
+                type: "line"
+            },
+            {
+                value: "Recovered(Data)",
+                type: "line"
+            },
+            {
+                value:  {
+                            high: "HD",
+                            low: "LD"
+                        },
+                name: "Deceased(Uncertainty)",
+                type: "area-range",
+                style: {
+                    plot:{
+                        "stroke-opacity": "0",
+                        "fill-opacity": "0.1"
+                    }
+                }
+            },
+            {
+                value: "Deceased(IND Trend)",
+                type: "line"
+            },
+            {
+                value: "Deceased(Data)",
+                type: "line"
+            },
+            {
+                value:  {
+                            high: "HT",
+                            low: "LT"
+                        },
+                name: "Total(Uncertainty)",
+                type: "area-range",
+                style: {
+                    plot:{
+                        "stroke-opacity": "0",
+                        "fill-opacity": "0.1"
+                    }
+                }
+            },
+            {
+                value: "Total(IND Trend)",
+                type: "line"
+            },
+            {
+                value: "Total(Data)",
+                type: "line"
+            }
+        ],
+        }
+      ]
+    };
+  
+    
+  
+    var dataStore2 = new FusionCharts.DataStore();
+    var dataSource2 = {
+       chart: {palettecolors:"E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
+               exportEnabled: "1",
+               exportFileName: 'IISc Covid-19 Model by CDS, IISc',
+               animation: '0',
+               style: {
+                  "background": {
+                      "fill": "#FFFFFF",
+                  },
+                  "canvas": {
+                      "fill": "#FFFFFF",
+                  }
+              }
+     },
+     legend: {
+        item:[
+            {
+                value: 'Active(Data)',
+                initiallyhidden: legendStatus['Active(Data)'],
+            },
+            {
+                value: 'Active(Predicted)',
+                initiallyhidden: legendStatus['Active(Predicted)'],
+            },
+            {
+                value: 'Active(Uncertainty)',
+                initiallyhidden: legendStatus['Active(Uncertainty)'],
+            },
+            {
+                value: 'Recovered(Data)',
+                initiallyhidden: legendStatus['Recovered(Data)'],
+            },
+            {
+                value: 'Recovered(Predicted)',
+                initiallyhidden: legendStatus['Recovered(Predicted)'],
+            },
+            {
+                value: 'Recovered(Uncertainty)',
+                initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+            },
+            {
+                value: 'Deceased(Data)',
+                initiallyhidden: legendStatus['Deceased(Data)'],
+            },
+            {
+                value: 'Deceased(Predicted)',
+                initiallyhidden: legendStatus['Deceased(Predicted)'],
+            },
+            {
+                value: 'Deceased(Uncertainty)',
+                initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+            },
+            {
+                value: 'Total(Data)',
+                initiallyhidden: legendStatus['Total(Data)'],
+            },
+            {
+                value: 'Total(Predicted)',
+                initiallyhidden: legendStatus['Total(Predicted)'],
+            },
+            {
+                value: 'Total(Uncertainty)',
+                initiallyhidden: legendStatus['Total(Uncertainty)'],
+            }
+        ]
+    },
+       caption: {
+         text: "India",
+         position: "center",
+         style: {
+            text: {
+                "font-size": 22,
+                'font-family': "'Fira Sans', sans-serif",
+                'font-weight': 500,
+                'text-align' : "center",
+            }
+        }
+       },
+       // subcaption: {
+       //   text: currentState
+       // },
+       yaxis: [
+        {   title: "Population",
+            plot: [
+                {
+                    value:  {
+                                high: "HA",
+                                low: "LA"
+                            },
+                    name: "Active(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Active(Predicted)",
+                    type: "line"
+                },
+                {
+                    value: "Active(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
+                                high: "HR",
+                                low: "LR"
+                            },
+                    name: "Recovered(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Recovered(Predicted)",
+                    type: "line"
+                },
+                {
+                    value: "Recovered(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
+                                high: "HD",
+                                low: "LD"
+                            },
+                    name: "Deceased(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Deceased(Predicted)",
+                    type: "line"
+                },
+                {
+                    value: "Deceased(Data)",
+                    type: "line"
+                },
+                {
+                    value:  {
+                                high: "HT",
+                                low: "LT"
+                            },
+                    name: "Total(Uncertainty)",
+                    type: "area-range",
+                    style: {
+                        plot:{
+                            "stroke-opacity": "0",
+                            "fill-opacity": "0.1"
+                        }
+                    }
+                },
+                {
+                    value: "Total(Predicted)",
+                    type: "line"
+                },
+                {
+                    value: "Total(Data)",
+                    type: "line"
+                }
+            ],
+        }
+       ]
+     };
+   
+    dataSource2.data = dataStore2.createDataTable(overallData["Total"], schema2);
+     
+     new FusionCharts({
+       type: "timeseries",
+       renderAt: "chart-container",
+       width: "100%",
+       height: L.Browser.mobile?(window.innerHeight*2/3).toString(): (window.innerHeight - 110).toString() ,
+       dataSource: dataSource2,
+       events: {
+        "legendItemClicked": function(ev) {
+          legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
+        },
+        "beforeExport": function(ev) {
+            console.log(ev);
+          }
+    },
+     }).render();
+  
+     function changeScript(value){
+        loadChartData();
+        var selectedButton = document.getElementById(value);
+        selectedButton.style.backgroundColor = '#5A6268';
+        selectedButton.style.color = '#fff';
+     }
+
+    function changeScenario(value){
+        document.getElementById('data').removeElement;
+        element = document.createElement("script");
+        element.src = "data/"+value+"/data.js";
+        element.type = "text/javascript";
+        element.id = "data";
+        document.getElementsByTagName("body")[0].appendChild(element);
+        // setTimeout(changeScript, (L.Browser.mobile?2100:1700), value );
+        element.onload = function (){
+            changeScript(value);
+        };
+        loadChartData();
+        var buttons = document.getElementsByClassName('scenario');
+        var i;
+        for (i = 0; i < buttons.length; i++) {
+            buttons[i].style.backgroundColor = "#fff";
+            buttons[i].style.color = '#5A6268';
+        } 
+    }
+
+    
+
+  function loadChart(state){
+    if(state == "India"){
+        dataSource2.data = dataStore2.createDataTable(overallData["Total"], schema2);
+        dataSource2.legend.item[0].initiallyhidden = legendStatus['Active(Data)'];
+        dataSource2.legend.item[1].initiallyhidden = legendStatus['Active(Predicted)'];
+        dataSource2.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
+        dataSource2.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
+        dataSource2.legend.item[4].initiallyhidden = legendStatus['Recovered(Predicted)'];
+        dataSource2.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
+        dataSource2.legend.item[6].initiallyhidden = legendStatus['Deceased(Data)'];
+        dataSource2.legend.item[7].initiallyhidden = legendStatus['Deceased(Predicted)'];
+        dataSource2.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
+        dataSource2.legend.item[9].initiallyhidden = legendStatus['Total(Data)'];
+        dataSource2.legend.item[10].initiallyhidden = legendStatus['Total(Predicted)'];
+        dataSource2.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
+
+        new FusionCharts({
+        type: "timeseries",
+        renderAt: "chart-container",
+        width: "100%",
+        height: L.Browser.mobile?(window.innerHeight*2/3).toString(): (window.innerHeight - 110).toString() ,
+        dataSource: dataSource2,
+        events: {
+            "legendItemClicked": function(ev) {
+              legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
+            },
+            "beforeExport": function(ev) {
+                console.log(ev);
+              }
+        },
+        }).render();
+    }
+    else{
+        dataSource.caption.text = state;
+        dataSource.data = dataStore.createDataTable(stateData[state], schema);
+        dataSource.legend.item[0].initiallyhidden = legendStatus['Active(Data)'];
+        dataSource.legend.item[1].initiallyhidden = legendStatus['Active(IND Trend)'];
+        dataSource.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
+        dataSource.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
+        dataSource.legend.item[4].initiallyhidden = legendStatus['Recovered(IND Trend)'];
+        dataSource.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
+        dataSource.legend.item[6].initiallyhidden = legendStatus['Deceased(Data)'];
+        dataSource.legend.item[7].initiallyhidden = legendStatus['Deceased(IND Trend)'];
+        dataSource.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
+        dataSource.legend.item[9].initiallyhidden = legendStatus['Total(Data)'];
+        dataSource.legend.item[10].initiallyhidden = legendStatus['Total(IND Trend)'];
+        dataSource.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
+        
+        new FusionCharts({
+        type: "timeseries",
+        renderAt: "chart-container",
+        width: "100%",
+        height: L.Browser.mobile?(window.innerHeight*2/3).toString(): (window.innerHeight - 110).toString() ,
+        dataSource: dataSource,
+        events: {
+            "legendItemClicked": function(ev) {
+              legendStatus[ev.data.datasetName] = (legendStatus[ev.data.datasetName]==0?1:0);
+            },
+            "beforeExport": function(ev) {
+                console.log(ev);
+              }
+        },
+        }).render();
+    }
+    
+  
+  }
+  
+var mymap;
+
+// Set location and zoom 
+if(L.Browser.mobile){
+    mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5, dragging: false}).setView([22.146, 79.088], 4);
+}
+else{
+    mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5}).setView([22.146, 79.088], 4.5);
+}
+
+
+// CartoDB Tile Layer with grayscale filter
+var googleStreets = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        // minZoom: 2,
+        subdomains: 'abcd',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    }).addTo(mymap);
+
+
+// GeoJson Layers
+geojson["Total(Predicted)"] = L.geoJson(statesData, {
+    style: styleTotalPred,
+    onEachFeature: onEachFeature
+}).addTo(mymap);
+
+geojson["Active(Predicted)"] = L.geoJson(statesData, {
+    style: styleActivePred,
+    onEachFeature: onEachFeature
+});
+
+geojson["Recovered(Predicted)"] = L.geoJson(statesData, {
+    style: styleRecoveredPred,
+    onEachFeature: onEachFeature
+});
+
+geojson["Deceased(Predicted)"] = L.geoJson(statesData, {
+    style: styleDeceasedPred,
+    onEachFeature: onEachFeature
+});
+
+geojson["Total"] = L.geoJson(actualstatesData, {
+    style: styleTotal,
+    onEachFeature: onEachFeature
+});
+
+geojson["Active"] = L.geoJson(actualstatesData, {
+    style: styleActive,
+    onEachFeature: onEachFeature
+});
+
+geojson["Recovered"] = L.geoJson(actualstatesData, {
+    style: styleRecovered,
+    onEachFeature: onEachFeature
+});
+
+geojson["Deceased"] = L.geoJson(actualstatesData, {
+    style: styleDeceased,
+    onEachFeature: onEachFeature
+});
+
+// Title info control
+var title = L.control();
+
+title.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'title'); // Create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+title.update = function () {
+    this._div.innerHTML = '<h3>India</h3>' 
+                            + "Total(Predicted)<br> <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()]) + Number(totalData[0]["Deceased" + slider.value.toString()])).toString()
+                            + "</b><br> Total(Data)<br> <b>"   + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)])
+                            + "</b><br> Active(Predicted)<br> <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
+                            + "</b><br> Active(Data)<br> <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() )
+                            + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b><br> Recovered(Predicted)<br> <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
+                            + "</b><br> Recovered(Data)<br> <b>" + (actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]))
+                            + "</b><br> Deceased(Predicted)<br> <b>" + parseInt(totalData[0]["Deceased" + slider.value.toString()]).toString()
+                            + "</b><br> Deceased(Data)<br> <b>" + (actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]));
+};
+
+title.setPosition('topleft');
+
+
+
+function updateMobileTitle(){
+    var mobileTitle = document.getElementById('india-container');
+    mobileTitle.innerHTML = "<div id='india-numbers'>"
+                            +"  <div class='row' style='margin-right: 0px;margin-left: 0px;'><h3>India</h3></div>"
+                            +"  <div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + "Total(Predicted): <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()]) + Number(totalData[0]["Deceased" + slider.value.toString()])).toString()
+                            +"</div><div class='col'>"
+                            + "</b>Total(Data): <b>"   + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)])
+                            +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + "</b>Active(Predicted): <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
+                            +"</div><div class='col'>"
+                            + "</b>Active(Data): <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)] 
+                                                        - actualtotalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() ) 
+                            +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b>Recovered(Predicted): <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
+                            +"</div><div class='col'>"
+                            + "</b>Recovered(Data): <b>" + (actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Recovered_" + calculatedDate(slider.value)])) 
+                            +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
+                            + "</b>Deceased(Predicted): <b>" + parseInt(totalData[0]["Deceased" + slider.value.toString()]).toString() 
+                            +"</div><div class='col'>"
+                            + "</b>Deceased(Data): <b>" + (actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]))
+                            +"</div></div></div>";
+}
+
+
+if(!L.Browser.mobile){
+    title.addTo(mymap);
+}
+else{
+    updateMobileTitle();
+}
+
+
+// Info control
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // Create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// Method that we will use to update the control based on feature properties passed
+info.update = function (props, props2) {
+    this._div.innerHTML = '<h3>'+ calculatedDate(slider.value).replace(/_/g, ' ') + '</h3>' +  (props ?
+        '<b>' + props.name +'</b>'
+        +'<br />' + 'Total(IND Trend):<br /> ' + '<b>' + ((Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])).toString()=="NaN"?'-':(Number(props[slider.value.toString()])+Number(props["Recovered" + slider.value.toString()])+Number(props["Deceased" + slider.value.toString()])).toString() )+ '</b>'
+        +'<br />' + 'Active(IND Trend):<br /> ' + '<b>' + (parseInt(props[slider.value.toString()]).toString()=="NaN"?'-':parseInt(props[slider.value.toString()]).toString() ) +'</b>'
+        + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?'<br />' + 'Recovered(IND Trend)<br /> ' + '<b>' + (parseInt(props["Recovered" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Recovered" + slider.value.toString()]).toString() ) +'</b>':'')
+        +'<br />' + 'Deceased(IND Trend)<br /> ' + '<b>' + (parseInt(props["Deceased" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Deceased" + slider.value.toString()]).toString() ) +'</b>'
+        +'<br />' + 'Total(Data)<br /> ' + '<b>' + (props2["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props2["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
+        +'<br />' + 'Active(Data)<br /> ' + '<b>' + (props2["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
+                                                    (props2["Confirmed_" + calculatedDate(slider.value)] 
+                                                  - props2["Recovered_" + calculatedDate(slider.value)] 
+                                                  - props2["Deceased_" + calculatedDate(slider.value)]).toString() ) +'</b>'
+        +'<br />' + 'Recovered(Data)<br /> ' + '<b>' + (props2["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props2["Recovered_" + calculatedDate(slider.value)])) +'</b>'
+        +'<br />' + 'Deceased(Data)<br /> ' + '<b>' + (props2["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(props2["Deceased_" + calculatedDate(slider.value)])) +'</b>'
+        : (L.Browser.mobile?'Touch on<br />a state':'Hover over<br />a state'));
+};
+
+// Add to info control to the map
+info.addTo(mymap);
+
+
+// Legend Control
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+    this._div = L.DomUtil.create('div', 'info legend');
+    this.update();
+    return this._div;
+};
+
+legend.update = function (currentBaseLayer){
+    var grades;
+    if(L.Browser.mobile){
+        var mobileLegend = document.getElementById('legend-container');
+        mobileLegend.innerHTML = "<div class='col' id='legend-numbers-1'></div>"
+                                +"<div class='col' id='legend-numbers-2'></div>";
+        var legend1 = document.getElementById('legend-numbers-1');
+        var legend2 = document.getElementById('legend-numbers-2');
+    }
+
+    if (currentBaseLayer == "Active(Predicted)"){
+        grades = legendGrades((slider.value).toString());
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1, (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColor(grades[i] + 1, (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColor(grades[i] + 1, (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+        }
+    }
+
+    else if (currentBaseLayer == "Total(Predicted)"){
+        grades = legendGradesThree((slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString());
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+        }
+    }
+
+
+    else if(currentBaseLayer == "Recovered(Predicted)"){
+        grades = legendGrades("Recovered" + (slider.value).toString());
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1, "Recovered" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Recovered" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Recovered" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+        }
+    }
+
+    else if(currentBaseLayer == "Deceased(Predicted)"){
+        grades = legendGrades("Deceased" + (slider.value).toString());
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1, "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColor(grades[i] + 1, "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+        }
+    }
+
+    else if(currentBaseLayer == "Total(Data)" || currentBaseLayer == "Active(Data)"){
+        grades = legendActualGrades("Confirmed_" + calculatedDate(slider.value));
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getActualColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Confirmed_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+        }
+    }
+    else if(currentBaseLayer=='Recovered(Data)' ){
+        grades = legendActualGrades("Recovered_" + calculatedDate(slider.value));
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getActualColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Recovered_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+        }
+    }
+
+    else if(currentBaseLayer=='Deceased(Data)' ){
+        grades = legendActualGrades("Deceased_" + calculatedDate(slider.value));
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getActualColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getActualColor(grades[i] + 1, "Deceased_" + calculatedDate(slider.value)) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            }
+        }
+    }
+
+    else{
+        grades = legendGradesThree((slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString());
+
+        this._div.innerHTML = "";
+        for (var i = 0; i < grades.length; i++) {
+            this._div.innerHTML +=
+                '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            if(L.Browser.mobile && i<grades.length/2){
+                legend1.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+            if(L.Browser.mobile && i>=grades.length/2){
+                legend2.innerHTML += '<i style="background:' + getColorThree(grades[i] + 1, (slider.value).toString(), "Recovered" + (slider.value).toString(), "Deceased" + (slider.value).toString()) + '"></i> ' +
+                grades[i].toString() + (grades[i + 1] ? '&ndash;' + grades[i + 1].toString() + '<br>' : '+');
+            }
+        }
+    }
+    
+}
+
+
+// Add legend to map
+legend.addTo(mymap);
+if(L.Browser.mobile){
+    var legendDiv = document.getElementsByClassName('legend')[0];
+    legendDiv.style.display = 'none';
+    console.log(legendDiv.className);
+    legend.update(currentBaseLayer);
+}
+
+
+
+
+
+var baseMaps = {
+    "Total(Predicted)": geojson["Total(Predicted)"],
+    "Active(Predicted)": geojson["Active(Predicted)"],
+    "Recovered(Predicted)":geojson["Recovered(Predicted)"],
+    "Deceased(Predicted)": geojson["Deceased(Predicted)"],
+    "Total(Data)": geojson["Total"],
+    "Active(Data)": geojson["Active"],
+    "Recovered(Data)": geojson["Recovered"],
+    "Deceased(Data)": geojson["Deceased"],
+};
+
+
+
+var layerControl = L.control.layers(baseMaps).addTo(mymap);
+
+// Function to return shortened month name
+// Output of the JavaScript date function 'getMonth()' is passed as argument
+function getMonthName(month){
+    return month == 0  ? 'Jan' :
+           month == 1  ? 'Feb' :
+           month == 2  ? 'Mar' :
+           month == 3  ? 'Apr' :
+           month == 4  ? 'May' :
+           month == 5  ? 'Jun' :
+           month == 6  ? 'Jul' :
+           month == 7  ? 'Aug' :
+           month == 8  ? 'Sep' :
+           month == 9  ? 'Oct' :
+           month == 10 ? 'Nov' :
+           month == 11 ? 'Dec' :
+                      'Error: Invalid Argument';
+}
+
+// Function to pad a zero on the left for single digit dates
+// Output of the JavaScript date function 'getDate()' is passed as argument
+function getPaddedDate(date){
+    if (date >= 10){
+        return date.toString();
+    }
+    else{
+        return "0" + date.toString();
+    }
+}
+
+// Function to calculate date from the slider value
+function calculatedDate(value){
+    var reqDate = new Date(startDate.getTime() + value * (1000 * 3600 * 24));
+
+    return (getPaddedDate(reqDate.getDate()) + "_"
+            + getMonthName(reqDate.getMonth()) + "_"
+            + reqDate.getFullYear().toString().substring(2)).toString();
+
+}
+
+
+// Update info control and geoJson layer(on dragging slider)
+slider.oninput = function() {
+  info.update();
+  if(!L.Browser.mobile){
+    title.update();
+  }
+  else{
+      updateMobileTitle();
+  }
+  geojson["Total(Predicted)"].resetStyle();
+  geojson["Active(Predicted)"].resetStyle();
+  geojson["Recovered(Predicted)"].resetStyle();
+  geojson["Deceased(Predicted)"].resetStyle();
+  geojson["Total"].resetStyle();
+  geojson["Active"].resetStyle();
+  geojson["Recovered"].resetStyle(); 
+  geojson["Deceased"].resetStyle(); 
+  legend.update(currentBaseLayer);
+}
+
+
+
+mymap.on("baselayerchange", function(e){
+    currentBaseLayer = e.name;
+    legend.update(currentBaseLayer);
+ })
+
+
+// Custom zoom control bar with a Zoom to Home button
+L.Control.zoomHome = L.Control.extend({
+    options: {
+        position: 'topleft',
+        zoomInText: '<big>+</big>',
+        zoomInTitle: 'Zoom In',
+        zoomOutText: '<big>-</big>',
+        zoomOutTitle: 'Zoom Out',
+        zoomHomeText: '<small><i class="material-icons">home</i></small>',
+        zoomHomeTitle: 'Zoom Home'
+    },
+
+    onAdd: function (map) {
+        var controlName = 'gin-control-zoom',
+            container = L.DomUtil.create('div', controlName + ' leaflet-bar'),
+            options = this.options;
+
+        this._zoomInButton = this._createButton(options.zoomInText, options.zoomInTitle,
+        controlName + '-in', container, this._zoomIn);
+        this._zoomHomeButton = this._createButton(options.zoomHomeText, options.zoomHomeTitle,
+        controlName + '-home', container, this._zoomHome);
+        this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
+        controlName + '-out', container, this._zoomOut);
+
+        this._updateDisabled();
+        map.on('zoomend zoomlevelschange', this._updateDisabled, this);
+
+        return container;
+    },
+
+    onRemove: function (map) {
+        map.off('zoomend zoomlevelschange', this._updateDisabled, this);
+    },
+
+    _zoomIn: function (e) {
+        this._map.zoomIn(e.shiftKey ? 3 : 1);
+    },
+
+    _zoomOut: function (e) {
+        this._map.zoomOut(e.shiftKey ? 3 : 1);
+    },
+
+    _zoomHome: function (e) {
+        this._map.setView([22.146, 79.088], (L.Browser.mobile?4:4.5));
+    },
+
+    _createButton: function (html, title, className, container, fn) {
+        var link = L.DomUtil.create('a', className, container);
+        link.innerHTML = html;
+        link.href = '#';
+        link.title = title;
+
+        L.DomEvent.on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
+            .on(link, 'click', L.DomEvent.stop)
+            .on(link, 'click', fn, this)
+            .on(link, 'click', this._refocusOnMap, this);
+
+        return link;
+    },
+
+    _updateDisabled: function () {
+        var map = this._map,
+            className = 'leaflet-disabled';
+
+        L.DomUtil.removeClass(this._zoomInButton, className);
+        L.DomUtil.removeClass(this._zoomOutButton, className);
+
+        if (map._zoom === map.getMinZoom()) {
+            L.DomUtil.addClass(this._zoomOutButton, className);
+        }
+        if (map._zoom === map.getMaxZoom()) {
+            L.DomUtil.addClass(this._zoomInButton, className);
+        }
+    }
+});
+
+// add zoom control bar to the map
+var zoomBar = new L.Control.zoomHome();
+zoomBar.addTo(mymap);
+
+function myFunction() {
+    var dots = document.getElementById("dots");
+    var moreText = document.getElementById("more");
+    var btnText = document.getElementById("myBtn");
+
+    if (dots.style.display === "none") {
+    dots.style.display = "block";
+    btnText.innerHTML = "Read more"; 
+    moreText.style.display = "none";
+    } 
+    else {
+    dots.style.display = "none";
+    btnText.innerHTML = "Read less"; 
+    moreText.style.display = "block";
+    }
+}
