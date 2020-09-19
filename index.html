@@ -67,19 +67,23 @@
                            The developed model is a paradigm shift in mathematical modeling of infectious diseases.
                         </div>
                         <div class="text-left para" style="margin-bottom: 10px;">
-                            <i> This modeling framework introduces a multi-dimensional equation to predict the spread of pandemics with insights into the severity of infection, duration of infection, population age etc. Such insightful predictions are key for planning lockdown/unlock strategies and public health policies such as quarantine rules, hospital beds, health insurance and vaccination/treatment scheduling. Moreover, these insights can be used to formulate science-informed policy to revive normalcy in the world, especially from the disruption induced by Covid-19.  A detailed description of the predictive modeling framework  can be  <a target="_blank" href="https://arxiv.org/abs/2006.15336"> found here.  	arXiv:2006.15336 </a>.</i>
+                            <i> We provide prediction of all India and state-wise confirmed, recovered, active and deceased Covid-19 cases based on our <a target="_blank" href="https://arxiv.org/abs/2006.15336">multi-dimensional PDE model</a>.
+                            </i>
+                            <i> The prevalance estimated from sero-surveys have been included in the model. However, the scenario curves below show only cases that will officialy be tested for Covid-19.
+                            </i>
                         </div>
                         <div class="text-left para" style="margin-bottom: 10px;">
-                            <i>Model predictions <b> updated on Aug 06, 2020 </b>. For previous results click here <a target="_blank" href="covid-2020-07-06/index.html"> (Aug 06, 2020)</a>, <a target="_blank" href="covid-2020-06-18/index.html"> (Jun 18, 2020)</a>, <a target="_blank" href="covid-2020-05-27/index.html">  (May 28, 2020)</a> and <a target="_blank" href="covid-2020-05-03/index.html">  (May 3, 2020)</a>.</i>
+                            <i>Model predictions <b> updated on Sep 19, 2020 </b>. For previous results click here <a target="_blank" href="covid-2020-08-06/index.html"> (Aug 06, 2020)</a>, <a target="_blank" href="covid-2020-06-18/index.html"> (Jun 18, 2020)</a>, <a target="_blank" href="covid-2020-05-27/index.html">  (May 28, 2020)</a> and <a target="_blank" href="covid-2020-05-03/index.html">  (May 3, 2020)</a>.</i>
                         </div>
                         <div class="text-left para" style="margin-bottom: 10px;">
                         <font  size=4 face ="Josefin Slab">
-                        <h5>Key Observations</h5>
+                        <h5>Scenario Analysis</h5>
                         <ul class='para'>
-                            <li> The recovery rate has increased since May 3, 2020 and consequently reduced new infections. It emphasises the importance of appropriate medical care and timely quarantine.   </li>
-                            <li> Among all measures, contact tracing, quarantine and social distancing are key to contain the spread in the absence of vaccine.  </li>
-                            <li> One or two day lockdown per week (e.g., Sunday, Sunday & Wednesday etc) with complete compliance along with adequate social distancing during other days is effective to reduce the spread.  </li>
-                            <li> Proposed model can be used to predict region-wise and age-wise COVID-19 spread accurately, and consequently it can be used to frame policies on periodic lockdown, staggered opening of educational institutions and public <span id='result'> facilities. </span>  </li>
+                            <li> S1: Assume that 10 times (10x) the confirmed positive Covid-19 cases prevalent in the population. </li>
+                            <li> S2: S1 with a vaccine introduced on 1 January 2021. </li>
+                            <li> S3: S1 with a vaccine introduced on 1 April 2021.</li>
+                            <li> S4: Assume that 20 times (20x) the confirmed positive Covid-19 cases prevalent in the population. </li>
+                            <li> S5: S4 with a vaccine introduced on 1 January 2021.</li>
                         </ul>
                         </font>
                       </div>
@@ -104,27 +108,27 @@
                     <div class="row align-items-center" style="margin-right: 0px;margin-left: 0px;padding-bottom: 2px;">
                         <div class="col align-items-right" style = "padding-bottom: 10px; margin: 0%;">
                                 <button id='S10_NV' style="width: max-content; font-size: 15px; font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_NV');" title="Current Trend, No Vaccine">
-                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> Current Trend, No Vaccine
+                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> S1
                                 </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
                                 <button id='S10_1Jan' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_1Jan');" title="Current Trend, 1 Jan Vaccine">
-                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> Current Trend, 1 Jan Vaccine
+                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> S2
                                 </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
                             <button id='S10_1Apr' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_1Apr');" title="Current Trend, 1 Apr Vaccine">
-                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> Current Trend, 1 Apr Vaccine
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> S3
                             </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
                             <button id='S20_NV' style="width: 200px; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S20_NV');" title="Actual 20x, No Vaccine">
-                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> Actual 20x, No Vaccine
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> S4
                             </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
                             <button id='S20_1Jan' style="width: 200px; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S20_1Jan');" title="Actual 20x, 1 Jan Vaccine">
-                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> Actual 20x, 1 Jan Vaccine
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> S5
                             </button>
                         </div>
                     </div>
@@ -175,32 +179,26 @@
                     </div>
                     <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Computational Model</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
-                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> between 23 Mar and 06 Aug, 2020 is used partially to tune the parameters of the data-driven model. These results are current as of Aug 06, 2020.  </li>
-                        <li> State-wise results are computed with the parameters of national trend to compare the performance of the respective state with the national trend. See Discussion for interpretation.  </li>
+                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> between 23 Mar and 31 Aug, 2020 is used partially to tune the parameters of the data-driven model. These results are current as of Sep 19, 2020.  </li>
                         <li> Quarantine of <b>Active Cases</b> so as to prevent new infections is the key to contain the pandemic. An adaptive quarantine function in our model ensures that infected population is quarantined based on their infection level (showing symptoms) and based on latest published literature on how the infection spreads from infected population.  </li>
                         <li> The severity of the infection is taken into consideration while modeling the infectious death rate function (see the rate functions in the model).  </li>
-                        <li> Differnt scenarios are modeled based on anticipated individual behavior (social distancing, hygiene practice, compliance to government rules etc.), government policies (quarantine rules, lockdown rules etc.).  </li>
-                        <li> Current Trend follows business as usual assuming further relaxation to lockdown rules. Better and Worse Scenarios assume better and worse compliance. Weekly lockdown models the impact of lockdowns with 75 % Social-distancing compliance on Sunday and Sunday & Wednesday, respectively.  </li>
-                          <img src="data/images/IIScCovidStudy.png" alt="Summary" style="width:600px;margin-left:5px;">
                     </ul>
-                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Observations</h4>
+                    <!--h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Observations</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
-                        <li> <b> Current Trend:</b> Hits a peak of 17.2 lakh ‘Active Cases’ in the mid of October 2020. Further, there will be around 46 thousand ‘Active Cases’, 2 lakh deaths and 1.4 crore total cases at the end of March 2021.  </li>
-                        <li> <b>Better Scenario:</b> Hits a peak of 13.1 lakh 'Active Cases' in the last week of September 2020. Further, there will be around 5 thousand ‘Active Cases’, 1.43 lakh deaths and 91.1 lakh total cases at the end of March 2021.  </li>
-                        <li> <b>Worse Scenario:</b> Hits a peak of 46.5 lakh 'Active Cases' in the last week of December 2020. There will around 20.45 lakh ‘Active Cases’, 5.8 lakh deaths and 4.978 crore total cases at the end of March 2021.  </li>
-                        <li><b>Current Trend with Sunday  Lockdown:</b>Hits a peak of 17.1 lakh ‘Active Cases’ in the second week of November 2020. Further, there will be around 4.0368 lakh ‘Active Cases’, 2.45 lakh deaths and 1.848 crore total cases at the end of March 2021.  </li>
-                        <li><b>Current Trend with Sun & Wed  Lockdown:</b> Hits a peak of 9.5 lakh Active Cases in the last week of September 2020. Further, there will around 73.55 thousand ‘Active’ Cases, 1.414 lakh deaths and 92.6 lakh total cases at the end of March 2021.  </li>
-                    </ul>
+                        <li> <b>S1:</b> Hits a peak of 17.2 lakh ‘Active Cases’ in the mid of October 2020. Further, there will be around 46 thousand ‘Active Cases’, 2 lakh deaths and 1.4 crore total cases at the end of March 2021.  </li>
+                        <li> <b>S2:</b> Hits a peak of 13.1 lakh 'Active Cases' in the last week of September 2020. Further, there will be around 5 thousand ‘Active Cases’, 1.43 lakh deaths and 91.1 lakh total cases at the end of March 2021.  </li>
+                        <li> <b>S3:</b> Hits a peak of 46.5 lakh 'Active Cases' in the last week of December 2020. There will around 20.45 lakh ‘Active Cases’, 5.8 lakh deaths and 4.978 crore total cases at the end of March 2021.  </li>
+                        <li> <b>S4:</b> Hits a peak of 17.1 lakh ‘Active Cases’ in the second week of November 2020. Further, there will be around 4.0368 lakh ‘Active Cases’, 2.45 lakh deaths and 1.848 crore total cases at the end of March 2021.  </li>
+                        <li> <b>S5:</b> Hits a peak of 9.5 lakh Active Cases in the last week of September 2020. Further, there will around 73.55 thousand ‘Active’ Cases, 1.414 lakh deaths and 92.6 lakh total cases at the end of March 2021.  </li>
+                    </ul-->
                     <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Discussion</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
-                        <li> In order to achieve and follow the <b>Current Trend</b> prediction for the next one year, people should maintain the same or even better level of social distancing as maintained during 23 Mar - 06 Aug 2020. It is assumed that awareness increases with time and there is more compliance of social distancing and other norms. Also, we anticipate that more members of the susceptible population improve their hygiene practice and immunity levels.  </li>
+                        <li> A prevalence factor of 10x and 20x mean that only 10% and 5% of the total number of infected cases in the population are reported. </li>
+                        <li> In both 10x and 20x scenarios, the total number of cases (reported + unreported) is close to 50% of the total population. However, in the 10x scenario, more cases are reported than in 20x. </li>
+                        <li> For 10x preavalence factor, the availability of vaccine from 1 Jan and 1 Apr, reduce the total reported cases by 42% and 12% respectively by the end of 2021. </li>
+                        <li> To end the pandemic by Dec 2021 under the present conditions, the vaccination should start atleast by 1 Apr 2021.
                         <li> Until the development of vaccines, social distancing and other practices to reduce interaction among people (such as avoiding mass gathering etc.) are the key tools to contain the spread of COVID-19. As such, public awareness of these practices through several modes (advertisements through TV, radios, new papers, social media, etc.) is crucial.  </li>
-                         <li>  The <b>Better Scenario</b> and <b>Worse Scenario</b> model the infection spread when there is better and worse compliance of social distancing and other norms among susceptible population.  </li>
-                        <li> Short, periodic (e.g., one or two days per week) lockdown with strict compliance to stay at home and avoid interaction helps reduce infection. This must be combined with increased social distancing and quarantining of suspected population during non-lockdown phases. The ‘Sunday Lockdown’ and ‘Sun & Wed Lockdown’ scenarios model these strategies.  </li>
-                        <li>Since this is an active situation with regular ongoing interventions and policy changes from State and Central governments, we do not predict each state individually and the state numbers have to be interpreted as follows:  </li>
-                        <li>In each scenario, the <b>state numbers</b> are computed with the national parameters. This is done to compare the actual data of the state  with the national trend.  </li>
-                        <li>For example, Kerala, Uttar Pradesh (and others) have done better than the national trend. Whereas, Maharashtra, Tamil Nadu, Karnataka, Madhya Pradesh (and others) have done worse than the national trend. Some states such as Rajasthan, Andhra Pradesh (and others) have done similar to the national trend. Notably, Delhi has become better than the  national average, though it was worse at the beginning of pandemic.  </li>
-                        <li>The forecast range of all predicted scenarios (some shown here, others not shown) can be viewed by enabling the uncertainty region in the time series plots. The region may be interpreted as the "Confidence Interval" for the forecast numbers.  </li>
+                        <li> The forecast range of all predicted scenarios (some shown here, others not shown) can be viewed by enabling the uncertainty region in the time series plots. The region may be interpreted as the "Confidence Interval" for the forecast numbers.  </li>
                     </ul>
                 </div>
             </div>
