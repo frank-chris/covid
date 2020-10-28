@@ -1,5 +1,5 @@
-# Script to combine GeoJSON data of Indian States 
-# with CSV data of Covid cases and save as a JavaScript file, 
+# Script to combine GeoJSON data of Indian States
+# with CSV data of Covid cases and save as a JavaScript file,
 # which will be used in by the webpage
 
 import pandas as pd
@@ -42,13 +42,13 @@ def get_ST_NM(state):
     '''
     Returns ST_NM (state name) of the argument(which is a feature)
     Used in sorting the list of features in the GeoJSON file
-    based on ST_NM(state_name) of the feature.     
+    based on ST_NM(state_name) of the feature.
     '''
     return state["properties"]["ST_NM"]
 
 def statename(statecode):
     '''
-    Returns state name from state code   
+    Returns state name from state code
     '''
     if statecode == "AP":
         return "Andhra Pradesh"
@@ -136,7 +136,7 @@ def download_csv():
 # Download latest state_wise_daily.csv
 download_csv()
 
-# Read state_wise_daily.csv 
+# Read state_wise_daily.csv
 state_wise_daily = pd.read_csv('state_wise_daily.csv')
 
 # List of dates in actual data
@@ -170,10 +170,10 @@ non_cumulative["Daily_Status"] = non_cumulative["Daily_Status"].apply(modify_rat
 # A list of elements from Daily_Status
 date_status_list = list(state_wise_daily["Daily_Status"]) + list(non_cumulative["Daily_Status"])
 
-# Set the column Daily_Status as the index of the DataFrame 
-state_wise_daily.set_index("Daily_Status", inplace = True) 
+# Set the column Daily_Status as the index of the DataFrame
+state_wise_daily.set_index("Daily_Status", inplace = True)
 
-non_cumulative.set_index("Daily_Status", inplace = True) 
+non_cumulative.set_index("Daily_Status", inplace = True)
 
 # Make state_wise_daily data cumulative
 for column in state_wise_daily:
@@ -207,35 +207,35 @@ for date_status in date_status_list:
     total_properties_list[0][date_status] = str(state_wise_daily.loc[date_status, "Total"])
 
 
-# Delete the column corresponding to total data of all states(TT) 
+# Delete the column corresponding to total data of all states(TT)
 del state_wise_daily["Total"]
 
 
-# List of empty dicts which will be filled with the data from CSV file 
+# List of empty dicts which will be filled with the data from CSV file
 # and combined with the GeoJSON data
-state_wise_properties_list = [{} for i in range(36)]
+state_wise_properties_list = [{} for i in range(len(state_wise_daily.columns))]
 
 # Fill the list of dicts with data read from the CSV file
 for i, column in enumerate(state_wise_daily):
-    state_wise_properties_list[i]["name"] = column 
+    state_wise_properties_list[i]["name"] = column
     for date_status in date_status_list:
         state_wise_properties_list[i][date_status] = str(state_wise_daily.loc[date_status, column])
 
 # Open GeoJSON file
-f = open('states_geojson_simplified.json') 
+f = open('states_geojson_simplified.json')
 loaded_json = json.load(f)
 
-# Sort the list of features based on ST_NM, 
-# which is state name like 'Arunachal Pradesh', 'Andhra Pradesh' etc. 
+# Sort the list of features based on ST_NM,
+# which is state name like 'Arunachal Pradesh', 'Andhra Pradesh' etc.
 loaded_json["features"].sort(key=get_ST_NM)
 
 
 # Copy data from the list of dicts to the loaded_json dict
 for state_number in range(36):
     loaded_json["features"][state_number]["properties"] = state_wise_properties_list[state_number]
-    
+
 # Convert loaded_json dict to str
-states_data = str(loaded_json) 
+states_data = str(loaded_json)
 
 
 with open("actualdata.js", 'w') as file:
@@ -243,4 +243,3 @@ with open("actualdata.js", 'w') as file:
 print("\nData written into actualdata.js")
 
 f.close()
-
