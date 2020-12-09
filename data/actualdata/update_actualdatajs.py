@@ -138,7 +138,7 @@ download_csv()
 
 # Read state_wise_daily.csv
 state_wise_daily = pd.read_csv('state_wise_daily.csv')
-
+state_wise_daily['Date'] = state_wise_daily['Date'].str.replace('Sept','Sep')
 # List of dates in actual data
 dates_actual = [date.replace('-', '_') for date in state_wise_daily["Date"].unique()]
 

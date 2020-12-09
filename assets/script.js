@@ -6,7 +6,7 @@ var currentBaseLayer = "Total(Predicted)";
 var currentState = "India";
 
 // Start date parameters
-var startDate = new Date(SD); 
+var startDate = new Date(SD);
 
 
 var todaysDate = new Date();
@@ -77,7 +77,7 @@ function getActualMax(prop){
 
 // Function to decide colors based on data
 function getColor(value, prop) {
-    
+
     var max = getMax(prop);
 
     return value > max ? '#990000' :
@@ -92,7 +92,7 @@ function getColor(value, prop) {
 }
 
 function getActualColor(value, prop) {
-    
+
     var max = getActualMax(prop);
     return value > max ? '#990000' :
            value > max/2  ? '#d7301f' :
@@ -106,9 +106,9 @@ function getActualColor(value, prop) {
 }
 
 function getColorTotal(value, prop1, prop2) {
-    
+
     var max = getMax(prop1) + getMax(prop2);
-    
+
     return value > max ? '#990000' :
            value > max/2  ? '#d7301f' :
            value > max/5  ? '#ef6548' :
@@ -122,7 +122,7 @@ function getColorTotal(value, prop1, prop2) {
 
 function getColorThree(value, prop1, prop2, prop3){
     var max = getMax(prop1) + getMax(prop2) + getMax(prop3);
-    
+
     return value > max ? '#990000' :
            value > max/2  ? '#d7301f' :
            value > max/5  ? '#ef6548' :
@@ -137,10 +137,10 @@ function getColorThree(value, prop1, prop2, prop3){
 // Function to set style for geoJson layer
 function styleTotalPred(feature) {
     return {
-        fillColor: getColorThree(Number(feature.properties[(slider.value).toString()]) 
+        fillColor: getColorThree(Number(feature.properties[(slider.value).toString()])
                             + Number(feature.properties["Deceased" + (slider.value).toString()])
-                            + Number(feature.properties["Recovered" + (slider.value).toString()]), 
-                            (slider.value).toString(), 
+                            + Number(feature.properties["Recovered" + (slider.value).toString()]),
+                            (slider.value).toString(),
                             "Deceased" + (slider.value).toString(),
                             "Recovered" + (slider.value).toString()),
         weight: 2,
@@ -198,7 +198,7 @@ function styleTotal(feature) {
 
 function styleActive(feature) {
     return {
-        fillColor: getActualColor(  feature.properties['Confirmed_' + calculatedDate(slider.value)] 
+        fillColor: getActualColor(  feature.properties['Confirmed_' + calculatedDate(slider.value)]
                             - feature.properties['Recovered_' + calculatedDate(slider.value)]
                             - feature.properties['Deceased_' + calculatedDate(slider.value)] ,
                              'Confirmed_' + calculatedDate(slider.value)),
@@ -236,14 +236,14 @@ function styleDeceased(feature) {
 
 
 function legendGrades(prop){
-    
+
     var max = getMax(prop);
 
     return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
 }
 
 function legendActualGrades(prop){
-    
+
     var max = getActualMax(prop);
 
     return [0, max/100, max/50, max/20, max/10, max/5, max/2, max];
@@ -346,7 +346,7 @@ function monthName(month){
            month == 11 ? 'Dec' :
                       'Error: Invalid Argument';
   }
-  
+
   // Function to pad a zero on the left for single digit dates
   // Output of the JavaScript date function 'getDate()' is passed as argument
   function paddedDate(date){
@@ -357,17 +357,17 @@ function monthName(month){
         return "0" + date.toString();
     }
   }
-  
+
   // Function to calculate date
   function chartDate(value){
     var reqDate = new Date(startDate.getTime() + value * (1000 * 3600 * 24));
-  
+
     return (paddedDate(reqDate.getDate()) + "-"
             + monthName(reqDate.getMonth()) + "-"
             + reqDate.getFullYear().toString().substring(2)).toString();
-  
+
   }
-  
+
   let overallData = {}
   let stateData = {}
   var schema = [];
@@ -453,13 +453,13 @@ function setLegend(value){
     }
 }
 
-function loadChartData(){    
+function loadChartData(){
     overallData = {}
     stateData = {}
     var i;
     overallData["Total"] = [];
     for(i=0;i<=noOfDays;i++){
-        overallData["Total"].push([chartDate(i), 
+        overallData["Total"].push([chartDate(i),
         /*Active(Predicted)*/      totalData[0][i.toString()],
         /*Active*/                 (actualtotalData[0]["Confirmed_" + calculatedDate(i)] - actualtotalData[0]["Recovered_" + calculatedDate(i)] - actualtotalData[0]["Deceased_" + calculatedDate(i)]),
         /*Recovered(Predicted)*/   totalData[0]["Recovered" + i.toString()],
@@ -476,9 +476,9 @@ function loadChartData(){
                                 lowtotalData["Deceased" + i.toString()],
                                 Number(hightotalData[i.toString()]) + Number(hightotalData["Recovered" + i.toString()]) + Number(hightotalData["Deceased" + i.toString()]), // HT
                                 Number(lowtotalData[i.toString()]) + Number(lowtotalData["Recovered" + i.toString()]) + Number(lowtotalData["Deceased" + i.toString()])  // LT
-                            ]); 
+                            ]);
     }
-    
+
     if(dropDownFlag==1){
         var stateDropDown = document.getElementById("myselect");
         stateDropDown.innerHTML = "<option value='India'>India</option>"
@@ -488,7 +488,7 @@ function loadChartData(){
     var k = 0;
     for (state of statesData["features"]){
         stateData[state.properties["name"]] = [];
-    
+
         for(i=0;i<=noOfDays;i++){
         stateData[state.properties["name"]].push([chartDate(i),
                                                     state.properties[i.toString()],
@@ -508,7 +508,7 @@ function loadChartData(){
                                                     Number(highstatesData[state.properties["name"]][i.toString()])+Number(highstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(highstatesData[state.properties["name"]]["Deceased" + i.toString()]),
                                                     Number(lowstatesData[state.properties["name"]][i.toString()])+Number(lowstatesData[state.properties["name"]]["Recovered" + i.toString()])+Number(lowstatesData[state.properties["name"]]["Deceased" + i.toString()])
                                                 ]);
-        
+
         // stateData[state.properties["name"]].push([chartDate(i), "Recovered(Pred)", state.properties["Recovered" + i.toString()]]);
         // stateData[state.properties["name"]].push([chartDate(i), "Recovered", state.properties["Recovered_" + calculatedDate(i)]]);
         // stateData[state.properties["name"]].push([chartDate(i), "Total(Pred)", Number(state.properties[i.toString()])+Number(state.properties["Recovered" + i.toString()])]);
@@ -517,8 +517,8 @@ function loadChartData(){
         k += 1;
         if(dropDownFlag==1){
             stateDropDown.innerHTML += "<option value='"+ state.properties["name"].toString() +"'>" + state.properties["name"].toString() + "</option>";
-        }    
-    } 
+        }
+    }
     dropDownFlag = 0;
 
     schema2 = [{
@@ -575,7 +575,7 @@ function loadChartData(){
         "type": "number"
         }
     ];
-        
+
     schema = [{
         "name": "Time",
         "type": "date",
@@ -815,9 +815,9 @@ function loadChartData(){
             }
         ]
         };
-    
-        
-    
+
+
+
         dataStore2 = new FusionCharts.DataStore();
         dataSource2 = {
         chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
@@ -995,7 +995,7 @@ function loadChartData(){
             }
         ]
         };
-        
+
         if(currentState=='India'){
             dataSource2.data = dataStore2.createDataTable(overallData["Total"], schema2);
             new FusionCharts({
@@ -1017,7 +1017,7 @@ function loadChartData(){
         else{
             dataSource.caption.text = currentState;
             dataSource.data = dataStore.createDataTable(stateData[currentState], schema);
-            
+
             new FusionCharts({
             type: "timeseries",
             renderAt: "chart-container",
@@ -1034,8 +1034,8 @@ function loadChartData(){
             },
             }).render();
         }
-        
-        
+
+
 }
 
     loadChartData();
@@ -1046,8 +1046,8 @@ function loadChartData(){
   currentState = selectedSource;
   loadChart(selectedSource);
   }
-  
-  
+
+
 schema2 = [{
     "name": "Time",
     "type": "date",
@@ -1102,7 +1102,7 @@ schema2 = [{
     "type": "number"
     }
 ];
-    
+
 schema = [{
     "name": "Time",
     "type": "date",
@@ -1157,7 +1157,7 @@ schema = [{
     "type": "number"
     }
 ];
-    
+
    var dataStore = new FusionCharts.DataStore();
    var dataSource = {
       chart: {palettecolors: "E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
@@ -1343,9 +1343,9 @@ schema = [{
         }
       ]
     };
-  
-    
-  
+
+
+
     var dataStore2 = new FusionCharts.DataStore();
     var dataSource2 = {
        chart: {palettecolors:"E41A1C,E41A1C,F781BF,4DAF4A,4DAF4A,FF7F00,111111,111111,999999,A65628,A65628,984EA3,111111,999999",
@@ -1523,9 +1523,9 @@ schema = [{
         }
        ]
      };
-   
+
     dataSource2.data = dataStore2.createDataTable(overallData["Total"], schema2);
-     
+
      new FusionCharts({
        type: "timeseries",
        renderAt: "chart-container",
@@ -1541,7 +1541,7 @@ schema = [{
           }
     },
      }).render();
-  
+
      function changeScript(value){
         loadChartData();
         var selectedButton = document.getElementById(value);
@@ -1566,10 +1566,10 @@ schema = [{
         for (i = 0; i < buttons.length; i++) {
             buttons[i].style.backgroundColor = "#fff";
             buttons[i].style.color = '#5A6268';
-        } 
+        }
     }
 
-    
+
 
   function loadChart(state){
     if(state == "India"){
@@ -1618,7 +1618,7 @@ schema = [{
         dataSource.legend.item[9].initiallyhidden = legendStatus['Total(Data)'];
         dataSource.legend.item[10].initiallyhidden = legendStatus['Total(IND Trend)'];
         dataSource.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
-        
+
         new FusionCharts({
         type: "timeseries",
         renderAt: "chart-container",
@@ -1635,13 +1635,13 @@ schema = [{
         },
         }).render();
     }
-    
-  
+
+
   }
-  
+
 var mymap;
 
-// Set location and zoom 
+// Set location and zoom
 if(L.Browser.mobile){
     mymap = L.map('mapid',{zoomControl: false, zoomSnap: 0.5, dragging: false}).setView([22.146, 79.088], 4);
 }
@@ -1710,12 +1710,12 @@ title.onAdd = function (map) {
 };
 
 title.update = function () {
-    this._div.innerHTML = '<h3>India</h3>' 
+    this._div.innerHTML = '<h3>India</h3>'
                             + "Total(Predicted)<br> <b>" + (Number(totalData[0][slider.value.toString()]) + Number(totalData[0]["Recovered" + slider.value.toString()]) + Number(totalData[0]["Deceased" + slider.value.toString()])).toString()
                             + "</b><br> Total(Data)<br> <b>"   + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)])
                             + "</b><br> Active(Predicted)<br> <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
-                            + "</b><br> Active(Data)<br> <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)] 
-                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)] 
+                            + "</b><br> Active(Data)<br> <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]
+                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]
                                                         - actualtotalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() )
                             + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b><br> Recovered(Predicted)<br> <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
                             + "</b><br> Recovered(Data)<br> <b>" + (actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]))
@@ -1738,15 +1738,15 @@ function updateMobileTitle(){
                             +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
                             + "</b>Active(Predicted): <b>" + parseInt(totalData[0][slider.value.toString()]).toString()
                             +"</div><div class='col'>"
-                            + "</b>Active(Data): <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)] 
-                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)] 
-                                                        - actualtotalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() ) 
+                            + "</b>Active(Data): <b>" + (actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':(actualtotalData[0]["Confirmed_" + calculatedDate(slider.value)]
+                                                        - actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]
+                                                        - actualtotalData[0]["Deceased_" + calculatedDate(slider.value)] ).toString() )
                             +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
                             + ((recoveredAvailable=='y' || recoveredAvailable=='Y')?"</b>Recovered(Predicted): <b>" + parseInt(totalData[0]["Recovered" + slider.value.toString()]).toString():'')
                             +"</div><div class='col'>"
-                            + "</b>Recovered(Data): <b>" + (actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Recovered_" + calculatedDate(slider.value)])) 
+                            + "</b>Recovered(Data): <b>" + (actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Recovered_" + calculatedDate(slider.value)]))
                             +"</div></div><div class='row' style='margin-right: 0px;margin-left: 0px;'><div class='col'>"
-                            + "</b>Deceased(Predicted): <b>" + parseInt(totalData[0]["Deceased" + slider.value.toString()]).toString() 
+                            + "</b>Deceased(Predicted): <b>" + parseInt(totalData[0]["Deceased" + slider.value.toString()]).toString()
                             +"</div><div class='col'>"
                             + "</b>Deceased(Data): <b>" + (actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(actualtotalData[0]["Deceased_" + calculatedDate(slider.value)]))
                             +"</div></div></div>";
@@ -1780,8 +1780,8 @@ info.update = function (props, props2) {
         +'<br />' + 'Deceased(IND Trend)<br /> ' + '<b>' + (parseInt(props["Deceased" + slider.value.toString()]).toString()=="NaN"?'-':parseInt(props["Deceased" + slider.value.toString()]).toString() ) +'</b>'
         +'<br />' + 'Total(Data)<br /> ' + '<b>' + (props2["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':props2["Confirmed_" + calculatedDate(slider.value)]) +'</b>'
         +'<br />' + 'Active(Data)<br /> ' + '<b>' + (props2["Confirmed_" + calculatedDate(slider.value)]===undefined?'-':
-                                                    (props2["Confirmed_" + calculatedDate(slider.value)] 
-                                                  - props2["Recovered_" + calculatedDate(slider.value)] 
+                                                    (props2["Confirmed_" + calculatedDate(slider.value)]
+                                                  - props2["Recovered_" + calculatedDate(slider.value)]
                                                   - props2["Deceased_" + calculatedDate(slider.value)]).toString() ) +'</b>'
         +'<br />' + 'Recovered(Data)<br /> ' + '<b>' + (props2["Recovered_" + calculatedDate(slider.value)]===undefined?'-':Number(props2["Recovered_" + calculatedDate(slider.value)])) +'</b>'
         +'<br />' + 'Deceased(Data)<br /> ' + '<b>' + (props2["Deceased_" + calculatedDate(slider.value)]===undefined?'-':Number(props2["Deceased_" + calculatedDate(slider.value)])) +'</b>'
@@ -1963,7 +1963,7 @@ legend.update = function (currentBaseLayer){
             }
         }
     }
-    
+
 }
 
 
@@ -2050,8 +2050,8 @@ slider.oninput = function() {
   geojson["Deceased(Predicted)"].resetStyle();
   geojson["Total"].resetStyle();
   geojson["Active"].resetStyle();
-  geojson["Recovered"].resetStyle(); 
-  geojson["Deceased"].resetStyle(); 
+  geojson["Recovered"].resetStyle();
+  geojson["Deceased"].resetStyle();
   legend.update(currentBaseLayer);
 }
 
@@ -2150,12 +2150,12 @@ function myFunction() {
 
     if (dots.style.display === "none") {
     dots.style.display = "block";
-    btnText.innerHTML = "Read more"; 
+    btnText.innerHTML = "Read more";
     moreText.style.display = "none";
-    } 
+    }
     else {
     dots.style.display = "none";
-    btnText.innerHTML = "Read less"; 
+    btnText.innerHTML = "Read less";
     moreText.style.display = "block";
     }
 }
