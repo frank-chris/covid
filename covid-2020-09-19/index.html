@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="keywords" content="COVID-19, Covid-19 India Predictions, Mathematical model, MODELLING OF COVID-19 PANDEMIC">
+
+    <title>COVID-19: IISc MODEL</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="assets/css/smoothproducts.css"> -->
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}, menuSettings: { zoom: "Double-Click" }});
+    </script>
+    <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+
+</head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-100440163-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-100440163-2');
+</script>
+
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top clean-navbar" style="background-color: #666666;">
+        <div class="container"><a style = "font-family: 'Fira Sans', sans-serif; font-weight: 400;" class="navbar-brand logo" href="#">DATA-DRIVEN MODELLING OF COVID-19 PANDEMIC</a><button class="navbar-toggler" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse"
+                id="navcol-1">
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#result">Results</a></li>
+                    <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#slider1">Team</a></li>
+                    <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#model">Model</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="page landing-page" id = 'home'>
+        <section id = 'title-section' class="clean-block features" style=" padding-top:10px; padding-bottom: 5px;">
+            <div class="container">
+                <div class="block-heading" style='padding-top: 40px;'>
+                    <h3 class="text-left text-info" style="font-family: 'Fira Sans', sans-serif; margin-right: 5px;margin-left: 5px;">PDE-based modelling of Covid-19 infections</h3>
+                    <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
+                        <div class="text-left para" style="margin-bottom: 10px;">
+                           The developed model is a paradigm shift in mathematical modeling of infectious diseases.
+                        </div>
+                        <div class="text-left para" style="margin-bottom: 10px;">
+                            <i> We provide prediction of all India and state-wise confirmed, recovered, active and deceased Covid-19 cases based on our <a target="_blank" href="https://arxiv.org/abs/2006.15336">multi-dimensional PDE model</a>.
+                            </i>
+                            <i> The prevalance estimates from sero-surveys have been included in the model. However, the scenario curves below show only cases that will officialy be tested for Covid-19.
+                            </i>
+                        </div>
+                        <div class="text-left para" style="margin-bottom: 10px;">
+                            <i>Model predictions <b> updated on Sep 19, 2020 </b>. For previous results click here <a target="_blank" href="covid-2020-08-06/index.html"> (Aug 06, 2020)</a>, <a target="_blank" href="covid-2020-06-18/index.html"> (Jun 18, 2020)</a>, <a target="_blank" href="covid-2020-05-27/index.html">  (May 28, 2020)</a> and <a target="_blank" href="covid-2020-05-03/index.html">  (May 3, 2020)</a>.</i>
+                        </div>
+                        <div class="text-left para" style="margin-bottom: 10px;">
+                        <font  size=4 face ="Josefin Slab">
+                        <h5>Scenario Analysis</h5>
+                        <ul class='para'>
+                            <li> S1: Assume that 10 times (10x) the confirmed positive Covid-19 cases prevalent in the population. </li>
+                            <li> S2: S1 with a vaccine introduced on 1 January 2021. </li>
+                            <li> S3: S1 with a vaccine introduced on 1 April 2021.</li>
+                            <li> S4: Assume that 20 times (20x) the confirmed positive Covid-19 cases prevalent in the population. </li>
+                            <li> S5: S4 with a vaccine introduced on 1 January 2021.</li>
+                        </ul>
+                        </font>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id='chart-2' class="clean-block features" style="padding-bottom: 10px;">
+            <div class="container">
+                <div class="block-heading" style='padding-top: 30px;'>
+                    <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px; padding-bottom: 20px;">
+                        <div class="col" style = "padding-left: 0%;">
+                            <div class="text-center para">
+                                Choose India/State/UT<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a>
+                            </div>
+                            <select class="btn btn-secondary" name="myselect" id="myselect" style="width: 180px; margin-bottom: 10px;margin-top: 15px; font-family: 'Fira Sans', sans-serif;" onchange="getSelected();">
+                                <option value="India">India</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin-right: 0px;margin-left: 0px;padding-bottom: 2px;">
+                        <div class="col align-items-right" style = "padding-bottom: 10px; margin: 0%;">
+                                <button id='S10_NV' style="width: max-content; font-size: 15px; font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_NV');" title="Current Trend, No Vaccine">
+                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> S1
+                                </button>
+                        </div>
+                        <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
+                                <button id='S10_1Jan' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_1Jan');" title="Current Trend, 1 Jan Vaccine">
+                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> S2
+                                </button>
+                        </div>
+                        <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
+                            <button id='S10_1Apr' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_1Apr');" title="Current Trend, 1 Apr Vaccine">
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> S3
+                            </button>
+                        </div>
+                        <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
+                            <button id='S20_NV' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S20_NV');" title="Actual 20x, No Vaccine">
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> S4
+                            </button>
+                        </div>
+                        <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
+                            <button id='S20_1Jan' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S20_1Jan');" title="Actual 20x, 1 Jan Vaccine">
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> S5
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style=" padding-bottom: 2px; margin-left: 0px; margin-right: 0px;">
+                        <div class="col" style = "padding: 10px; margin: 0%;">
+                            <button id='Active' value='on' style="width: 110px;font-family: 'Fira Sans', sans serif; color: #ffffff; background-color: #DC3545;" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Active');"  title="Click to enable/disable">
+                                Enable/Disable Active Cases
+                            </button>
+                        </div>
+                        <div class="col" style = "padding: 10px; margin: 0%;">
+                            <button  id='Recovered' value='on' style="width: 120px; font-family: 'Fira Sans', sans serif; color: #ffffff; background-color: #28A745;" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Recovered');" title="Click to enable/disable">
+                               Enable/Disable Total Recovered
+                            </button>
+                        </div>
+                        <div class="col" style = "padding: 10px; margin: 0%;">
+                            <button  id='Deceased' value='on' style="width: 120px; font-family: 'Fira Sans', sans serif; color: #ffffff; background-color: #343A40;" type="button" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Deceased');" title="Click to enable/disable">
+                               Enable/Disable Deceased Cases
+                            </button>
+                        </div>
+                        <div class="col" style = "padding: 10px; margin: 0%;">
+                            <button id='Total' value='on' style="width: 120px; font-family: 'Fira Sans', sans serif; background-color: #A65628; color: #ffffff; border-color: #A65628;" type="button" class="btn btn-warning btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Total');"  title="Click to enable/disable">
+                               Enable/Disable  Total   Cases
+                            </button>
+                        </div>
+                        <div class="col" style = "padding: 10px; margin: 0%;">
+                            <button id='Uncertainty' value='off' style="width: 140px; font-family: 'Fira Sans', sans serif; color:#6C757D; background-color: #ffffff;" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Uncertainty');"  title="Click to enable/disable">
+                                Enable/Disable  Uncertainty Region
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row align-items-center" style="margin-right: 0px;margin-left: 0px;">
+                        <div class="col" style = "padding-left: 0%; margin: 0%;">
+                            <div style='position: relative;'>
+                                <div id="chart-container" style = "width: 100%; height: 100%;">
+                                    Chart loading
+                                </div>
+                                <div class='para' id='instruction' style="position: absolute; right: 9%; top: 2%; font-size: 15px; line-height: 1; color:#5648D4">
+                                    Select<br>Duration
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center para" style=" font-size: 15px;  margin-bottom: 5px; margin-right: 5px; margin-left: 5px;margin-top: 0px;">
+                        (Click on the above square buttons to remove/add a plot.
+<!--                         Scroll/pinch-zoom on the plot to zoom.  -->
+                        Use the time slider to adjust time period.)
+<!--                         Use the calendar on top-right corner to set a specific time period. -->
+                    </div>
+                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Computational Model</h4>
+                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> between 23 Mar and 31 Aug, 2020 is used partially to tune the parameters of the data-driven model. These results are current as of Sep 19, 2020.  </li>
+                        <li> Quarantine of <b>Active Cases</b> so as to prevent new infections is the key to contain the pandemic. An adaptive quarantine function in our model ensures that infected population is quarantined based on their infection level (showing symptoms) and based on latest published literature on how the infection spreads from infected population.  </li>
+                        <li> The severity of the infection is taken into consideration while modeling the infectious death rate function (see the rate functions in the model).  </li>
+                    </ul>
+                    <!--h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Observations</h4>
+                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+                        <li> <b>S1:</b> Hits a peak of 17.2 lakh ‘Active Cases’ in the mid of October 2020. Further, there will be around 46 thousand ‘Active Cases’, 2 lakh deaths and 1.4 crore total cases at the end of March 2021.  </li>
+                        <li> <b>S2:</b> Hits a peak of 13.1 lakh 'Active Cases' in the last week of September 2020. Further, there will be around 5 thousand ‘Active Cases’, 1.43 lakh deaths and 91.1 lakh total cases at the end of March 2021.  </li>
+                        <li> <b>S3:</b> Hits a peak of 46.5 lakh 'Active Cases' in the last week of December 2020. There will around 20.45 lakh ‘Active Cases’, 5.8 lakh deaths and 4.978 crore total cases at the end of March 2021.  </li>
+                        <li> <b>S4:</b> Hits a peak of 17.1 lakh ‘Active Cases’ in the second week of November 2020. Further, there will be around 4.0368 lakh ‘Active Cases’, 2.45 lakh deaths and 1.848 crore total cases at the end of March 2021.  </li>
+                        <li> <b>S5:</b> Hits a peak of 9.5 lakh Active Cases in the last week of September 2020. Further, there will around 73.55 thousand ‘Active’ Cases, 1.414 lakh deaths and 92.6 lakh total cases at the end of March 2021.  </li>
+                    </ul-->
+                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Discussion</h4>
+                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+                        <li> A prevalence factor of 10x and 20x mean that only 10% and 5% of the total number of infected cases in the population are reported. </li>
+                        <li> In both 10x and 20x scenarios, the total number of cases (reported + unreported) is close to 50% of the total population. However, in the 10x scenario, more cases are reported than in 20x. </li>
+                        <li> For 10x preavalence factor, the availability of vaccine from 1 Jan and 1 Apr, reduce the total reported cases by 42% and 12% respectively by the end of 2021. </li>
+                        <li> To end the pandemic by Dec 2021 under the present conditions, the vaccination should start atleast by 1 Apr 2021.
+                        <li> Until the development of vaccines, social distancing and other practices to reduce interaction among people (such as avoiding mass gathering etc.) are the key tools to contain the spread of COVID-19. As such, public awareness of these practices through several modes (advertisements through TV, radios, new papers, social media, etc.) is crucial.  </li>
+                        <li> The forecast range of all predicted scenarios (some shown here, others not shown) can be viewed by enabling the uncertainty region in the time series plots. The region may be interpreted as the "Confidence Interval" for the forecast numbers.  </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id='map-section' class="clean-block features" style="padding-bottom: 1px;">
+            <div class="container">
+                <div class="block-heading" style='padding-top: 30px;'>
+                    <h3 class="text-center text-info" style="margin-right: 5px;margin-left: 5px;">State Performance Compared to National Trend</h3>
+                </div>
+            </div>
+        </section>
+        <div id='india-container'>
+
+        </div>
+        <div id="main" style="position:relative; height:100%;" >
+
+            <!-- Leaflet Map -->
+            <div id="mapid"></div>
+            <!-- Time Slider -->
+            <div class="slidecontainer ml-auto mr-auto" id = "slider1">
+                <div id = "start-date"></div> <div id = "end-date"></div>
+                <input type="range" class="slider" id="myRange">
+            </div>
+        </div>
+        <div>
+            <div class="row" style ='margin: 0%;' id='legend-container'>
+
+            </div>
+        </div>
+        <section id = 'team' class="clean-block features" style="padding-bottom: 5px; padding-top: 5px;">
+            <div class="container">
+                <div class="block-heading" style='padding-top: 30px;'>
+                    <h3 class="text-left text-info" style="margin-right: 5px;margin-left: 5px;">Team </h3>
+                         <ul class='para' style="list-style-type:none;">
+                            <li> <b>Lead: </b>
+
+                                <i><a href='http://cds.iisc.ac.in/faculty/sashi/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                                 <font  size=4 face ="Josefin Slab" color="1976A1">   Prof. Sashikumaar Ganesan </font>
+                                </a> and <a href='http://cds.iisc.ac.in/faculty/deepakns/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                                 <font  size=4 face ="Josefin Slab" color="1976A1">   Prof. Deepak Subramani </font>
+                                </a>
+                                 </i>
+                                 CDS, IISc Bangalore, India
+                            </li>
+                            <li>
+                              Email:
+                               <A href="mailto:sashi-please remove this text-@iisc.ac.in">
+                                <span class="mailaddress">
+<!--                                  <font  size=4 face ="Josefin Slab" color="1976A1"> -->
+                                   sashi<span style="display:none;">-please remove this text-</span><span style="display:inline;">@iisc.ac.in,</span>
+<!--                                  </font> -->
+                                </span>
+                               </A>
+                               <A href="mailto:deepakns-please remove this text-@iisc.ac.in">
+                                <span class="mailaddress">
+<!--                                  <font  size=4 face ="Josefin Slab" color="1976A1"> -->
+                                   deepakns<span style="display:none;">-please remove this text-</span><span style="display:inline;">@iisc.ac.in</span>
+<!--                                  </font> -->
+                                </span>
+                               </A>
+
+                            </li>
+                            <br>
+                            <li id = 'model'> <b>Members: </b>
+                               <i> <a href='http://linkedin.com/in/chrisfrancis09' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                                    Chris Francis
+                                </a>
+                                </i>
+                            </li>
+                        </ul>
+                    </div>
+            </div>
+        </section>
+
+        <section id = 'team' class="clean-block features" style="padding-bottom: 10px; padding-top: 5px;">
+            <div class="container">
+                <div class="block-heading" style='padding-top: 30px;'>
+                    <h3 class="text-left text-info" style="margin-right: 5px;margin-left: 5px;">Acknowledgements</h3>
+                    <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
+                        <ol class='para' style = 'color:#444'>
+                            <li>
+                                <a href='https://api.covid19india.org/' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                                    COVID19-India API
+                                </a>
+                            </li>
+                            <li>
+                                <a href='https://github.com/datameet/maps' rel='noopener noreferrer' target="_blank" style = 'color:#444' >
+                                    DataMeet/maps
+                                </a>
+                            </li>
+                            <li>
+                                    Members of eXComp group, CDS, IISc Bangalore
+                            </li>
+                            <li>
+                                    Special thanks to all well wishers and colleagues for the discussion and feedback on our model.
+                            </li>
+                            <li>
+                                    We thank the Indian Academy of Science Summer Fellowship Program for the support to Chris.
+                            </li>
+                            <li>
+                                    Deepak wishes to acknowledge DST Inspire and Arcot Ramachandran Young Investigator Awards.
+                            </li>
+                            <li>
+                                    Sashi wishes to acknowledge SERB, DST,  DRDO, DAAD and AvH for the grants that supported for the development of ParMooN.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id='footer' class="clean-block features" style="padding-bottom: 18px;padding-top: 18px; font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;">
+            <div class="container">
+                <div class="block-heading" style="margin-bottom: 0px;padding-top: 0px;">
+                    <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
+                        <div class="col">Department of Computational and Data Sciences (CDS), Indian Institute of Science, Bangalore</div>
+                    </div>
+                    <div class="row align-items-center" style="margin-right: 5px;margin-left: 5px;">
+                        <div class="col">
+                            <a href='http://cds.iisc.ac.in/' rel='noopener noreferrer' target="_blank" style = 'color:#EAEBED'>
+                                <u>cds.iisc.ac.in</u>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FusionCharts JavaScript -->
+    <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+
+    <!-- GeoJSON data and predicted CSV data combined and saved as JavaScript -->
+    <script id="data" src="data/S10_NV/data.js"></script>
+
+    <script src="data/actualdata/actualdata.js"></script>
+
+    <!-- Data for uncertainty region -->
+    <script src="data/uncertainty/uncertainty.js"></script>
+
+    <!-- JavaScript for Map and Slider -->
+    <script src="assets/script.js"></script>
+
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script> -->
+    <!-- <script src="assets/js/smoothproducts.min.js"></script> -->
+    <!-- <script src="assets/js/theme.js"></script> -->
+</body>
+
+</html>
