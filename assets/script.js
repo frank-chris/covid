@@ -376,19 +376,19 @@ function monthName(month){
   var legendStatus = {
       'Active(Predicted)':0,
       'Active(IND Trend)':0,
-      'Active(Uncertainty)':1,
+//      'Active(Uncertainty)':1,
       'Active(Data)':0,
       'Recovered(Predicted)':0,
       'Recovered(IND Trend)':0,
-      'Recovered(Uncertainty)':1,
+//      'Recovered(Uncertainty)':1,
       'Recovered(Data)':0,
       'Deceased(Predicted)':0,
       'Deceased(IND Trend)':0,
-      'Deceased(Uncertainty)':1,
+//      'Deceased(Uncertainty)':1,
       'Deceased(Data)':0,
       'Total(Predicted)':0,
       'Total(IND Trend)':0,
-      'Total(Uncertainty)':1,
+//      'Total(Uncertainty)':1,
       'Total(Data)':0
   };
 
@@ -439,18 +439,18 @@ function setLegend(value){
         legendButton.style.color = legendButton.style.backgroundColor;
         legendButton.style.backgroundColor = temp;
     }
-    else if(value == 'Uncertainty'){
-        legendButton = document.getElementById('Uncertainty');
-        legendStatus['Active(Uncertainty)'] = (legendButton.value=='on'?1:0);
-        legendStatus['Recovered(Uncertainty)'] = (legendButton.value=='on'?1:0);
-        legendStatus['Deceased(Uncertainty)'] = (legendButton.value=='on'?1:0);
-        legendStatus['Total(Uncertainty)'] = (legendButton.value=='on'?1:0);
-        loadChart(currentState);
-        legendButton.value = (legendButton.value=='on'?'off':'on');
-        temp = legendButton.style.color;
-        legendButton.style.color = legendButton.style.backgroundColor;
-        legendButton.style.backgroundColor = temp;
-    }
+    // else if(value == 'Uncertainty'){
+    //     legendButton = document.getElementById('Uncertainty');
+    //     legendStatus['Active(Uncertainty)'] = (legendButton.value=='on'?1:0);
+    //     legendStatus['Recovered(Uncertainty)'] = (legendButton.value=='on'?1:0);
+    //     legendStatus['Deceased(Uncertainty)'] = (legendButton.value=='on'?1:0);
+    //     legendStatus['Total(Uncertainty)'] = (legendButton.value=='on'?1:0);
+    //     loadChart(currentState);
+    //     legendButton.value = (legendButton.value=='on'?'off':'on');
+    //     temp = legendButton.style.color;
+    //     legendButton.style.color = legendButton.style.backgroundColor;
+    //     legendButton.style.backgroundColor = temp;
+    // }
 }
 
 function loadChartData(){
@@ -655,10 +655,10 @@ function loadChartData(){
                     value: 'Active(IND Trend)',
                     initiallyhidden: legendStatus['Active(IND Trend)'],
                 },
-                {
-                    value: 'Active(Uncertainty)',
-                    initiallyhidden: legendStatus['Active(Uncertainty)'],
-                },
+//                {
+//                    value: 'Active(Uncertainty)',
+//                    initiallyhidden: legendStatus['Active(Uncertainty)'],
+//                },
                 {
                     value: 'Recovered(Data)',
                     initiallyhidden: legendStatus['Recovered(Data)'],
@@ -667,10 +667,10 @@ function loadChartData(){
                     value: 'Recovered(IND Trend)',
                     initiallyhidden: legendStatus['Recovered(IND Trend)'],
                 },
-                {
-                    value: 'Recovered(Uncertainty)',
-                    initiallyhidden: legendStatus['Recovered(Uncertainty)'],
-                },
+//                {
+//                    value: 'Recovered(Uncertainty)',
+//                    initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+//                },
                 {
                     value: 'Deceased(Data)',
                     initiallyhidden: legendStatus['Deceased(Data)'],
@@ -679,10 +679,10 @@ function loadChartData(){
                     value: 'Deceased(IND Trend)',
                     initiallyhidden: legendStatus['Deceased(IND Trend)'],
                 },
-                {
-                    value: 'Deceased(Uncertainty)',
-                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
-                },
+//                {
+//                    value: 'Deceased(Uncertainty)',
+//                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+//                },
                 {
                     value: 'Total(Data)',
                     initiallyhidden: legendStatus['Total(Data)'],
@@ -691,10 +691,10 @@ function loadChartData(){
                     value: 'Total(IND Trend)',
                     initiallyhidden: legendStatus['Total(IND Trend)'],
                 },
-                {
-                    value: 'Total(Uncertainty)',
-                    initiallyhidden: legendStatus['Total(Uncertainty)'],
-                }
+//                {
+//                    value: 'Total(Uncertainty)',
+//                    initiallyhidden: legendStatus['Total(Uncertainty)'],
+//                }
             ]
         },
         caption: {
@@ -723,20 +723,20 @@ function loadChartData(){
         yaxis: [
             {title: "Population",
             plot: [
-                {
-                    value:  {
-                                high: "HA",
-                                low: "LA"
-                            },
-                    name: "Active(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HA",
+                //                 low: "LA"
+                //             },
+                //     name: "Active(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Active(IND Trend)",
                     type: "line"
@@ -745,20 +745,20 @@ function loadChartData(){
                     value: "Active(Data)",
                     type: "line"
                 },
-                {
-                    value:  {
-                                high: "HR",
-                                low: "LR"
-                            },
-                    name: "Recovered(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HR",
+                //                 low: "LR"
+                //             },
+                //     name: "Recovered(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Recovered(IND Trend)",
                     type: "line"
@@ -767,20 +767,20 @@ function loadChartData(){
                     value: "Recovered(Data)",
                     type: "line"
                 },
-                {
-                    value:  {
-                                high: "HD",
-                                low: "LD"
-                            },
-                    name: "Deceased(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HD",
+                //                 low: "LD"
+                //             },
+                //     name: "Deceased(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Deceased(IND Trend)",
                     type: "line"
@@ -789,20 +789,20 @@ function loadChartData(){
                     value: "Deceased(Data)",
                     type: "line"
                 },
-                {
-                    value:  {
-                                high: "HT",
-                                low: "LT"
-                            },
-                    name: "Total(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HT",
+                //                 low: "LT"
+                //             },
+                //     name: "Total(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Total(IND Trend)",
                     type: "line"
@@ -843,10 +843,10 @@ function loadChartData(){
                     value: 'Active(Predicted)',
                     initiallyhidden: legendStatus['Active(Predicted)'],
                 },
-                {
-                    value: 'Active(Uncertainty)',
-                    initiallyhidden: legendStatus['Active(Uncertainty)'],
-                },
+//                {
+//                    value: 'Active(Uncertainty)',
+//                    initiallyhidden: legendStatus['Active(Uncertainty)'],
+//                },
                 {
                     value: 'Recovered(Data)',
                     initiallyhidden: legendStatus['Recovered(Data)'],
@@ -855,10 +855,10 @@ function loadChartData(){
                     value: 'Recovered(Predicted)',
                     initiallyhidden: legendStatus['Recovered(Predicted)'],
                 },
-                {
-                    value: 'Recovered(Uncertainty)',
-                    initiallyhidden: legendStatus['Recovered(Uncertainty)'],
-                },
+//                {
+//                    value: 'Recovered(Uncertainty)',
+//                    initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+//                },
                 {
                     value: 'Deceased(Data)',
                     initiallyhidden: legendStatus['Deceased(Data)'],
@@ -867,10 +867,10 @@ function loadChartData(){
                     value: 'Deceased(Predicted)',
                     initiallyhidden: legendStatus['Deceased(Predicted)'],
                 },
-                {
-                    value: 'Deceased(Uncertainty)',
-                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
-                },
+//                {
+//                    value: 'Deceased(Uncertainty)',
+//                    initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+//                },
                 {
                     value: 'Total(Data)',
                     initiallyhidden: legendStatus['Total(Data)'],
@@ -879,10 +879,10 @@ function loadChartData(){
                     value: 'Total(Predicted)',
                     initiallyhidden: legendStatus['Total(Predicted)'],
                 },
-                {
-                    value: 'Total(Uncertainty)',
-                    initiallyhidden: legendStatus['Total(Uncertainty)'],
-                }
+//                {
+//                    value: 'Total(Uncertainty)',
+//                    initiallyhidden: legendStatus['Total(Uncertainty)'],
+//                }
             ]
         },
         caption: {
@@ -903,20 +903,20 @@ function loadChartData(){
         yaxis: [
             {   title: "Population",
                 plot: [
-                    {
-                        value:  {
-                                    high: "HA",
-                                    low: "LA"
-                                },
-                        name: "Active(Uncertainty)",
-                        type: "area-range",
-                        style: {
-                            plot:{
-                                "stroke-opacity": "0",
-                                "fill-opacity": "0.1"
-                            }
-                        }
-                    },
+                    // {
+                    //     value:  {
+                    //                 high: "HA",
+                    //                 low: "LA"
+                    //             },
+                    //     name: "Active(Uncertainty)",
+                    //     type: "area-range",
+                    //     style: {
+                    //         plot:{
+                    //             "stroke-opacity": "0",
+                    //             "fill-opacity": "0.1"
+                    //         }
+                    //     }
+                    // },
                     {
                         value: "Active(Predicted)",
                         type: "line"
@@ -925,20 +925,20 @@ function loadChartData(){
                         value: "Active(Data)",
                         type: "line"
                     },
-                    {
-                        value:  {
-                                    high: "HR",
-                                    low: "LR"
-                                },
-                        name: "Recovered(Uncertainty)",
-                        type: "area-range",
-                        style: {
-                            plot:{
-                                "stroke-opacity": "0",
-                                "fill-opacity": "0.1"
-                            }
-                        }
-                    },
+                    // {
+                    //     value:  {
+                    //                 high: "HR",
+                    //                 low: "LR"
+                    //             },
+                    //     name: "Recovered(Uncertainty)",
+                    //     type: "area-range",
+                    //     style: {
+                    //         plot:{
+                    //             "stroke-opacity": "0",
+                    //             "fill-opacity": "0.1"
+                    //         }
+                    //     }
+                    // },
                     {
                         value: "Recovered(Predicted)",
                         type: "line"
@@ -947,20 +947,20 @@ function loadChartData(){
                         value: "Recovered(Data)",
                         type: "line"
                     },
-                    {
-                        value:  {
-                                    high: "HD",
-                                    low: "LD"
-                                },
-                        name: "Deceased(Uncertainty)",
-                        type: "area-range",
-                        style: {
-                            plot:{
-                                "stroke-opacity": "0",
-                                "fill-opacity": "0.1"
-                            }
-                        }
-                    },
+                    // {
+                    //     value:  {
+                    //                 high: "HD",
+                    //                 low: "LD"
+                    //             },
+                    //     name: "Deceased(Uncertainty)",
+                    //     type: "area-range",
+                    //     style: {
+                    //         plot:{
+                    //             "stroke-opacity": "0",
+                    //             "fill-opacity": "0.1"
+                    //         }
+                    //     }
+                    // },
                     {
                         value: "Deceased(Predicted)",
                         type: "line"
@@ -969,20 +969,20 @@ function loadChartData(){
                         value: "Deceased(Data)",
                         type: "line"
                     },
-                    {
-                        value:  {
-                                    high: "HT",
-                                    low: "LT"
-                                },
-                        name: "Total(Uncertainty)",
-                        type: "area-range",
-                        style: {
-                            plot:{
-                                "stroke-opacity": "0",
-                                "fill-opacity": "0.1"
-                            }
-                        }
-                    },
+                    // {
+                    //     value:  {
+                    //                 high: "HT",
+                    //                 low: "LT"
+                    //             },
+                    //     name: "Total(Uncertainty)",
+                    //     type: "area-range",
+                    //     style: {
+                    //         plot:{
+                    //             "stroke-opacity": "0",
+                    //             "fill-opacity": "0.1"
+                    //         }
+                    //     }
+                    // },
                     {
                         value: "Total(Predicted)",
                         type: "line"
@@ -1183,10 +1183,10 @@ schema = [{
                 value: 'Active(IND Trend)',
                 initiallyhidden: legendStatus['Active(IND Trend)'],
             },
-            {
-                value: 'Active(Uncertainty)',
-                initiallyhidden: legendStatus['Active(Uncertainty)'],
-            },
+            // {
+            //     value: 'Active(Uncertainty)',
+            //     initiallyhidden: legendStatus['Active(Uncertainty)'],
+            // },
             {
                 value: 'Recovered(Data)',
                 initiallyhidden: legendStatus['Recovered(Data)'],
@@ -1195,10 +1195,10 @@ schema = [{
                 value: 'Recovered(IND Trend)',
                 initiallyhidden: legendStatus['Recovered(IND Trend)'],
             },
-            {
-                value: 'Recovered(Uncertainty)',
-                initiallyhidden: legendStatus['Recovered(Uncertainty)'],
-            },
+            // {
+            //     value: 'Recovered(Uncertainty)',
+            //     initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+            // },
             {
                 value: 'Deceased(Data)',
                 initiallyhidden: legendStatus['Deceased(Data)'],
@@ -1207,10 +1207,10 @@ schema = [{
                 value: 'Deceased(IND Trend)',
                 initiallyhidden: legendStatus['Deceased(IND Trend)'],
             },
-            {
-                value: 'Deceased(Uncertainty)',
-                initiallyhidden: legendStatus['Deceased(Uncertainty)'],
-            },
+            // {
+            //     value: 'Deceased(Uncertainty)',
+            //     initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+            // },
             {
                 value: 'Total(Data)',
                 initiallyhidden: legendStatus['Total(Data)'],
@@ -1219,10 +1219,10 @@ schema = [{
                 value: 'Total(IND Trend)',
                 initiallyhidden: legendStatus['Total(IND Trend)'],
             },
-            {
-                value: 'Total(Uncertainty)',
-                initiallyhidden: legendStatus['Total(Uncertainty)'],
-            }
+            // {
+            //     value: 'Total(Uncertainty)',
+            //     initiallyhidden: legendStatus['Total(Uncertainty)'],
+            // }
         ]
     },
       caption: {
@@ -1251,20 +1251,20 @@ schema = [{
       yaxis: [
         {title: "Population",
         plot: [
-            {
-                value:  {
-                            high: "HA",
-                            low: "LA"
-                        },
-                name: "Active(Uncertainty)",
-                type: "area-range",
-                style: {
-                    plot:{
-                        "stroke-opacity": "0",
-                        "fill-opacity": "0.1"
-                    }
-                }
-            },
+            // {
+            //     value:  {
+            //                 high: "HA",
+            //                 low: "LA"
+            //             },
+            //     name: "Active(Uncertainty)",
+            //     type: "area-range",
+            //     style: {
+            //         plot:{
+            //             "stroke-opacity": "0",
+            //             "fill-opacity": "0.1"
+            //         }
+            //     }
+            // },
             {
                 value: "Active(IND Trend)",
                 type: "line"
@@ -1273,20 +1273,20 @@ schema = [{
                 value: "Active(Data)",
                 type: "line"
             },
-            {
-                value:  {
-                            high: "HR",
-                            low: "LR"
-                        },
-                name: "Recovered(Uncertainty)",
-                type: "area-range",
-                style: {
-                    plot:{
-                        "stroke-opacity": "0",
-                        "fill-opacity": "0.1"
-                    }
-                }
-            },
+            // {
+            //     value:  {
+            //                 high: "HR",
+            //                 low: "LR"
+            //             },
+            //     name: "Recovered(Uncertainty)",
+            //     type: "area-range",
+            //     style: {
+            //         plot:{
+            //             "stroke-opacity": "0",
+            //             "fill-opacity": "0.1"
+            //         }
+            //     }
+            // },
             {
                 value: "Recovered(IND Trend)",
                 type: "line"
@@ -1295,20 +1295,20 @@ schema = [{
                 value: "Recovered(Data)",
                 type: "line"
             },
-            {
-                value:  {
-                            high: "HD",
-                            low: "LD"
-                        },
-                name: "Deceased(Uncertainty)",
-                type: "area-range",
-                style: {
-                    plot:{
-                        "stroke-opacity": "0",
-                        "fill-opacity": "0.1"
-                    }
-                }
-            },
+            // {
+            //     value:  {
+            //                 high: "HD",
+            //                 low: "LD"
+            //             },
+            //     name: "Deceased(Uncertainty)",
+            //     type: "area-range",
+            //     style: {
+            //         plot:{
+            //             "stroke-opacity": "0",
+            //             "fill-opacity": "0.1"
+            //         }
+            //     }
+            // },
             {
                 value: "Deceased(IND Trend)",
                 type: "line"
@@ -1317,20 +1317,20 @@ schema = [{
                 value: "Deceased(Data)",
                 type: "line"
             },
-            {
-                value:  {
-                            high: "HT",
-                            low: "LT"
-                        },
-                name: "Total(Uncertainty)",
-                type: "area-range",
-                style: {
-                    plot:{
-                        "stroke-opacity": "0",
-                        "fill-opacity": "0.1"
-                    }
-                }
-            },
+            // {
+            //     value:  {
+            //                 high: "HT",
+            //                 low: "LT"
+            //             },
+            //     name: "Total(Uncertainty)",
+            //     type: "area-range",
+            //     style: {
+            //         plot:{
+            //             "stroke-opacity": "0",
+            //             "fill-opacity": "0.1"
+            //         }
+            //     }
+            // },
             {
                 value: "Total(IND Trend)",
                 type: "line"
@@ -1371,10 +1371,10 @@ schema = [{
                 value: 'Active(Predicted)',
                 initiallyhidden: legendStatus['Active(Predicted)'],
             },
-            {
-                value: 'Active(Uncertainty)',
-                initiallyhidden: legendStatus['Active(Uncertainty)'],
-            },
+            // {
+            //     value: 'Active(Uncertainty)',
+            //     initiallyhidden: legendStatus['Active(Uncertainty)'],
+            // },
             {
                 value: 'Recovered(Data)',
                 initiallyhidden: legendStatus['Recovered(Data)'],
@@ -1383,10 +1383,10 @@ schema = [{
                 value: 'Recovered(Predicted)',
                 initiallyhidden: legendStatus['Recovered(Predicted)'],
             },
-            {
-                value: 'Recovered(Uncertainty)',
-                initiallyhidden: legendStatus['Recovered(Uncertainty)'],
-            },
+            // {
+            //     value: 'Recovered(Uncertainty)',
+            //     initiallyhidden: legendStatus['Recovered(Uncertainty)'],
+            // },
             {
                 value: 'Deceased(Data)',
                 initiallyhidden: legendStatus['Deceased(Data)'],
@@ -1395,10 +1395,10 @@ schema = [{
                 value: 'Deceased(Predicted)',
                 initiallyhidden: legendStatus['Deceased(Predicted)'],
             },
-            {
-                value: 'Deceased(Uncertainty)',
-                initiallyhidden: legendStatus['Deceased(Uncertainty)'],
-            },
+            // {
+            //     value: 'Deceased(Uncertainty)',
+            //     initiallyhidden: legendStatus['Deceased(Uncertainty)'],
+            // },
             {
                 value: 'Total(Data)',
                 initiallyhidden: legendStatus['Total(Data)'],
@@ -1407,10 +1407,10 @@ schema = [{
                 value: 'Total(Predicted)',
                 initiallyhidden: legendStatus['Total(Predicted)'],
             },
-            {
-                value: 'Total(Uncertainty)',
-                initiallyhidden: legendStatus['Total(Uncertainty)'],
-            }
+            // {
+            //     value: 'Total(Uncertainty)',
+            //     initiallyhidden: legendStatus['Total(Uncertainty)'],
+            // }
         ]
     },
        caption: {
@@ -1431,20 +1431,20 @@ schema = [{
        yaxis: [
         {   title: "Population",
             plot: [
-                {
-                    value:  {
-                                high: "HA",
-                                low: "LA"
-                            },
-                    name: "Active(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HA",
+                //                 low: "LA"
+                //             },
+                //     name: "Active(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Active(Predicted)",
                     type: "line"
@@ -1453,20 +1453,20 @@ schema = [{
                     value: "Active(Data)",
                     type: "line"
                 },
-                {
-                    value:  {
-                                high: "HR",
-                                low: "LR"
-                            },
-                    name: "Recovered(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HR",
+                //                 low: "LR"
+                //             },
+                //     name: "Recovered(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Recovered(Predicted)",
                     type: "line"
@@ -1475,20 +1475,20 @@ schema = [{
                     value: "Recovered(Data)",
                     type: "line"
                 },
-                {
-                    value:  {
-                                high: "HD",
-                                low: "LD"
-                            },
-                    name: "Deceased(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HD",
+                //                 low: "LD"
+                //             },
+                //     name: "Deceased(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Deceased(Predicted)",
                     type: "line"
@@ -1497,20 +1497,20 @@ schema = [{
                     value: "Deceased(Data)",
                     type: "line"
                 },
-                {
-                    value:  {
-                                high: "HT",
-                                low: "LT"
-                            },
-                    name: "Total(Uncertainty)",
-                    type: "area-range",
-                    style: {
-                        plot:{
-                            "stroke-opacity": "0",
-                            "fill-opacity": "0.1"
-                        }
-                    }
-                },
+                // {
+                //     value:  {
+                //                 high: "HT",
+                //                 low: "LT"
+                //             },
+                //     name: "Total(Uncertainty)",
+                //     type: "area-range",
+                //     style: {
+                //         plot:{
+                //             "stroke-opacity": "0",
+                //             "fill-opacity": "0.1"
+                //         }
+                //     }
+                // },
                 {
                     value: "Total(Predicted)",
                     type: "line"
@@ -1576,16 +1576,16 @@ schema = [{
         dataSource2.data = dataStore2.createDataTable(overallData["Total"], schema2);
         dataSource2.legend.item[0].initiallyhidden = legendStatus['Active(Data)'];
         dataSource2.legend.item[1].initiallyhidden = legendStatus['Active(Predicted)'];
-        dataSource2.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
+        // dataSource2.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
         dataSource2.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
         dataSource2.legend.item[4].initiallyhidden = legendStatus['Recovered(Predicted)'];
-        dataSource2.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
+        // dataSource2.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
         dataSource2.legend.item[6].initiallyhidden = legendStatus['Deceased(Data)'];
         dataSource2.legend.item[7].initiallyhidden = legendStatus['Deceased(Predicted)'];
-        dataSource2.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
+        // dataSource2.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
         dataSource2.legend.item[9].initiallyhidden = legendStatus['Total(Data)'];
         dataSource2.legend.item[10].initiallyhidden = legendStatus['Total(Predicted)'];
-        dataSource2.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
+        // dataSource2.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
 
         new FusionCharts({
         type: "timeseries",
@@ -1608,16 +1608,16 @@ schema = [{
         dataSource.data = dataStore.createDataTable(stateData[state], schema);
         dataSource.legend.item[0].initiallyhidden = legendStatus['Active(Data)'];
         dataSource.legend.item[1].initiallyhidden = legendStatus['Active(IND Trend)'];
-        dataSource.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
+        // dataSource.legend.item[2].initiallyhidden = legendStatus['Active(Uncertainty)'];
         dataSource.legend.item[3].initiallyhidden = legendStatus['Recovered(Data)'];
         dataSource.legend.item[4].initiallyhidden = legendStatus['Recovered(IND Trend)'];
-        dataSource.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
+        // dataSource.legend.item[5].initiallyhidden = legendStatus['Recovered(Uncertainty)'];
         dataSource.legend.item[6].initiallyhidden = legendStatus['Deceased(Data)'];
         dataSource.legend.item[7].initiallyhidden = legendStatus['Deceased(IND Trend)'];
-        dataSource.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
+        // dataSource.legend.item[8].initiallyhidden = legendStatus['Deceased(Uncertainty)'];
         dataSource.legend.item[9].initiallyhidden = legendStatus['Total(Data)'];
         dataSource.legend.item[10].initiallyhidden = legendStatus['Total(IND Trend)'];
-        dataSource.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
+        // dataSource.legend.item[11].initiallyhidden = legendStatus['Total(Uncertainty)'];
 
         new FusionCharts({
         type: "timeseries",

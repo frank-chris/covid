@@ -52,7 +52,7 @@
                     <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#home">Home</a></li>
                     <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#result">Results</a></li>
                     <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#slider1">Team</a></li>
-                    <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="#model">Model</a></li>
+                    <li class="nav-item" role="presentation"><a  style = "font-family: 'Fira Sans', sans-serif; font-weight: 400; font-size: 100%;" class="nav-link active" href="https://www.nature.com/articles/s41598-021-86084-7">Model</a></li>
                 </ul>
             </div>
         </div>
@@ -67,24 +67,31 @@
                            The developed model is a paradigm shift in mathematical modeling of infectious diseases.
                         </div>
                         <div class="text-left para" style="margin-bottom: 10px;">
-                            <i> We provide prediction of all India and state-wise confirmed, recovered, active and deceased Covid-19 cases based on our <a target="_blank" href="https://arxiv.org/abs/2006.15336">multi-dimensional PDE model</a>.
+                            <i> We provide prediction of all India and state-wise confirmed, recovered, active and deceased Covid-19 cases based on our <a target="_blank" href="https://www.nature.com/articles/s41598-021-86084-7">multi-dimensional PDE model</a>.
                             </i>
                             <i> The prevalance estimates from sero-surveys have been included in the model. However, the scenario curves below show only cases that will officialy be tested for Covid-19.
                             </i>
                         </div>
                         <div class="text-left para" style="margin-bottom: 10px;">
-                            <i>Model predictions <b> updated on Sep 19, 2020 </b>. For previous results click here <a target="_blank" href="covid-2020-08-06/index.html"> (Aug 06, 2020)</a>, <a target="_blank" href="covid-2020-06-18/index.html"> (Jun 18, 2020)</a>, <a target="_blank" href="covid-2020-05-27/index.html">  (May 28, 2020)</a> and <a target="_blank" href="covid-2020-05-03/index.html">  (May 3, 2020)</a>.</i>
+                            <i>Model predictions <b> updated on Apr 01, 2021 </b>. For previous results click here <a target="_blank" href="covid-2020-09-19/index.html"> (Sep 19, 2020)</a>, <a target="_blank" href="covid-2020-08-06/index.html"> (Aug 06, 2020)</a>, <a target="_blank" href="covid-2020-06-18/index.html"> (Jun 18, 2020)</a>, <a target="_blank" href="covid-2020-05-27/index.html">  (May 28, 2020)</a> and <a target="_blank" href="covid-2020-05-03/index.html">  (May 3, 2020)</a>.</i>
                         </div>
                         <div class="text-left para" style="margin-bottom: 10px;">
                         <font  size=4 face ="Josefin Slab">
-                        <h5>Scenario Analysis</h5>
+                          <h5>COVID-19 Wave II projections:</h5>
+                          Our model assumes the following:
+                          <ul class='para'>
+                        	<li> Spread is similar to 23 Mar - 1 Oct '20, </li>
+                        	<li> 30L vaccinated every day, and the vaccine is 70% effective </li>
+                        	<li> 20X prevalence factor based on serosurveys</li>
+                          </ul>
+                        <!--h5>Scenario Analysis</h5>
                         <ul class='para'>
                             <li> S1: Assume that 10 times (10x) the confirmed positive Covid-19 cases prevalent in the population. </li>
                             <li> S2: S1 with a vaccine introduced on 1 January 2021. </li>
                             <li> S3: S1 with a vaccine introduced on 1 April 2021.</li>
                             <li> S4: Assume that 20 times (20x) the confirmed positive Covid-19 cases prevalent in the population. </li>
                             <li> S5: S4 with a vaccine introduced on 1 January 2021.</li>
-                        </ul>
+                        </ul-->
                         </font>
                       </div>
                     </div>
@@ -111,7 +118,7 @@
                                     <i class="material-icons" style="padding-right: 5px;">show_chart</i> S1
                                 </button>
                         </div>
-                        <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
+                        <!--div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
                                 <button id='S10_1Jan' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_1Jan');" title="Current Trend, 1 Jan Vaccine">
                                     <i class="material-icons" style="padding-right: 5px;">show_chart</i> S2
                                 </button>
@@ -130,7 +137,7 @@
                             <button id='S20_1Jan' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S20_1Jan');" title="Actual 20x, 1 Jan Vaccine">
                                 <i class="material-icons" style="padding-right: 5px;">show_chart</i> S5
                             </button>
-                        </div>
+                        </div-->
                     </div>
                     <div class="row align-items-center" style=" padding-bottom: 2px; margin-left: 0px; margin-right: 0px;">
                         <div class="col" style = "padding: 10px; margin: 0%;">
@@ -153,11 +160,11 @@
                                Enable/Disable  Total   Cases
                             </button>
                         </div>
-                        <div class="col" style = "padding: 10px; margin: 0%;">
+                        <!--div class="col" style = "padding: 10px; margin: 0%;">
                             <button id='Uncertainty' value='off' style="width: 140px; font-family: 'Fira Sans', sans serif; color:#6C757D; background-color: #ffffff;" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Uncertainty');"  title="Click to enable/disable">
                                 Enable/Disable  Uncertainty Region
                             </button>
-                        </div>
+                        </div-->
                     </div>
                     <div class="row align-items-center" style="margin-right: 0px;margin-left: 0px;">
                         <div class="col" style = "padding-left: 0%; margin: 0%;">
@@ -179,9 +186,18 @@
                     </div>
                     <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Computational Model</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
-                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> between 23 Mar and 31 Aug, 2020 is used partially to tune the parameters of the data-driven model. These results are current as of Sep 19, 2020.  </li>
+                        <li> Data<a href = '#Acknowledgements' data-toggle="tooltip" data-placement="top" title="Acknowledgements">*</a> from 23 March, 2020 is used partially to tune the parameters of the data-driven model. These results are current as of Apr 01, 2021.  </li>
                         <li> Quarantine of <b>Active Cases</b> so as to prevent new infections is the key to contain the pandemic. An adaptive quarantine function in our model ensures that infected population is quarantined based on their infection level (showing symptoms) and based on latest published literature on how the infection spreads from infected population.  </li>
                         <li> The severity of the infection is taken into consideration while modeling the infectious death rate function (see the rate functions in the model).  </li>
+                    </ul>
+                    <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Projections</h4>
+                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+
+                    <li>IND: 1.36cr by 1 May'21 and 1.53cr by 1 Sep'21 will get infected in India, whereas the peak will be over by the end of April with a maximum active case of 7.3L.</li>
+
+                    <li>KA: 10.7L by 1 May'21 and 11.2L by Sep'21 will get infected in Karnataka, whereas the peak will be over by the end of April with a maximum active case of 36K.</li>
+
+                    <li>TN: 9.5L by 1 May'21 and 10.1L by Sep'21 will get infected in Tamilnadu, whereas the peak will be over by the end of April with a maximum active case of 27K.</li>
                     </ul>
                     <!--h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Observations</h4>
                     <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
@@ -192,14 +208,15 @@
                         <li> <b>S5:</b> Hits a peak of 9.5 lakh Active Cases in the last week of September 2020. Further, there will around 73.55 thousand ‘Active’ Cases, 1.414 lakh deaths and 92.6 lakh total cases at the end of March 2021.  </li>
                     </ul-->
                     <h4 class="text-left text-info" style="margin-right: 5px;margin-left: 5px; margin-top: 20px;">Discussion</h4>
-                    <ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
+                    More scenarios and results will be released in the coming days.
+                    <!--ul class="para" style="font-family: 'Fira Sans', sans serif; color:#6C757D;">
                         <li> A prevalence factor of 10x and 20x mean that only 10% and 5% of the total number of infected cases in the population are reported. </li>
                         <li> In both 10x and 20x scenarios, the total number of cases (reported + unreported) is close to 50% of the total population. However, in the 10x scenario, more cases are reported than in 20x. </li>
                         <li> For 10x preavalence factor, the availability of vaccine from 1 Jan and 1 Apr, reduce the total reported cases by 42% and 12% respectively by the end of 2021. </li>
                         <li> To end the pandemic by Dec 2021 under the present conditions, the vaccination should start atleast by 1 Apr 2021.
                         <li> Until the development of vaccines, social distancing and other practices to reduce interaction among people (such as avoiding mass gathering etc.) are the key tools to contain the spread of COVID-19. As such, public awareness of these practices through several modes (advertisements through TV, radios, new papers, social media, etc.) is crucial.  </li>
                         <li> The forecast range of all predicted scenarios (some shown here, others not shown) can be viewed by enabling the uncertainty region in the time series plots. The region may be interpreted as the "Confidence Interval" for the forecast numbers.  </li>
-                    </ul>
+                    </ul-->
                 </div>
             </div>
         </section>
