@@ -77,21 +77,20 @@
                         </div>
                         <div class="text-left para" style="margin-bottom: 10px;">
                         <font  size=4 face ="Josefin Slab">
-                          <h5>COVID-19 Wave II projections:</h5>
-                          Our model assumes the following:
+                          <h5>COVID-19 Wave II projections with assumptions:</h5>
                           <ul class='para'>
                         	<li> Spread is similar to 23 Mar - 1 Oct '20, </li>
                         	<li> 30L vaccinated every day, and the vaccine is 70% effective </li>
                         	<li> 20X prevalence factor based on serosurveys</li>
                           </ul>
-                        <!--h5>Scenario Analysis</h5>
+                        <h5>Scenario Analysis</h5>
                         <ul class='para'>
-                            <li> S1: Assume that 10 times (10x) the confirmed positive Covid-19 cases prevalent in the population. </li>
-                            <li> S2: S1 with a vaccine introduced on 1 January 2021. </li>
-                            <li> S3: S1 with a vaccine introduced on 1 April 2021.</li>
-                            <li> S4: Assume that 20 times (20x) the confirmed positive Covid-19 cases prevalent in the population. </li>
-                            <li> S5: S4 with a vaccine introduced on 1 January 2021.</li>
-                        </ul-->
+                            <li> Wave II: Assumptions as above </li>
+                            <li> Better: 30x Sero Factor</li>
+                            <li> Worse: 2x Sero Factor</li>
+                            <!--li> Better 2: Wave II with 50% more vaccination </li>
+                            <li> S5: S4 with a vaccine introduced on 1 January 2021.</li-->
+                        </ul>
                         </font>
                       </div>
                     </div>
@@ -114,22 +113,22 @@
                     </div>
                     <div class="row align-items-center" style="margin-right: 0px;margin-left: 0px;padding-bottom: 2px;">
                         <div class="col align-items-right" style = "padding-bottom: 10px; margin: 0%;">
-                                <button id='S10_NV' style="width: max-content; font-size: 15px; font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_NV');" title="Current Trend, No Vaccine">
+                                <button id='20x' style="width: max-content; font-size: 15px; font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('20x');" title="Current Trend">
                                     <i class="material-icons" style="padding-right: 5px;">show_chart</i> Wave II
                                 </button>
                         </div>
-                        <!--div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
-                                <button id='S10_1Jan' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_1Jan');" title="Current Trend, 1 Jan Vaccine">
-                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> S2
+                        <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
+                                <button id='2x' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('2x');" title="2x Sero Factor">
+                                    <i class="material-icons" style="padding-right: 5px;">show_chart</i> Worse
                                 </button>
                         </div>
                         <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
-                            <button id='S10_1Apr' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S10_1Apr');" title="Current Trend, 1 Apr Vaccine">
-                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> S3
+                            <button id='30x' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('30x');" title="30x Sero Factor">
+                                <i class="material-icons" style="padding-right: 5px;">show_chart</i> Better
                             </button>
                         </div>
-                        <div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
-                            <button id='S20_NV' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('S20_NV');" title="Actual 20x, No Vaccine">
+                        <!--div class="col align-items-left" style = "padding-bottom: 10px; margin: 0%;">
+                            <button id='20x50v' style="width: max-content; font-size: 15px;  font-family: 'Fira Sans', sans serif;" type="button" class="btn btn-outline-secondary btn-sm scenario" data-toggle="tooltip" data-placement="top" onclick="changeScenario('20x50v');" title="Current Trend, More Vaccination">
                                 <i class="material-icons" style="padding-right: 5px;">show_chart</i> S4
                             </button>
                         </div>
@@ -160,11 +159,11 @@
                                Enable/Disable  Total   Cases
                             </button>
                         </div>
-                        <!--div class="col" style = "padding: 10px; margin: 0%;">
+                        <div class="col" style = "padding: 10px; margin: 0%;">
                             <button id='Uncertainty' value='off' style="width: 140px; font-family: 'Fira Sans', sans serif; color:#6C757D; background-color: #ffffff;" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="top" onclick="setLegend('Uncertainty');"  title="Click to enable/disable">
                                 Enable/Disable  Uncertainty Region
                             </button>
-                        </div-->
+                        </div>
                     </div>
                     <div class="row align-items-center" style="margin-right: 0px;margin-left: 0px;">
                         <div class="col" style = "padding-left: 0%; margin: 0%;">
@@ -353,7 +352,7 @@
     crossorigin=""></script>
 
     <!-- GeoJSON data and predicted CSV data combined and saved as JavaScript -->
-    <script id="data" src="data/S10_NV/data.js"></script>
+    <script id="data" src="data/20x/data.js"></script>
 
     <script src="data/actualdata/actualdata.js"></script>
 
